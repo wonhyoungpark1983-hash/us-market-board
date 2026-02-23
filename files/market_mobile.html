@@ -1981,7 +1981,7 @@
 
     // Touch support
     pagesEl.addEventListener('touchstart', e => {
-      if (e.target.closest('.idx-strip')) return;
+      if (e.target.closest('.idx-strip, .mini-chart-strip')) return;
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       isDragging = true; moved = false;
@@ -2011,7 +2011,7 @@
 
     // Mouse drag (desktop)
     pagesEl.addEventListener('mousedown', e => {
-      if (e.target.closest('.idx-strip')) return;
+      if (e.target.closest('.idx-strip, .mini-chart-strip')) return;
       startX = e.clientX; isDragging = true; moved = false;
       pagesEl.style.userSelect = 'none';
     });
