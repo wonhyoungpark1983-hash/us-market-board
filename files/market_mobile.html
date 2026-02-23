@@ -1229,13 +1229,13 @@
               <div class="metric-grid">
                 <div class="metric-box">
                   <div class="metric-label">2Y</div>
-                  <div class="metric-val" style="font-size:18px;color:var(--blue)">3.44%</div>
-                  <div class="metric-sub">단기</div>
+                  <div class="metric-val" data-ticker="^IRX" style="font-size:18px;color:var(--blue)">3.44%</div>
+                  <div class="metric-sub" data-ticker="^IRX">단기</div>
                 </div>
                 <div class="metric-box">
                   <div class="metric-label">10Y</div>
-                  <div class="metric-val" style="font-size:18px;color:var(--warn)">4.09%</div>
-                  <div class="metric-sub">↑ 매파 반등</div>
+                  <div class="metric-val" data-ticker="^TNX" style="font-size:18px;color:var(--warn)">4.09%</div>
+                  <div class="metric-sub" data-ticker="^TNX">↑ 매파 반등</div>
                 </div>
                 <div class="metric-box">
                   <div class="metric-label">2s10s 스프레드</div>
@@ -1244,8 +1244,8 @@
                 </div>
                 <div class="metric-box">
                   <div class="metric-label">30Y</div>
-                  <div class="metric-val" style="font-size:18px;color:var(--t2)">4.52%</div>
-                  <div class="metric-sub">장기 압박</div>
+                  <div class="metric-val" data-ticker="^TYX" style="font-size:18px;color:var(--t2)">4.52%</div>
+                  <div class="metric-sub" data-ticker="^TYX">장기 압박</div>
                 </div>
               </div>
             </div>
@@ -1259,32 +1259,32 @@
             <div class="fx-row">
               <div class="fx-pair" style="color:var(--gold)">USD/KRW</div>
               <div class="fx-name">원/달러 환율</div>
-              <div class="fx-val">1,450</div>
-              <div class="fx-chg" style="color:var(--dn)">▲ 0.7%</div>
+              <div class="fx-val idx-val" data-ticker="KRW=X">1,450</div>
+              <div class="fx-chg idx-chg dn" data-ticker="KRW=X" style="color:var(--dn)">▲ 0.7%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">DXY</div>
               <div class="fx-name">달러 인덱스</div>
-              <div class="fx-val">97.4</div>
-              <div class="fx-chg" style="color:var(--dn)">▲ 0.3%</div>
+              <div class="fx-val idx-val" data-ticker="DX-Y.NYB">97.4</div>
+              <div class="fx-chg idx-chg dn" data-ticker="DX-Y.NYB" style="color:var(--dn)">▲ 0.3%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">EUR/USD</div>
               <div class="fx-name">유로/달러</div>
-              <div class="fx-val">1.046</div>
-              <div class="fx-chg" style="color:var(--t3)">→ 보합</div>
+              <div class="fx-val idx-val" data-ticker="EURUSD=X">1.046</div>
+              <div class="fx-chg idx-chg neu" data-ticker="EURUSD=X" style="color:var(--t3)">→ 보합</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">USD/JPY</div>
               <div class="fx-name">달러/엔</div>
-              <div class="fx-val">152.3</div>
-              <div class="fx-chg" style="color:var(--dn)">▲ 0.2%</div>
+              <div class="fx-val idx-val" data-ticker="JPY=X">152.3</div>
+              <div class="fx-chg idx-chg dn" data-ticker="JPY=X" style="color:var(--dn)">▲ 0.2%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">GBP/USD</div>
               <div class="fx-name">파운드/달러</div>
-              <div class="fx-val">1.262</div>
-              <div class="fx-chg" style="color:var(--t3)">▼ 0.1%</div>
+              <div class="fx-val idx-val" data-ticker="GBPUSD=X">1.262</div>
+              <div class="fx-chg idx-chg neu" data-ticker="GBPUSD=X" style="color:var(--t3)">▼ 0.1%</div>
             </div>
           </div>
 
@@ -1296,38 +1296,38 @@
             <div class="fx-row">
               <div class="fx-pair" style="color:var(--warn)">WTI</div>
               <div class="fx-name">서부텍사스유</div>
-              <div class="fx-val" style="color:var(--warn)">$66.2</div>
-              <div class="fx-chg" style="color:var(--up)">▲ 2.1%</div>
+              <div class="fx-val idx-val" data-ticker="CL=F" style="color:var(--warn)">$66.2</div>
+              <div class="fx-chg idx-chg up" data-ticker="CL=F" style="color:var(--up)">▲ 2.1%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">BRENT</div>
               <div class="fx-name">브렌트유</div>
-              <div class="fx-val">$70.1</div>
-              <div class="fx-chg" style="color:var(--up)">▲ 1.9%</div>
+              <div class="fx-val idx-val" data-ticker="BZ=F">$70.1</div>
+              <div class="fx-chg idx-chg up" data-ticker="BZ=F" style="color:var(--up)">▲ 1.9%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair" style="color:var(--gold)">GOLD</div>
               <div class="fx-name">금 현물 (oz)</div>
-              <div class="fx-val" style="color:var(--gold)">$2,924</div>
-              <div class="fx-chg" style="color:var(--dn)">▼ 0.4%</div>
+              <div class="fx-val idx-val" data-ticker="GC=F" style="color:var(--gold)">$2,924</div>
+              <div class="fx-chg idx-chg dn" data-ticker="GC=F" style="color:var(--dn)">▼ 0.4%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair">SILVER</div>
               <div class="fx-name">은 현물 (oz)</div>
-              <div class="fx-val">$32.6</div>
-              <div class="fx-chg" style="color:var(--dn)">▼ 0.2%</div>
+              <div class="fx-val idx-val" data-ticker="SI=F">$32.6</div>
+              <div class="fx-chg idx-chg dn" data-ticker="SI=F" style="color:var(--dn)">▼ 0.2%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair" style="color:var(--cyan)">BTC</div>
               <div class="fx-name">비트코인</div>
-              <div class="fx-val">$97,800</div>
-              <div class="fx-chg" style="color:var(--dn)">▼ 0.8%</div>
+              <div class="fx-val idx-val" data-ticker="BTC-USD">$97,800</div>
+              <div class="fx-chg idx-chg dn" data-ticker="BTC-USD" style="color:var(--dn)">▼ 0.8%</div>
             </div>
             <div class="fx-row">
               <div class="fx-pair" style="color:var(--purp)">ETH</div>
               <div class="fx-name">이더리움</div>
-              <div class="fx-val">$2,740</div>
-              <div class="fx-chg" style="color:var(--dn)">▼ 1.2%</div>
+              <div class="fx-val idx-val" data-ticker="ETH-USD">$2,740</div>
+              <div class="fx-chg idx-chg dn" data-ticker="ETH-USD" style="color:var(--dn)">▼ 1.2%</div>
             </div>
           </div>
 

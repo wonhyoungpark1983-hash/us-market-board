@@ -1,7 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT'];
+const TICKERS = [
+    '^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT', // Indices
+    'CL=F', 'BZ=F', 'GC=F', 'SI=F', // Commodities
+    'BTC-USD', 'ETH-USD', // Crypto
+    'KRW=X', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'GBPUSD=X', // FX
+    '^TNX', '^TYX', '^FVX', '^IRX' // Yields
+];
 
 async function fetchMarketData() {
     const newMarketData = {
@@ -30,14 +36,26 @@ async function fetchMarketData() {
                     const pctDiff = (diff / prevClose) * 100;
 
                     const isVix = symbol === '^VIX';
-                    changeObj.price = price.toLocaleString(undefined, { maximumFractionDigits: isVix ? 2 : 0, minimumFractionDigits: isVix ? 2 : 0 });
+                    const isYield = symbol.startsWith('^') && ['^TNX', '^TYX', '^FVX', '^IRX'].includes(symbol);
+                    const isCrypto = symbol.includes('-USD');
+                    const isFX = symbol.includes('=X') || symbol === 'DX-Y.NYB';
+
+                    let decimals = 2;
+                    if (isVix || isYield || isFX) decimals = 2; // Fixed 2 decimals for FX and Yields
+                    if (isCrypto && price < 10) decimals = 4;
+                    if (symbol === 'KRW=X') decimals = 1; // KRW normally 1 decimal
+
+                    changeObj.price = price.toLocaleString(undefined, { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
                     changeObj.changePercent = (diff >= 0 ? "+" : "") + pctDiff.toFixed(2);
 
                     if (isVix) {
                         changeObj.changeText = diff >= 0 ? "⚠ 경계" : "안정";
                         changeObj.status = diff >= 0 ? "warn" : "down";
+                    } else if (isYield) {
+                        changeObj.changeText = (diff >= 0 ? "▲ " : "▼ ") + Math.abs(diff * 100).toFixed(1) + "bp";
+                        changeObj.status = diff >= 0 ? "warn" : "down";
                     } else {
-                        changeObj.changeText = (diff >= 0 ? "▲ " : "▼ ") + Math.abs(pctDiff).toFixed(2) + "%";
+                        changeObj.changeText = (diff >= 0 ? "▲ " : "▼ ") + Math.abs(pctDiff).toFixed(1) + "%";
                         changeObj.status = diff >= 0 ? "up" : "down";
                     }
                 }
