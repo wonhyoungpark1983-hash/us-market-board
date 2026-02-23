@@ -1,0 +1,24 @@
+name: Daily Market Data Update
+on:
+  schedule:
+    - cron: '30 21 * * 1-5' # Runs at 21:30 UTC, Mon-Fri (After US Market Close)
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Run Fetch Script
+        run: node scripts/fetch-market-data.js
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add files/data/market_data.json
+          git commit -m "Auto-update market data [skip ci]" || exit 0
+          git push

@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국 시황 인텔리전스 | US Market Daily</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Oswald:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090d;
+      --surface: #0e131c;
+      --surface2: #131b27;
+      --surface3: #182030;
+      --border: #1c2d42;
+      --border2: #243548;
+
+      --blue: #3b9eff;
+      --cyan: #00d4ff;
+      --green: #00e676;
+      --red: #ff4444;
+      --orange: #ff8c42;
+      --gold: #ffc940;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+
+      --text: #d0dce8;
+      --text-dim: #4a6478;
+      --text-mid: #7a9ab0;
+
+      --radius: 6px;
+      --gap: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ── SCAN-LINE OVERLAY ──────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.04) 2px,
+          rgba(0, 0, 0, 0.04) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── TOP NAV ────────────────────────────────── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 9, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+    }
+
+    .nav-brand {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      margin-right: 40px;
+      white-space: nowrap;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0;
+      flex: 1;
+    }
+
+    .nav-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      padding: 0 18px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-mid);
+    }
+
+    .nav-tab.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+    }
+
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .live-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--orange);
+      background: rgba(255, 140, 66, 0.1);
+      border: 1px solid rgba(255, 140, 66, 0.25);
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.2
+      }
+    }
+
+    .date-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* ── LAYOUT ─────────────────────────────────── */
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 28px 60px;
+    }
+
+    section {
+      margin-bottom: 36px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    .section-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    /* ── ALERT BAR ──────────────────────────────── */
+    .alert-bar {
+      background: linear-gradient(135deg, rgba(255, 140, 66, 0.08), rgba(255, 68, 68, 0.05));
+      border: 1px solid rgba(255, 140, 66, 0.2);
+      border-left: 3px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .alert-icon {
+      font-size: 16px;
+      line-height: 1.6;
+      flex-shrink: 0;
+    }
+
+    .alert-body {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    .alert-text strong {
+      color: var(--text);
+    }
+
+    /* ── CARD BASE ──────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 12px 16px 8px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    /* ── INDEX STRIP ────────────────────────────── */
+    .index-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--gap);
+      margin-bottom: 24px;
+    }
+
+    .idx-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px 14px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .idx-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-1px);
+    }
+
+    .idx-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      transition: opacity 0.2s;
+    }
+
+    .idx-card.up::after {
+      background: linear-gradient(90deg, var(--green), transparent);
+    }
+
+    .idx-card.down::after {
+      background: linear-gradient(90deg, var(--red), transparent);
+    }
+
+    .idx-card.warn::after {
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+
+    .idx-card.neutral::after {
+      background: linear-gradient(90deg, var(--text-dim), transparent);
+    }
+
+    .idx-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .idx-val {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .idx-card.warn .idx-val {
+      color: var(--orange);
+    }
+
+    .idx-chg {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .idx-chg.up {
+      color: var(--green);
+    }
+
+    .idx-chg.down {
+      color: var(--red);
+    }
+
+    .idx-chg.warn {
+      color: var(--orange);
+    }
+
+    .idx-sub {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    .spark-wrap {
+      margin-top: 12px;
+      height: 36px;
+    }
+
+    /* ── GRID LAYOUTS ───────────────────────────── */
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+    }
+
+    .g3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--gap);
+    }
+
+    .g4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: var(--gap);
+    }
+
+    .g12 {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--gap);
+    }
+
+    .g21 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--gap);
+    }
+
+    .g211 {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--gap);
+    }
+
+    /* ── MARKET TICKER TABLE ────────────────────── */
+    .mkt-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .mkt-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .mkt-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(28, 45, 66, 0.5);
+    }
+
+    .mkt-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .mkt-table tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .mkt-table .mono {
+      font-family: 'DM Mono', monospace;
+    }
+
+    .mkt-table .sym {
+      color: var(--cyan);
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .mkt-table .up {
+      color: var(--green);
+    }
+
+    .mkt-table .dn {
+      color: var(--red);
+    }
+
+    .mkt-table .neu {
+      color: var(--text-dim);
+    }
+
+    /* ── GAUGE INDICATORS ───────────────────────── */
+    .gauge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .gauge-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .gauge-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .gauge-val {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .gauge-note {
+      font-size: 10px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* ── PROGRESS BAR ───────────────────────────── */
+    .prog-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── HOLDING ROW ────────────────────────────── */
+    .h-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(28, 45, 66, 0.6);
+      transition: background 0.15s;
+      cursor: default;
+    }
+
+    .h-row:last-child {
+      border-bottom: none;
+    }
+
+    .h-row:hover {
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .h-rank {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .h-ticker {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--cyan);
+      width: 52px;
+      flex-shrink: 0;
+    }
+
+    .h-name {
+      font-size: 11px;
+      color: var(--text-mid);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .h-weight {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+      width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .h-bar {
+      width: 60px;
+      flex-shrink: 0;
+    }
+
+    .h-action {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      width: 52px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .h-action.buy {
+      color: var(--green);
+    }
+
+    .h-action.sell {
+      color: var(--red);
+    }
+
+    .h-action.hold {
+      color: var(--text-dim);
+    }
+
+    .h-action.new {
+      color: var(--cyan);
+    }
+
+    /* ── TAG PILLS ──────────────────────────────── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .tag.buy {
+      background: rgba(0, 230, 118, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(0, 230, 118, 0.2);
+    }
+
+    .tag.sell {
+      background: rgba(255, 68, 68, 0.1);
+      color: var(--red);
+      border: 1px solid rgba(255, 68, 68, 0.2);
+    }
+
+    .tag.hold {
+      background: rgba(74, 100, 120, 0.15);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+
+    .tag.new {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .tag.warn {
+      background: rgba(255, 140, 66, 0.1);
+      color: var(--orange);
+      border: 1px solid rgba(255, 140, 66, 0.2);
+    }
+
+    .tag.gold {
+      background: rgba(255, 201, 64, 0.1);
+      color: var(--gold);
+      border: 1px solid rgba(255, 201, 64, 0.2);
+    }
+
+    /* ── FX / COMMODITY ROWS ────────────────────── */
+    .fx-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(28, 45, 66, 0.5);
+    }
+
+    .fx-row:last-child {
+      border-bottom: none;
+    }
+
+    .fx-pair {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      width: 64px;
+    }
+
+    .fx-name {
+      font-size: 11px;
+      color: var(--text-mid);
+      flex: 1;
+      margin: 0 10px;
+    }
+
+    .fx-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .fx-chg {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      width: 52px;
+      text-align: right;
+    }
+
+    /* ── NARRATIVE ──────────────────────────────── */
+    .narrative {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+
+    .narrative-section {
+      margin-bottom: 16px;
+    }
+
+    .narrative-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .n-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .n-title span {
+      color: var(--text-mid);
+    }
+
+    .n-text {
+      font-size: 12.5px;
+      color: var(--text-mid);
+      line-height: 1.85;
+    }
+
+    .n-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── TODAY'S ARK TRADES ─────────────────────── */
+    .trade-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(28, 45, 66, 0.5);
+    }
+
+    .trade-row:last-child {
+      border-bottom: none;
+    }
+
+    .trade-etf {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--purple);
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      padding: 2px 7px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      width: 52px;
+      text-align: center;
+    }
+
+    .trade-ticker {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+      width: 52px;
+      flex-shrink: 0;
+    }
+
+    .trade-name {
+      font-size: 11px;
+      color: var(--text-mid);
+      flex: 1;
+    }
+
+    .trade-shares {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      width: 80px;
+      text-align: right;
+    }
+
+    .trade-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text);
+      width: 80px;
+      text-align: right;
+    }
+
+    /* ── CHART WRAPPERS ─────────────────────────── */
+    .chart-box {
+      position: relative;
+    }
+
+    .chart-box canvas {
+      width: 100% !important;
+    }
+
+    /* ── MOVERS TABLE ───────────────────────────── */
+    .movers-header {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .movers-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .movers-tab.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+    }
+
+    /* ── PORTFOLIO COMPARE ──────────────────────── */
+    .compare-row {
+      display: grid;
+      grid-template-columns: 40px 1fr 80px 80px 80px;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(28, 45, 66, 0.5);
+    }
+
+    .compare-row:last-child {
+      border-bottom: none;
+    }
+
+    .compare-row:hover {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .footer-left {
+      font-size: 10px;
+      color: var(--text-dim);
+      line-height: 2;
+    }
+
+    .footer-brand {
+      font-family: 'Oswald', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--border2);
+    }
+
+    /* ── ANIMATIONS ─────────────────────────────── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade {
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .d1 {
+      animation-delay: 0.05s;
+    }
+
+    .d2 {
+      animation-delay: 0.10s;
+    }
+
+    .d3 {
+      animation-delay: 0.15s;
+    }
+
+    .d4 {
+      animation-delay: 0.20s;
+    }
+
+    .d5 {
+      animation-delay: 0.25s;
+    }
+
+    .d6 {
+      animation-delay: 0.30s;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width:1100px) {
+      .index-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .g211 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width:800px) {
+      .index-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .g2,
+      .g3,
+      .g4,
+      .g12,
+      .g21,
+      .g211 {
+        grid-template-columns: 1fr;
+      }
+
+      .topnav {
+        padding: 0 16px;
+      }
+
+      .page {
+        padding: 16px 16px 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── TOP NAVIGATION ──────────────────────────────────────── -->
+  <nav class="topnav">
+    <div class="nav-brand">MARKET INTEL</div>
+    <div class="nav-tabs">
+      <a class="nav-tab active" href="#overview">OVERVIEW</a>
+      <a class="nav-tab" href="#bonds">BONDS & FX</a>
+      <a class="nav-tab" href="#gurus">GURU PORT.</a>
+      <a class="nav-tab" href="#stocks">주요 종목</a>
+      <a class="nav-tab" href="#narrative">시황 해설</a>
+    </div>
+    <div class="nav-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>DELAYED DATA
+      </div>
+      <div class="date-text" id="last-sync-time">2026.02.19 (목)</div>
+      <button id="refresh-btn"
+        style="background:#00cfff;color:#000;border:none;padding:5px 12px;border-radius:4px;font-size:12px;font-weight:bold;margin-left:10px;cursor:pointer;">Refresh</button>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ── ALERT ──────────────────────────────────────────────── -->
+    <div class="alert-bar fade d1">
+      <div class="alert-icon">⚡</div>
+      <div class="alert-body">
+        <div class="alert-title">TODAY'S KEY DRIVER</div>
+        <div class="alert-text">
+          <strong>FOMC 의사록 매파 충격</strong>: 대다수 위원 "인플레이션 둔화 더딜 수 있어" 언급 — 10년물 국채 4.09%로 반등.
+          WTI <strong>$66 돌파</strong> (이란-미국 긴장), Walmart 가이던스 실망 → 소비심리 우려.
+          내일(2/20) <strong>PCE 발표</strong> (컨센서스 2.8%) 대기 중 — 연준 금리인하 기대 후퇴 가능.
+          ARK: 오늘 Figma(FIG) 대규모 신규 매수 $23M, DraftKings 매도.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: OVERVIEW ────────────────────────────────── -->
+    <section id="overview">
+      <div class="section-header fade d1">
+        <div class="section-title">주요 지수</div>
+        <div class="section-line"></div>
+        <div class="section-badge">미국 동부시간 기준 전일 마감</div>
+      </div>
+
+      <!-- INDEX STRIP -->
+      <div class="index-strip fade d2">
+
+        <div class="idx-card down">
+          <div class="idx-label">S&P 500 · SPX</div>
+          <div class="idx-val" data-ticker="^GSPC">6,854</div>
+          <div class="idx-chg down" data-ticker="^GSPC">▼ 0.47% &nbsp;–32.3pt</div>
+          <div class="idx-sub">52주: 4,835 ~ 7,002</div>
+          <div class="spark-wrap"><canvas id="spark-spx"></canvas></div>
+        </div>
+
+        <div class="idx-card down">
+          <div class="idx-label">NASDAQ COMP. · COMP</div>
+          <div class="idx-val">22,312</div>
+          <div class="idx-chg down">▼ 0.51% &nbsp;–114pt</div>
+          <div class="idx-sub">YTD: ▼ 1.0% &nbsp;|&nbsp; 50일선 하회</div>
+          <div class="spark-wrap"><canvas id="spark-nas"></canvas></div>
+        </div>
+
+        <div class="idx-card down">
+          <div class="idx-label">DOW JONES · DJIA</div>
+          <div class="idx-val">49,263</div>
+          <div class="idx-chg down">▼ 0.38% &nbsp;–188pt</div>
+          <div class="idx-sub">52주 고점: 50,188</div>
+          <div class="spark-wrap"><canvas id="spark-djia"></canvas></div>
+        </div>
+
+        <div class="idx-card warn">
+          <div class="idx-label">VIX · 공포지수</div>
+          <div class="idx-val" data-ticker="^VIX">19.8</div>
+          <div class="idx-chg warn" data-ticker="^VIX">▲ 경계 구간 접근</div>
+          <div class="idx-sub">⚠ 20선 돌파 시 위험↑</div>
+          <div class="spark-wrap"><canvas id="spark-vix"></canvas></div>
+        </div>
+
+        <div class="idx-card down">
+          <div class="idx-label">RUSSELL 2000 · RUT</div>
+          <div class="idx-val" data-ticker="^RUT">2,214</div>
+          <div class="idx-chg down" data-ticker="^RUT">▼ 0.62% &nbsp;–13.8pt</div>
+          <div class="idx-sub">소형주 약세 지속</div>
+          <div class="spark-wrap"><canvas id="spark-rut"></canvas></div>
+        </div>
+
+      </div>
+
+      <!-- MAIN CHART + INDICATORS -->
+      <div class="g211 fade d3">
+
+        <!-- CHART: 4주 추이 -->
+        <div class="card">
+          <div class="card-head">
+            <span>S&P 500 · NASDAQ — 4주 일간 추이</span>
+            <span style="color:var(--text-dim)">RECENT 18 SESSIONS</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-box" style="height:240px">
+              <canvas id="chart-main"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- S&P 500 SECTORS -->
+        <div class="card">
+          <div class="card-head"><span>S&P 500 섹터별 등락</span></div>
+          <div class="card-body" style="padding:12px 0">
+            <div class="chart-box" style="height:240px">
+              <canvas id="chart-sector"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- MARKET MOOD -->
+        <div class="card">
+          <div class="card-head"><span>시장 심리 지표</span></div>
+          <div class="card-body">
+            <div class="gauge-grid">
+              <div class="gauge-item">
+                <div class="gauge-label">S&P RSI (14)</div>
+                <div class="gauge-val" style="color:var(--text)">48.2</div>
+                <div class="gauge-note">중립권 (과매수 70)</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:48%;background:var(--blue)"></div>
+                </div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">VIX INDEX</div>
+                <div class="gauge-val" style="color:var(--orange)">19.8</div>
+                <div class="gauge-note">⚠ 20 경계선 접근</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:66%;background:var(--orange)"></div>
+                </div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">CPI YoY (1월)</div>
+                <div class="gauge-val" style="color:var(--green)">2.4%</div>
+                <div class="gauge-note">예상 2.5% 하회 ✓</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:48%;background:var(--green)"></div>
+                </div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">PCE (2/20 예상)</div>
+                <div class="gauge-val" style="color:var(--orange)">2.8%</div>
+                <div class="gauge-note">Fed 목표 2.0% 상회</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:70%;background:var(--orange)"></div>
+                </div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">실업률 (1월)</div>
+                <div class="gauge-val" style="color:var(--green)">4.3%</div>
+                <div class="gauge-note">NFP +130K 예상↑</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:43%;background:var(--green)"></div>
+                </div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">연준 기준금리</div>
+                <div class="gauge-val" style="color:var(--text)">3.50%</div>
+                <div class="gauge-note">동결 유지, 연내 2회↓ 예상</div>
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:35%;background:var(--purple)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: BONDS & FX ──────────────────────────────── -->
+    <section id="bonds">
+      <div class="section-header fade">
+        <div class="section-title">채권 · 환율 · 원자재</div>
+        <div class="section-line"></div>
+        <div class="section-badge">FIXED INCOME + FX + COMMODITIES</div>
+      </div>
+
+      <div class="g3 fade">
+
+        <!-- YIELD CURVE -->
+        <div class="card">
+          <div class="card-head"><span>미국 국채 수익률 곡선</span><span>2026.02.19</span></div>
+          <div class="card-body" style="padding:12px">
+            <div class="chart-box" style="height:180px">
+              <canvas id="chart-yield"></canvas>
+            </div>
+            <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="gauge-item">
+                <div class="gauge-label">2Y</div>
+                <div class="gauge-val" style="font-size:18px;color:var(--blue)">3.44%</div>
+                <div class="gauge-note">단기</div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">10Y</div>
+                <div class="gauge-val" style="font-size:18px;color:var(--orange)">4.09%</div>
+                <div class="gauge-note">↑ 매파 반등</div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">2s10s 스프레드</div>
+                <div class="gauge-val" style="font-size:18px;color:var(--green)">+65bp</div>
+                <div class="gauge-note">정상 기울기</div>
+              </div>
+              <div class="gauge-item">
+                <div class="gauge-label">30Y</div>
+                <div class="gauge-val" style="font-size:18px;color:var(--text-mid)">4.52%</div>
+                <div class="gauge-note">장기 금리 압박</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FX -->
+        <div class="card">
+          <div class="card-head"><span>외환 시장</span><span>FOREX</span></div>
+          <div style="padding:0">
+            <div class="fx-row">
+              <div class="fx-pair">USD/KRW</div>
+              <div class="fx-name">원/달러 환율</div>
+              <div class="fx-val">1,450</div>
+              <div class="fx-chg" style="color:var(--red)">▲ 0.7%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">DXY</div>
+              <div class="fx-name">달러 인덱스</div>
+              <div class="fx-val">97.4</div>
+              <div class="fx-chg" style="color:var(--red)">▲ 0.3%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">EUR/USD</div>
+              <div class="fx-name">유로/달러</div>
+              <div class="fx-val">1.046</div>
+              <div class="fx-chg" style="color:var(--text-dim)">→ ±0.0%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">USD/JPY</div>
+              <div class="fx-name">달러/엔</div>
+              <div class="fx-val">152.3</div>
+              <div class="fx-chg" style="color:var(--red)">▲ 0.2%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">GBP/USD</div>
+              <div class="fx-name">파운드/달러</div>
+              <div class="fx-val">1.262</div>
+              <div class="fx-chg" style="color:var(--text-dim)">▼ 0.1%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">USD/CNY</div>
+              <div class="fx-name">달러/위안</div>
+              <div class="fx-val">7.248</div>
+              <div class="fx-chg" style="color:var(--red)">▲ 0.1%</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top:12px;border-top:1px solid var(--border)">
+            <div class="gauge-item" style="background:rgba(255,68,68,0.05);border-color:rgba(255,68,68,0.2)">
+              <div class="gauge-label" style="color:var(--red)">KRW 한국 투자자 주목</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.7;margin-top:4px">
+                원/달러 1,450원 수준 — 달러 강세 지속 시 <strong style="color:var(--text)">삼성전자·현대차 환차익</strong> 기대 vs. 외인 이탈 리스크 병존.
+                52주 고점 1,488원 대비 안정권.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMMODITIES -->
+        <div class="card">
+          <div class="card-head"><span>원자재 & 크립토</span><span>COMMODITIES</span></div>
+          <div style="padding:0">
+            <div class="fx-row">
+              <div class="fx-pair" style="color:var(--orange)">WTI</div>
+              <div class="fx-name">서부텍사스유 (bbl)</div>
+              <div class="fx-val" style="color:var(--orange)">$66.2</div>
+              <div class="fx-chg" style="color:var(--green)">▲ 2.1%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">BRENT</div>
+              <div class="fx-name">브렌트유 (bbl)</div>
+              <div class="fx-val">$70.1</div>
+              <div class="fx-chg" style="color:var(--green)">▲ 1.9%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair" style="color:var(--gold)">GOLD</div>
+              <div class="fx-name">금 현물 (oz)</div>
+              <div class="fx-val" style="color:var(--gold)">$2,924</div>
+              <div class="fx-chg" style="color:var(--red)">▼ 0.4%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair">SILVER</div>
+              <div class="fx-name">은 현물 (oz)</div>
+              <div class="fx-val">$32.6</div>
+              <div class="fx-chg" style="color:var(--text-dim)">▼ 0.2%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair" style="color:var(--cyan)">BTC</div>
+              <div class="fx-name">비트코인 (USD)</div>
+              <div class="fx-val">$97,800</div>
+              <div class="fx-chg" style="color:var(--red)">▼ 0.8%</div>
+            </div>
+            <div class="fx-row">
+              <div class="fx-pair" style="color:var(--purple)">ETH</div>
+              <div class="fx-name">이더리움 (USD)</div>
+              <div class="fx-val">$2,740</div>
+              <div class="fx-chg" style="color:var(--red)">▼ 1.2%</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top:12px;border-top:1px solid var(--border)">
+            <div class="gauge-item" style="background:rgba(255,140,66,0.05);border-color:rgba(255,140,66,0.2)">
+              <div class="gauge-label" style="color:var(--orange)">WTI 급등 포인트</div>
+              <div style="font-size:11px;color:var(--text-mid);line-height:1.7;margin-top:4px">
+                이란-미국 핵 협상 결렬 우려 + 계절적 수요 회복 → 2026년 신고점. <strong style="color:var(--text)">에너지 섹터</strong>(CVX,OXY) 수혜,
+                항공·화학은 비용 압박.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: GURU PORTFOLIOS ─────────────────────────── -->
+    <section id="gurus">
+      <div class="section-header fade">
+        <div class="section-title">대가 포트폴리오</div>
+        <div class="section-line"></div>
+        <div class="section-badge">BUFFETT Q4'25 13F (2026.02.17) · ARK 최신</div>
+      </div>
+
+      <!-- BUFFETT -->
+      <div style="margin-bottom:16px">
+        <div class="card fade">
+          <div class="card-head">
+            <span>🏦 워런 버핏 · Berkshire Hathaway — $274B 포트폴리오 (Q4 2025)</span>
+            <span style="color:var(--gold)">CASH HOARD $381.7B — 사상 최대</span>
+          </div>
+          <div class="g2" style="gap:0">
+
+            <!-- TOP HOLDINGS LIST -->
+            <div style="border-right:1px solid var(--border)">
+              <div
+                style="padding:10px 14px 8px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:16px 52px 1fr 40px 60px 52px;gap:10px">
+                <div class="h-rank">#</div>
+                <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--text-dim)">
+                  TICKER</div>
+                <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--text-dim)">
+                  종목명</div>
+                <div
+                  style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--text-dim);text-align:right">
+                  비중</div>
+                <div></div>
+                <div
+                  style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--text-dim);text-align:right">
+                  액션</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">1</div>
+                <div class="h-ticker">AAPL</div>
+                <div class="h-name">Apple — 기술소비재</div>
+                <div class="h-weight">28%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:100%;background:var(--blue)"></div>
+                  </div>
+                </div>
+                <div class="h-action sell">▼ 축소</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">2</div>
+                <div class="h-ticker">AXP</div>
+                <div class="h-name">American Express — 금융</div>
+                <div class="h-weight">17%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:61%;background:var(--blue)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">3</div>
+                <div class="h-ticker">BAC</div>
+                <div class="h-name">Bank of America — 금융</div>
+                <div class="h-weight">10%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:36%;background:var(--blue)"></div>
+                  </div>
+                </div>
+                <div class="h-action sell">▼ 매도중</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">4</div>
+                <div class="h-ticker">KO</div>
+                <div class="h-name">Coca-Cola — 필수소비재</div>
+                <div class="h-weight">9%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:32%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 영구보유</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">5</div>
+                <div class="h-ticker">CVX</div>
+                <div class="h-name">Chevron — 에너지</div>
+                <div class="h-weight">7%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:25%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 추가매수</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">6</div>
+                <div class="h-ticker">CB</div>
+                <div class="h-name">Chubb — 보험</div>
+                <div class="h-weight">5%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:18%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 대규모매수</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">7</div>
+                <div class="h-ticker">OXY</div>
+                <div class="h-name">Occidental Petroleum — 에너지</div>
+                <div class="h-weight">4%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:14%;background:var(--blue)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">8</div>
+                <div class="h-ticker">MCO</div>
+                <div class="h-name">Moody's — 금융서비스</div>
+                <div class="h-weight">4%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:14%;background:var(--blue)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">9</div>
+                <div class="h-ticker">KHC</div>
+                <div class="h-name">Kraft Heinz — 식음료</div>
+                <div class="h-weight">3%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:11%;background:var(--text-dim)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">10</div>
+                <div class="h-ticker">GOOGL</div>
+                <div class="h-name">Alphabet — 테크/AI</div>
+                <div class="h-weight">3%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:11%;background:var(--cyan)"></div>
+                  </div>
+                </div>
+                <div class="h-action new">✦ Q3 신규</div>
+              </div>
+            </div>
+
+            <!-- PIE + Q4 CHANGES -->
+            <div>
+              <div style="padding:16px;border-bottom:1px solid var(--border)">
+                <div
+                  style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-bottom:12px">
+                  섹터 비중</div>
+                <div class="chart-box" style="height:180px">
+                  <canvas id="chart-buffett-pie"></canvas>
+                </div>
+              </div>
+              <div style="padding:14px">
+                <div
+                  style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-bottom:10px">
+                  Q4 2025 핵심 변화</div>
+                <div style="display:flex;flex-direction:column;gap:7px">
+                  <div style="display:flex;align-items:center;gap:10px;font-size:11px">
+                    <span class="tag new">NEW</span>
+                    <span style="color:var(--text-mid)">NYT (뉴욕타임스) 신규 편입</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:11px">
+                    <span class="tag buy">ADD</span>
+                    <span style="color:var(--text-mid)">CB, CVX, DPZ 대규모 추가매수</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:11px">
+                    <span class="tag sell">TRIM</span>
+                    <span style="color:var(--text-mid)">AMZN 대규모 축소, AAPL 지속 감소</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:11px">
+                    <span class="tag gold">CASH</span>
+                    <span style="color:var(--text-mid)">현금 $381.7B — 사상 최대 (시장 고평가 시사)</span>
+                  </div>
+                  <div
+                    style="margin-top:8px;padding:10px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);font-size:11px;color:var(--text-mid);line-height:1.7">
+                    Greg Abel 신임 CEO 체제 하에서도 <strong style="color:var(--text)">보험·에너지·소비재</strong> 중심의 방어적 포트폴리오 기조 유지
+                    예상.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ARK INVEST -->
+      <div class="g2 fade">
+
+        <!-- ARKK HOLDINGS -->
+        <div class="card">
+          <div class="card-head">
+            <span>🚀 ARK 이노베이션 ETF (ARKK) — TOP 10 ($6.7B)</span>
+            <span style="color:var(--purple)">혁신·파괴적 성장</span>
+          </div>
+          <div style="padding:0">
+            <div class="h-row">
+              <div class="h-rank">1</div>
+              <div class="h-ticker" style="color:var(--purple)">TSLA</div>
+              <div class="h-name">Tesla — EV / AI</div>
+              <div class="h-weight">10.9%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:100%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">2</div>
+              <div class="h-ticker" style="color:var(--purple)">CRSP</div>
+              <div class="h-name">CRISPR Therapeutics — 유전자편집</div>
+              <div class="h-weight">6.3%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:57%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action buy">▲ 추가</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">3</div>
+              <div class="h-ticker" style="color:var(--purple)">TEM</div>
+              <div class="h-name">Tempus AI — AI 헬스케어</div>
+              <div class="h-weight">5.5%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:50%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action buy">▲ 추가</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">4</div>
+              <div class="h-ticker" style="color:var(--purple)">ROKU</div>
+              <div class="h-name">Roku — 스트리밍 플랫폼</div>
+              <div class="h-weight">5.0%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:46%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">5</div>
+              <div class="h-ticker" style="color:var(--purple)">COIN</div>
+              <div class="h-name">Coinbase — 크립토 거래소</div>
+              <div class="h-weight">4.6%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:42%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action buy">▲ 추가</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">6</div>
+              <div class="h-ticker" style="color:var(--purple)">SHOP</div>
+              <div class="h-name">Shopify — 전자상거래</div>
+              <div class="h-weight">4.2%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:39%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">7</div>
+              <div class="h-ticker" style="color:var(--purple)">HOOD</div>
+              <div class="h-name">Robinhood — 핀테크</div>
+              <div class="h-weight">4.0%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:37%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">8</div>
+              <div class="h-ticker" style="color:var(--purple)">AMD</div>
+              <div class="h-name">AMD — AI 반도체</div>
+              <div class="h-weight">4.0%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:37%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">9</div>
+              <div class="h-ticker" style="color:var(--purple)">BEAM</div>
+              <div class="h-name">Beam Therapeutics — 유전자</div>
+              <div class="h-weight">3.5%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:32%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action buy">▲ 추가</div>
+            </div>
+            <div class="h-row">
+              <div class="h-rank">10</div>
+              <div class="h-ticker" style="color:var(--purple)">RBLX</div>
+              <div class="h-name">Roblox — 메타버스/게임</div>
+              <div class="h-weight">3.6%</div>
+              <div class="h-bar">
+                <div class="prog-bar">
+                  <div class="prog-fill" style="width:33%;background:var(--purple)"></div>
+                </div>
+              </div>
+              <div class="h-action sell">▼ 일부 매도</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARK TODAY'S TRADES + COMPARISON -->
+        <div style="display:flex;flex-direction:column;gap:var(--gap)">
+
+          <!-- TODAY's TRADES 2/19 -->
+          <div class="card">
+            <div class="card-head">
+              <span>🔄 ARK 오늘의 매매 (2026.02.19)</span>
+              <span style="color:var(--cyan)">DAILY TRADES</span>
+            </div>
+            <div style="padding:0">
+              <div class="trade-row">
+                <div class="trade-etf">ARKK</div>
+                <div class="trade-ticker" style="color:var(--cyan)">FIG</div>
+                <div class="trade-name">Figma Inc — 디자인 협업</div>
+                <div class="trade-shares" style="color:var(--green)">▲ 964,342주</div>
+                <div class="trade-val" style="color:var(--green)">$23.3M 매수</div>
+              </div>
+              <div class="trade-row">
+                <div class="trade-etf">ARKK</div>
+                <div class="trade-ticker" style="color:var(--red)">DKNG</div>
+                <div class="trade-name">DraftKings — 스포츠베팅</div>
+                <div class="trade-shares" style="color:var(--red)">▼ 480,919주</div>
+                <div class="trade-val" style="color:var(--red)">$11.2M 매도</div>
+              </div>
+              <div class="trade-row">
+                <div class="trade-etf">ARKG</div>
+                <div class="trade-ticker" style="color:var(--cyan)">CMPS</div>
+                <div class="trade-name">Compass Pathways — 정신건강</div>
+                <div class="trade-shares" style="color:var(--green)">▲ 781,085주</div>
+                <div class="trade-val" style="color:var(--green)">$6.6M 매수</div>
+              </div>
+              <div class="trade-row">
+                <div class="trade-etf">ARKK</div>
+                <div class="trade-ticker" style="color:var(--cyan)">RXRX</div>
+                <div class="trade-name">Recursion Pharma — AI 신약</div>
+                <div class="trade-shares" style="color:var(--green)">▲ 780,532주</div>
+                <div class="trade-val" style="color:var(--green)">$2.8M 매수</div>
+              </div>
+              <div class="trade-row">
+                <div class="trade-etf">ARKK</div>
+                <div class="trade-ticker" style="color:var(--red)">VEEV</div>
+                <div class="trade-name">Veeva Systems — 헬스케어 SaaS</div>
+                <div class="trade-shares" style="color:var(--red)">▼ 34,993주</div>
+                <div class="trade-val" style="color:var(--red)">$6.3M 매도</div>
+              </div>
+              <div class="trade-row">
+                <div class="trade-etf">ARKK</div>
+                <div class="trade-ticker" style="color:var(--cyan)">KLAR</div>
+                <div class="trade-name">Klarna — 핀테크 BNPL</div>
+                <div class="trade-shares" style="color:var(--green)">▲ 56,507주</div>
+                <div class="trade-val" style="color:var(--green)">$1.1M 매수</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUFFETT vs ARK 비교 -->
+          <div class="card">
+            <div class="card-head"><span>버핏 vs 아크 — 철학 비교</span></div>
+            <div class="card-body" style="padding:0">
+              <div class="compare-row"
+                style="grid-template-columns:1fr 1fr;gap:0;padding:14px;border-bottom:1px solid var(--border)">
+                <div style="padding-right:14px;border-right:1px solid var(--border)">
+                  <div
+                    style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">
+                    BUFFETT · VALUE</div>
+                  <div style="font-size:11px;color:var(--text-mid);line-height:1.8">
+                    ✓ 현금 $381.7B 대기<br>
+                    ✓ 배당·자사주 선호<br>
+                    ✓ 평균 보유 20분기<br>
+                    ✓ 41개 집중 포트폴리오
+                  </div>
+                </div>
+                <div style="padding-left:14px">
+                  <div
+                    style="font-family:'DM Mono',monospace;font-size:9px;color:var(--purple);letter-spacing:2px;margin-bottom:8px">
+                    ARK · GROWTH</div>
+                  <div style="font-size:11px;color:var(--text-mid);line-height:1.8">
+                    ✓ 매일 포트폴리오 공개<br>
+                    ✓ 파괴적 혁신 집중<br>
+                    ✓ 197개 분산 보유<br>
+                    ✓ 고변동성 고수익 추구
+                  </div>
+                </div>
+              </div>
+              <div style="padding:12px 14px">
+                <div class="chart-box" style="height:110px">
+                  <canvas id="chart-compare"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- NEW GURUS (Burry & Druckenmiller) -->
+      <div style="margin-top:16px">
+        <div class="g2 fade">
+
+          <!-- MICHAEL BURRY -->
+          <div class="card">
+            <div class="card-head">
+              <span>📉 Michael Burry · Scion Asset Management (Q4 2025 13F)</span>
+              <span style="color:var(--red)">빅쇼트</span>
+            </div>
+            <div style="padding:0">
+              <div class="h-row">
+                <div class="h-rank">1</div>
+                <div class="h-ticker">BABA</div>
+                <div class="h-name">Alibaba Group Holding</div>
+                <div class="h-weight">19.5%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:100%;background:var(--red)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 추가</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">2</div>
+                <div class="h-ticker">JD</div>
+                <div class="h-name">JD.com Inc</div>
+                <div class="h-weight">14.3%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:73%;background:var(--red)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 추가</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">3</div>
+                <div class="h-ticker">BIDU</div>
+                <div class="h-name">Baidu Inc</div>
+                <div class="h-weight">9.2%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:47%;background:var(--red)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">4</div>
+                <div class="h-ticker">REAL</div>
+                <div class="h-name">The RealReal</div>
+                <div class="h-weight">7.8%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:40%;background:var(--red)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 신규</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAN DRUCKENMILLER -->
+          <div class="card">
+            <div class="card-head">
+              <span>📈 Stan Druckenmiller · Duquesne (Q4 2025 13F)</span>
+              <span style="color:var(--green)">매크로모멘텀</span>
+            </div>
+            <div style="padding:0">
+              <div class="h-row">
+                <div class="h-rank">1</div>
+                <div class="h-ticker">COUP</div>
+                <div class="h-name">Coupang Inc</div>
+                <div class="h-weight">16.4%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:100%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action hold">→ 유지</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">2</div>
+                <div class="h-ticker">MSFT</div>
+                <div class="h-name">Microsoft Corp</div>
+                <div class="h-weight">12.1%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:73%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action sell">▼ 축소</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">3</div>
+                <div class="h-ticker">NVDA</div>
+                <div class="h-name">NVIDIA Corp</div>
+                <div class="h-weight">8.5%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:51%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action sell">▼ 축소</div>
+              </div>
+              <div class="h-row">
+                <div class="h-rank">4</div>
+                <div class="h-ticker">VST</div>
+                <div class="h-name">Vistra Corp</div>
+                <div class="h-weight">6.2%</div>
+                <div class="h-bar">
+                  <div class="prog-bar">
+                    <div class="prog-fill" style="width:37%;background:var(--green)"></div>
+                  </div>
+                </div>
+                <div class="h-action buy">▲ 추가</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 4: 주요 종목 ────────────────────────────────── -->
+    <section id="stocks">
+      <div class="section-header fade">
+        <div class="section-title">주요 개별 종목</div>
+        <div class="section-line"></div>
+        <div class="section-badge">MAGNIFICENT 7 + 주간 무버</div>
+      </div>
+
+      <div class="g2 fade">
+
+        <!-- MAG 7 -->
+        <div class="card">
+          <div class="card-head"><span>⭐ Magnificent 7</span><span>전일 마감 기준</span></div>
+          <table class="mkt-table">
+            <thead>
+              <tr>
+                <th>티커</th>
+                <th>종목명</th>
+                <th>현재가</th>
+                <th>일간</th>
+                <th>YTD</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono sym">AAPL</td>
+                <td>Apple</td>
+                <td class="mono">$228.4</td>
+                <td class="mono dn">▼ 5.0%</td>
+                <td class="mono dn">▼ 8.2%</td>
+                <td><span class="tag warn">Siri 지연</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">NVDA</td>
+                <td>NVIDIA</td>
+                <td class="mono">$132.6</td>
+                <td class="mono dn">▼ 0.8%</td>
+                <td class="mono up">▲ 4.1%</td>
+                <td><span class="tag buy">AI 주도</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">MSFT</td>
+                <td>Microsoft</td>
+                <td class="mono">$412.8</td>
+                <td class="mono dn">▼ 0.4%</td>
+                <td class="mono dn">▼ 2.3%</td>
+                <td><span class="tag hold">클라우드↓</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">GOOGL</td>
+                <td>Alphabet</td>
+                <td class="mono">$194.2</td>
+                <td class="mono dn">▼ 0.6%</td>
+                <td class="mono dn">▼ 1.8%</td>
+                <td><span class="tag hold">AI 검색</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">AMZN</td>
+                <td>Amazon</td>
+                <td class="mono">$224.1</td>
+                <td class="mono dn">▼ 0.3%</td>
+                <td class="mono up">▲ 3.2%</td>
+                <td><span class="tag buy">AWS 성장</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">META</td>
+                <td>Meta</td>
+                <td class="mono">$706.3</td>
+                <td class="mono up">▲ 0.2%</td>
+                <td class="mono up">▲ 12.4%</td>
+                <td><span class="tag buy">광고↑</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">TSLA</td>
+                <td>Tesla</td>
+                <td class="mono">$342.8</td>
+                <td class="mono dn">▼ 1.2%</td>
+                <td class="mono dn">▼ 14.6%</td>
+                <td><span class="tag warn">판매↓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- WEEKLY MOVERS -->
+        <div class="card">
+          <div class="card-head"><span>📊 주간 TOP 무버</span><span>WEEKLY MOVERS</span></div>
+          <table class="mkt-table">
+            <thead>
+              <tr>
+                <th>티커</th>
+                <th>종목명</th>
+                <th>현재가</th>
+                <th>주간</th>
+                <th>사유</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono sym">RIVN</td>
+                <td>리비안 오토모티브</td>
+                <td class="mono">$16.8</td>
+                <td class="mono up">▲ 20.0%</td>
+                <td><span class="tag buy">실적↑ 가이던스↑</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">ROKU</td>
+                <td>로쿠</td>
+                <td class="mono">$83.4</td>
+                <td class="mono up">▲ 15.0%</td>
+                <td><span class="tag buy">목표가↑ +42%</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">VRTV</td>
+                <td>버티브 홀딩스</td>
+                <td class="mono">$124.6</td>
+                <td class="mono up">▲ 24.0%</td>
+                <td><span class="tag buy">AI 인프라↑</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">WMT</td>
+                <td>월마트</td>
+                <td class="mono">$98.2</td>
+                <td class="mono up">▲ 2.2%</td>
+                <td><span class="tag hold">실적 OK 가이던스↓</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">PLTR</td>
+                <td>팔란티어</td>
+                <td class="mono">$74.3</td>
+                <td class="mono dn">▼ 20.0%</td>
+                <td><span class="tag sell">YTD 고점 대비 조정</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">DKNG</td>
+                <td>드래프트킹스</td>
+                <td class="mono">$34.1</td>
+                <td class="mono dn">▼ 17.0%</td>
+                <td><span class="tag sell">연간 가이던스 실망</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">CSCO</td>
+                <td>시스코</td>
+                <td class="mono">$54.2</td>
+                <td class="mono dn">▼ 12.0%</td>
+                <td><span class="tag sell">실적 가이던스↓</span></td>
+              </tr>
+              <tr>
+                <td class="mono sym">AAPL</td>
+                <td>애플</td>
+                <td class="mono">$228.4</td>
+                <td class="mono dn">▼ 5.0%</td>
+                <td><span class="tag warn">Siri AI 출시 지연</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ADDITIONAL WATCHLIST -->
+      <div class="card fade" style="margin-top:var(--gap)">
+        <div class="card-head"><span>📋 확장 관심종목 — 섹터별 핵심 종목</span><span>SECTOR WATCHLIST</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+
+          <div style="padding:14px;border-right:1px solid var(--border)">
+            <div
+              style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px">
+              AI · 반도체</div>
+            <table class="mkt-table" style="font-size:11px">
+              <tr>
+                <td class="mono sym" style="font-size:11px">NVDA</td>
+                <td>$132.6</td>
+                <td class="mono up">+4.1%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">AMD</td>
+                <td>$122.4</td>
+                <td class="mono dn">-8.2%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">AVGO</td>
+                <td>$186.2</td>
+                <td class="mono up">+6.4%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">SMCI</td>
+                <td>$38.4</td>
+                <td class="mono dn">-22%</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="padding:14px;border-right:1px solid var(--border)">
+            <div
+              style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--green);margin-bottom:10px">
+              에너지 · 원자재</div>
+            <table class="mkt-table" style="font-size:11px">
+              <tr>
+                <td class="mono sym" style="font-size:11px">CVX</td>
+                <td>$162.4</td>
+                <td class="mono up">+2.8%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">OXY</td>
+                <td>$46.2</td>
+                <td class="mono up">+3.1%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">XOM</td>
+                <td>$112.8</td>
+                <td class="mono up">+1.6%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">FCX</td>
+                <td>$38.6</td>
+                <td class="mono dn">-0.8%</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="padding:14px;border-right:1px solid var(--border)">
+            <div
+              style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--orange);margin-bottom:10px">
+              금융 · 보험</div>
+            <table class="mkt-table" style="font-size:11px">
+              <tr>
+                <td class="mono sym" style="font-size:11px">JPM</td>
+                <td>$248.6</td>
+                <td class="mono dn">-0.6%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">BAC</td>
+                <td>$44.2</td>
+                <td class="mono dn">-1.2%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">GS</td>
+                <td>$586.4</td>
+                <td class="mono dn">-1.4%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">V</td>
+                <td>$326.8</td>
+                <td class="mono dn">-0.4%</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="padding:14px">
+            <div
+              style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--purple);margin-bottom:10px">
+              혁신 · 크립토</div>
+            <table class="mkt-table" style="font-size:11px">
+              <tr>
+                <td class="mono sym" style="font-size:11px">COIN</td>
+                <td>$242.8</td>
+                <td class="mono dn">-2.1%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">HOOD</td>
+                <td>$34.6</td>
+                <td class="mono dn">-1.8%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">MSTR</td>
+                <td>$318.4</td>
+                <td class="mono dn">-3.2%</td>
+              </tr>
+              <tr>
+                <td class="mono sym" style="font-size:11px">PLTR</td>
+                <td>$74.3</td>
+                <td class="mono dn">-20%</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: NARRATIVE ───────────────────────────────── -->
+    <section id="narrative">
+      <div class="section-header fade">
+        <div class="section-title">시황 해설 & 한국 투자자 시각</div>
+        <div class="section-line"></div>
+        <div class="section-badge">MARKET NARRATIVE · KR INVESTOR PERSPECTIVE</div>
+      </div>
+
+      <div class="narrative fade">
+
+        <div class="narrative-section">
+          <div class="n-title">
+            <span style="color:var(--orange)">01</span>
+            <span>FOMC 매파 기조 — 금리 전망의 재조정</span>
+          </div>
+          <div class="n-text">
+            2월 19일 공개된 FOMC 의사록에서 <strong>다수의 위원이 인플레이션 둔화에 예상보다 긴 시간이 필요할 수 있다</strong>고 언급, 일부 위원은 인플레이션이 목표치 위에서 고착화될
+            경우 추가 금리인상도 필요할 수 있다고 경고했습니다. 이에 10년물 국채 금리가 4.09%로 반등하며 성장주·테크주 전반에 할인율 상승 압박을 가했습니다. 내일(2/20) 발표되는
+            PCE(개인소비지출 물가지수)가 컨센서스 2.8%에 부합하거나 초과할 경우, <strong>2026년 연내 금리인하 기대(현재 2회)가 1회 또는 0회로 압축</strong>될 가능성에 주목해야
+            합니다.
+          </div>
+        </div>
+
+        <div class="narrative-section">
+          <div class="n-title">
+            <span style="color:var(--orange)">02</span>
+            <span>WTI 원유 급등 — 에너지 섹터 수혜 vs. 비용 부담</span>
+          </div>
+          <div class="n-text">
+            이란-미국 핵 협상 결렬 우려가 고조되며 WTI 원유가 <strong>$66.2(2026년 신고점)</strong>를 기록했습니다. 에너지 섹터(CVX, OXY, XOM)는 직접 수혜를 받는
+            반면, 항공·석유화학·물류·소비재 업종은 원가 압박 요인으로 작용합니다. 한국 투자자 관점에서는 <strong>SK이노베이션, S-Oil 등 국내 정유주에 정제마진 개선 기대감</strong>이
+            유입될 수 있으며, 반면 항공주(대한항공, 아시아나)는 유가 민감도가 높아 주의가 필요합니다.
+          </div>
+        </div>
+
+        <div class="narrative-section">
+          <div class="n-title">
+            <span style="color:var(--cyan)">03</span>
+            <span>원/달러 1,450원 — 환율과 국내 수출주</span>
+          </div>
+          <div class="n-text">
+            DXY(달러인덱스) 소폭 강세와 함께 원/달러가 1,450원 수준을 유지 중입니다. <strong>삼성전자·현대차·LG에너지솔루션 등 국내 수출 대형주에는 환차익 요인</strong>으로
+            긍정적으로 작용할 수 있으나, 외국인 자금의 이탈(달러 강세 = 신흥국 통화 약세 압박) 리스크도 동시에 점검해야 합니다. 52주 고점인 1,488원 대비 현재는 안정권에 있으나, PCE
+            서프라이즈 발생 시 단기 변동성이 확대될 수 있습니다.
+          </div>
+        </div>
+
+        <div class="narrative-section">
+          <div class="n-title">
+            <span style="color:var(--gold)">04</span>
+            <span>버핏 vs 아크 — 두 가지 시그널 읽기</span>
+          </div>
+          <div class="n-text">
+            버크셔의 <strong>현금 $381.7B(사상 최대)</strong>는 버핏이 시장 밸류에이션에 여전히 부담을 느끼고 있음을 시사합니다. 신임 CEO 그렉 아벨 체제에서도 보험·에너지 중심의
+            방어적 기조는 유지될 것으로 예상됩니다. 반면 ARK의 오늘 매매는 흥미롭습니다: <strong>Figma(FIG) $23M 신규 매수</strong>는 Adobe가 인수 실패 후 IPO한
+            디자인 플랫폼으로, 아크가 SaaS·AI 생산성 툴에 다시 배팅하고 있음을 의미합니다. 두 대가의 상반된 포지셔닝은 현 시장이 '가치 vs. 성장'의 갈림길에 있음을 보여줍니다.
+          </div>
+        </div>
+
+        <div class="narrative-section" style="margin-bottom:0">
+          <div class="n-title">
+            <span style="color:var(--green)">05</span>
+            <span>내일 주목할 이벤트 (2026.02.20 금)</span>
+          </div>
+          <div class="n-text">
+            <strong>① PCE 물가지수(12월)</strong> — 전년비 2.8% 컨센서스. 상회 시 금리인하 기대 축소 → 성장주 추가 하락 가능.<br>
+            <strong>② 연준 발언</strong> — FOMC 의사록 이후 추가 발언 모니터링.<br>
+            <strong>③ 아크 일일 포트폴리오 공시</strong> — Figma 추가 매수 여부 주목.<br>
+            <strong>④ 원유 동향</strong> — 이란 관련 지정학적 뉴스 모니터링.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────────────────────── -->
+    <div class="footer fade">
+      <div class="footer-left">
+        데이터 출처: CNBC · Edward Jones · Charles Schwab Market Update · FRED St. Louis Fed · Berkshire 13F (SEC) · ARK
+        Invest Daily Holdings · Investing.com · X-Rates<br>
+        기준 시점: 2026.02.19 — 미국 동부시간 장 중 및 전일 마감 기준 (지연 데이터)<br>
+        ⚠ 본 보고서는 투자 권유가 아닙니다. 모든 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.
+      </div>
+      <div class="footer-brand">MARKET INTEL</div>
+    </div>
+
+  </div><!-- /.page -->
+
+  <script>
+    // ────────────────────────────────────────────────────────────
+    // CHART DEFAULTS
+    // ────────────────────────────────────────────────────────────
+    Chart.defaults.color = '#4a6478';
+    Chart.defaults.font.family = "'DM Mono', monospace";
+    Chart.defaults.font.size = 10;
+
+    const C = {
+      blue: '#3b9eff',
+      cyan: '#00d4ff',
+      green: '#00e676',
+      red: '#ff4444',
+      orange: '#ff8c42',
+      gold: '#ffc940',
+      purple: '#a78bfa',
+      dim: '#1c2d42',
+    };
+
+    // ── HELPERS ──────────────────────────────────────────────────
+    function makeGrad(ctx, top, bot) {
+      const g = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+      g.addColorStop(0, top); g.addColorStop(1, bot);
+      return g;
+    }
+
+    function spark(id, data, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const ctx = el.getContext('2d');
+      const up = data[data.length - 1] >= data[0];
+      const col = up ? C.green : C.red;
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map((_, i) => i),
+          datasets: [{
+            data, borderColor: col, borderWidth: 1.5,
+            fill: true, backgroundColor: col + '18',
+            pointRadius: 0, tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: { x: { display: false }, y: { display: false } },
+          animation: { duration: 900 }
+        }
+      });
+    }
+
+    // ── SPARKLINES ────────────────────────────────────────────────
+    spark('spark-spx', [6798, 6832, 6941, 6978, 6941, 6836, 6850, 6862, 6855, 6848, 6854], C.green);
+    spark('spark-nas', [22540, 22597, 23066, 23817, 23102, 22546, 22480, 22350, 22330, 22312], C.red);
+    spark('spark-djia', [48908, 49451, 50121, 50188, 49500, 49400, 49280, 49263], C.red);
+    spark('spark-vix', [16.5, 17.2, 18.9, 20.1, 19.3, 18.5, 19.0, 19.4, 19.8], C.orange);
+    spark('spark-rut', [2180, 2192, 2240, 2255, 2238, 2220, 2214], C.red);
+
+    // ── MAIN INDEX CHART ─────────────────────────────────────────
+    (function () {
+      const ctx = document.getElementById('chart-main').getContext('2d');
+      const labels = ['1/27', '1/28', '1/29', '1/30', '2/3', '2/4', '2/5', '2/6', '2/7', '2/10', '2/11', '2/12', '2/13', '2/14', '2/17', '2/18', '2/19'];
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'S&P 500',
+              data: [6878, 6830, 6801, 6798, 6832, 6941, 6978, 6941, 6941, 6836, 6850, 6836, 6842, 6836, 6854, 6885, 6854],
+              borderColor: C.cyan,
+              backgroundColor: C.cyan + '12',
+              fill: true, tension: 0.3, pointRadius: 2,
+              borderWidth: 1.8, yAxisID: 'y'
+            },
+            {
+              label: 'NASDAQ',
+              data: [23200, 22900, 22600, 22540, 22597, 23066, 23817, 23102, 23066, 22546, 22560, 22546, 22480, 22546, 22312, 22400, 22312],
+              borderColor: C.purple,
+              fill: false, tension: 0.3, pointRadius: 2,
+              borderWidth: 1.5, borderDash: [5, 3], yAxisID: 'y2'
+            }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: true, labels: { usePointStyle: true, pointStyle: 'line', padding: 16, color: '#7a9ab0', font: { size: 10 } } },
+            tooltip: {
+              backgroundColor: '#0e131c', borderColor: '#1c2d42', borderWidth: 1,
+              titleColor: '#7a9ab0', bodyColor: '#d0dce8'
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1c2d42' }, ticks: { maxRotation: 45, color: '#4a6478' } },
+            y: { position: 'left', grid: { color: '#1c2d42' }, ticks: { callback: v => v.toLocaleString(), color: '#4a6478' }, min: 6600, max: 7100 },
+            y2: { position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => (v / 1000).toFixed(1) + 'K', color: '#a78bfa' }, min: 22000, max: 24500 }
+          }
+        }
+      });
+    })();
+
+    // ── SECTOR CHART ─────────────────────────────────────────────
+    (function () {
+      const ctx = document.getElementById('chart-sector').getContext('2d');
+      const sectors = ['에너지', '유틸리티', '금융', '헬스케어', '소재', '산업재', '부동산', '소비재(필수)', '소비재(임의)', '통신', '기술'];
+      const vals = [2.1, 1.2, -0.4, 0.3, -0.2, 0.1, 0.8, -0.3, -0.9, -0.6, -0.8];
+      const colors = vals.map(v => v >= 0 ? C.green + 'cc' : C.red + 'cc');
+      const borders = vals.map(v => v >= 0 ? C.green : C.red);
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: sectors,
+          datasets: [{
+            data: vals,
+            backgroundColor: colors,
+            borderColor: borders,
+            borderWidth: 1,
+            borderRadius: 3,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }, tooltip: {
+              callbacks: { label: ctx => ` ${ctx.parsed.x > 0 ? '▲' : '▼'} ${Math.abs(ctx.parsed.x).toFixed(1)}%` }
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1c2d42' }, ticks: { callback: v => v + '%', color: '#4a6478' }, min: -2, max: 3 },
+            y: { grid: { display: false }, ticks: { color: '#7a9ab0', font: { size: 9 } } }
+          }
+        }
+      });
+    })();
+
+    // ── YIELD CURVE ───────────────────────────────────────────────
+    (function () {
+      const ctx = document.getElementById('chart-yield').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['3M', '6M', '1Y', '2Y', '5Y', '7Y', '10Y', '20Y', '30Y'],
+          datasets: [{
+            label: '수익률 곡선',
+            data: [4.32, 4.28, 4.12, 3.44, 3.95, 4.05, 4.09, 4.43, 4.52],
+            borderColor: C.cyan,
+            backgroundColor: ctx => {
+              const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 180);
+              g.addColorStop(0, C.cyan + '30'); g.addColorStop(1, 'transparent');
+              return g;
+            },
+            fill: true, tension: 0.4, pointRadius: 4,
+            pointBackgroundColor: C.cyan, borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }, tooltip: {
+              callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)}%` }
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1c2d42' }, ticks: { color: '#4a6478' } },
+            y: { grid: { color: '#1c2d42' }, ticks: { callback: v => v + '%', color: '#4a6478' }, min: 3.0, max: 5.0 }
+          }
+        }
+      });
+    })();
+
+    // ── BUFFETT PIE ───────────────────────────────────────────────
+    (function () {
+      const ctx = document.getElementById('chart-buffett-pie').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['테크(AAPL)', '금융(AXP·BAC)', '에너지(CVX·OXY)', '소비재(KO·KHC)', '보험(CB)', '기타'],
+          datasets: [{
+            data: [28, 22, 11, 12, 5, 22],
+            backgroundColor: ['#3b9eff22', '#ff8c4222', '#00e67622', '#ffc94022', '#a78bfa22', '#4a647822'],
+            borderColor: [C.blue, C.orange, C.green, C.gold, C.purple, '#4a6478'],
+            borderWidth: 1.5, hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { padding: 8, color: '#7a9ab0', font: { size: 9 }, boxWidth: 10 } },
+            tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}%` } }
+          },
+          cutout: '62%'
+        }
+      });
+    })();
+
+    // ── COMPARE CHART (Buffett vs ARK YTD) ───────────────────────
+    (function () {
+      const ctx = document.getElementById('chart-compare').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['1Y 수익률', '3Y 수익률', '변동성(σ)', '집중도(Top10%)'],
+          datasets: [
+            { label: '버핏(BRK.B)', data: [18, 42, 16, 70], backgroundColor: C.gold + '66', borderColor: C.gold, borderWidth: 1.5, borderRadius: 3 },
+            { label: 'ARK(ARKK)', data: [-8, -45, 48, 50], backgroundColor: C.purple + '66', borderColor: C.purple, borderWidth: 1.5, borderRadius: 3 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, labels: { color: '#7a9ab0', font: { size: 9 }, padding: 8 } },
+            tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}${ctx.dataIndex >= 2 ? '' : ' %'}` } }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#4a6478', font: { size: 8 } } },
+            y: { grid: { color: '#1c2d42' }, ticks: { color: '#4a6478', font: { size: 9 } } }
+          }
+        }
+      });
+    })();
+
+    // ── NAV SCROLL HIGHLIGHT ──────────────────────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navTabs = document.querySelectorAll('.nav-tab');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 80) current = s.id;
+      });
+      navTabs.forEach(t => {
+        t.classList.toggle('active', t.getAttribute('href') === '#' + current);
+      });
+    }, { passive: true });
+
+  </script>
+  <script src="js/market-api.js"></script>
+</body>
+
+</html>

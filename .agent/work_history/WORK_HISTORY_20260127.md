@@ -1,0 +1,31 @@
+# Work History - 2026-01-27
+
+- 20260127 09:55:00: [Orchestrator] Starting analysis of Security Threat Patterns registration issue.
+- 20260127 09:57:00: [Orchestrator] Completed analysis. Identified parameter order mismatch (Put SP) and authorization discrepancy (uLevel 70 vs 9).
+- 20260127 09:58:00: [Orchestrator] Created SECURITY_THREAT_PATTERNS_SPECIFICATION.md and Implementation Plan.
+- 20260127 09:59:00: [Orchestrator] Implementation plan approved. Starting execution.
+- 20260127 10:05:00: [Orchestrator] Completed DB and code fixes. Deployed updated SPs.
+- 20260127 10:08:00: [Orchestrator] Translated all artifacts to Korean per user request.
+- 20260127 10:12:00: [Orchestrator] Updated all agent role definitions (.agent/roles/*.md) with the mandatory Korean documentation rule.
+- 20260127 13:21:44: [Antigravity] README.md 정리 및 .agent 디렉토리 구조 최적화 작업 시작.
+- 20260127 13:24:20: [Antigravity] README.md 업데이트 완료 (개요, 구조, 규칙, 워크플로우 포함).
+- 20260127 13:25:21: [Antigravity] 프로젝트 특정적 규칙(SQL 제한 등) 제거 및 롤 정의 일반화 작업 시작.
+- 20260127 13:28:45: [Antigravity] README.md 및 모든 롤 정의 일반화 완료.
+- 20260127 13:32:10: [Antigravity] README.md 세션 시작 가이드 및 수동 핸드오프 방법 추가 완료.
+- 20260127 13:35:12: [Antigravity] 5분 간격 자동 실행 스크립트 작성 및 README.md 업데이트 작업 시작.
+- 20260127 13:38:44: [Antigravity] auto_agent.bat 생성 및 README.md 가이드 보완 완료.
+- 20260127 13:42:15: [Antigravity] API Key 설정 샘플 파일 추가 및 로딩 로직 일반화 완료.
+- 20260127 13:45:30: [Antigravity] 모든 스크립트 내 절대 경로를 상대 경로 및 환경 변수로 변환 완료.
+- 20260127 13:48:12: [Antigravity] README.md 에 설치 요구사항 및 API Key 설정 가이드 추가 작업 시작.
+- 20260127 13:51:30: [Antigravity] README.md 사전 준비 사항 및 API Key 상세 설정 가이드 보완 완료.
+- 20260127 13:54:12: [Antigravity] .agent/scripts/README.md 작성 및 루트 README.md 링크 작업 시작.
+- 20260127 13:57:45: [Antigravity] 개별 스크립트 상세 가이드 문서 작성 및 루트 README 연결 완료.
+- 20260127 14:21:06: [Antigravity] SEO 및 GEO 최적화를 위한 README.md 및 프로젝트 텍스트 조정 작업 시작.
+- 20260127 14:25:00: [Antigravity] README.md 최적화 완료: SEO 키워드 강화, GitHub 배지 추가, 한국어 지원(GEO) 강조.
+- 20260127 14:28:00: [Antigravity] GIIP 공식 홈페이지 안내 섹션 추가 완료 (전문가 및 AI 협업 모델 강조).
+- 20260127 15:00:00: [Antigravity] SEO 및 GEO 최적화 고도화 완료. H1/H2 헤더 영문 키워드 추가, Core Features 섹션 신설, 한국 개발자 생태계 중심의 문구 개선.
+- 20260127 15:35:00: [Antigravity] 상세 기술 스펙 업데이트 완료: Claude Code/OpenCode 스타일 서브 에이전트 개념, 무설치 환경, Antigravity 최적화 및 Electron/PowerShell 호환성 강조.
+- 20260127 15:50:00: [Antigravity] 다중 API Key 지원 기능 추가. 순차적(Sequential) 및 랜덤(Random) 선택 로직 구현 및 settings.json 확장.
+- 20260127 16:00:00: [Antigravity] 사용자 원본 텍스트 복구 및 최적화 내용 통합 완료.
+- 20260127 16:30:00: [Antigravity] README.md를 최초 원본 상태로 완전히 복구 완료 (모든 수정 사항 제거).
+- 20260127 16:40:00: [Antigravity] 다중 API Key 가이드를 별도 파일(.agent/scripts/MULTI_API_GUIDE.md)로 분리하고 README.md는 순수 원본 유지.

@@ -1,0 +1,35 @@
+{
+  "lastUpdated": "2026-02-22T14:33:24.086Z",
+  "indices": {
+    "^GSPC": {
+      "price": "6,910",
+      "changeText": "▲ 0.41%",
+      "changePercent": "+0.41",
+      "status": "up"
+    },
+    "^IXIC": {
+      "price": "22,886",
+      "changeText": "▲ 0.58%",
+      "changePercent": "+0.58",
+      "status": "up"
+    },
+    "^DJI": {
+      "price": "49,626",
+      "changeText": "▼ 0.07%",
+      "changePercent": "-0.07",
+      "status": "down"
+    },
+    "^VIX": {
+      "price": "19.09",
+      "changeText": "안정",
+      "changePercent": "-5.64",
+      "status": "down"
+    },
+    "^RUT": {
+      "price": "2,664",
+      "changeText": "▲ 0.19%",
+      "changePercent": "+0.19",
+      "status": "up"
+    }
+  }
+}
