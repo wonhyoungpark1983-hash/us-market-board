@@ -5,8 +5,8 @@
  */
 
 const API_KEY = "demo"; // For public/free APIs or proxy configuration
-const CACHE_KEY_DATA = "us_market_data";
-const CACHE_KEY_TIME = "us_market_last_sync";
+const CACHE_KEY_DATA = "us_market_data_v2";
+const CACHE_KEY_TIME = "us_market_last_sync_v2";
 
 /**
  * 캐시 만료 체크 로직:
@@ -87,21 +87,25 @@ function updateDOMWithData(data) {
     const tickers = Object.keys(data.indices);
     tickers.forEach(symbol => {
         // 1. 가격 요소 업데이트
-        const priceEl = document.querySelector(`.idx-val[data-ticker="${symbol}"]`);
-        if (priceEl) {
-            priceEl.textContent = data.indices[symbol].price.toLocaleString();
-        }
+        const priceEls = document.querySelectorAll(`.idx-val[data-ticker="${symbol}"], .metric-val[data-ticker="${symbol}"], .fx-val[data-ticker="${symbol}"]`);
+        priceEls.forEach(priceEl => {
+            let prefix = "";
+            let suffix = "";
+            const currentText = priceEl.textContent;
+            if (currentText.includes("$")) prefix = "$";
+            if (currentText.includes("%")) suffix = "%";
+            priceEl.textContent = prefix + data.indices[symbol].price + suffix;
+        });
 
         // 2. 등락률 요소 업데이트
-        const chgEl = document.querySelector(`.idx-chg[data-ticker="${symbol}"]`);
-        if (chgEl) {
+        const chgEls = document.querySelectorAll(`.idx-chg[data-ticker="${symbol}"], .metric-sub[data-ticker="${symbol}"], .fx-chg[data-ticker="${symbol}"]`);
+        chgEls.forEach(chgEl => {
             chgEl.textContent = data.indices[symbol].changeText;
-            // 클래스 교체로 색상 반영 (up, dn 클래스)
-            chgEl.classList.remove('up', 'dn', 'warn'); // 기존 제거
-            // status에 따라 up/dn 등 설정 (하드코딩 클래스 형식 호환)
+            chgEl.classList.remove('up', 'dn', 'warn', 'neu'); // 기존 제거
             if (data.indices[symbol].status === 'up') chgEl.classList.add('up');
-            if (data.indices[symbol].status === 'down') chgEl.classList.add('dn'); // dn 클래스가 CSS에 매핑되어 있음
-        }
+            if (data.indices[symbol].status === 'down') chgEl.classList.add('dn');
+            if (data.indices[symbol].status === 'warn') chgEl.classList.add('warn');
+        });
     });
 
     // 최종 동기화 시간 헤더에 표시
