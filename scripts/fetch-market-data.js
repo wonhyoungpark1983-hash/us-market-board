@@ -10,7 +10,7 @@ const TICKERS = [
 ];
 
 // Tickers that need historical chart data (main chart + sparklines)
-const HISTORY_TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT'];
+const HISTORY_TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT', 'BTC-USD'];
 
 async function fetchMarketData() {
     const newMarketData = {
@@ -186,7 +186,7 @@ Based on the following US market data at the close:
 - NASDAQ: ${ndx?.price || 'N/A'} (Daily: ${ndx?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^IXIC'] || 'N/A'}%)
 - Dow Jones: ${dji?.price || 'N/A'} (Daily: ${dji?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^DJI'] || 'N/A'}%)
 - VIX: ${vix?.price || 'N/A'} (Daily: ${vix?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^VIX'] || 'N/A'}%)
-- Bitcoin: ${btc?.price || 'N/A'} (Daily: ${btc?.changePercent || 'N/A'}%)
+- Bitcoin: ${btc?.price || 'N/A'} (Daily: ${btc?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['BTC-USD'] || 'N/A'}%)
 
 2. Latest Mainstream Market News Headlines (S&P 500 & Economy):
 ${marketNews.length > 0 ? marketNews.map(n => "- " + n).join('\\n') : 'No news fetched'}
@@ -195,8 +195,11 @@ ${marketNews.length > 0 ? marketNews.map(n => "- " + n).join('\\n') : 'No news f
 ${cryptoNews.length > 0 ? cryptoNews.map(n => "- " + n).join('\\n') : 'No news fetched'}
 
 Write a daily US market commentary based strictly on the provided recent news headlines and the 1-month long-term trends, NOT just the 1-day daily change. 
-It MUST be accurate for today (${dateStr}). If the market dropped 50% over the month but rose 2% today, do NOT call it a "strong market". Reflect the broader reality seen in the news and 1-month trends.
-For the "events" section, list only REAL upcoming major economic events or earnings for the U.S. market starting from TODAY or later this week. Do NOT invent past events.
+It MUST be accurate for today (${dateStr}).
+CRITICAL RULES for MARKET TRENDS: 
+1. If the 1-month trend is heavily negative (e.g. -10%) but the daily change is slightly positive (e.g. +1%), DO NOT use titles like "강세 지속" (Continued Strength) or "상승장". Describe it accurately as a "slight rebound during a broader downtrend" (단기 반등/낙폭 과대에 따른 반발 매수 등).
+2. Only label the market as "강세" (Strong) if BOTH the daily and 1-month trends are positive. 
+3. For the "events" section, list only REAL upcoming major economic events or earnings for the U.S. market starting from TODAY or later this week. Do NOT invent past events.
 Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
 {
   "brief": "A 1-2 sentence overall summary of the market today.",
