@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T03:46:54.290Z",
+  "lastUpdated": "2026-02-25T03:55:02.354Z",
   "indices": {
     "^GSPC": {
       "price": "6,890.07",
@@ -32,39 +32,39 @@
       "status": "down"
     },
     "CL=F": {
-      "price": "66.19",
-      "changeText": "▼ 0.2%",
-      "changePercent": "-0.18",
+      "price": "66.11",
+      "changeText": "▼ 0.3%",
+      "changePercent": "-0.30",
       "status": "down"
     },
     "BZ=F": {
-      "price": "71.20",
-      "changeText": "▼ 0.4%",
-      "changePercent": "-0.41",
+      "price": "71.11",
+      "changeText": "▼ 0.5%",
+      "changePercent": "-0.53",
       "status": "down"
     },
     "GC=F": {
-      "price": "5,202.80",
+      "price": "5,202.70",
       "changeText": "▼ 0.0%",
       "changePercent": "-0.04",
       "status": "down"
     },
     "SI=F": {
-      "price": "89.43",
-      "changeText": "▲ 3.4%",
-      "changePercent": "+3.35",
+      "price": "89.20",
+      "changeText": "▲ 3.1%",
+      "changePercent": "+3.09",
       "status": "up"
     },
     "BTC-USD": {
-      "price": "65,456.00",
+      "price": "65,479.66",
       "changeText": "▲ 2.2%",
-      "changePercent": "+2.19",
+      "changePercent": "+2.23",
       "status": "up"
     },
     "ETH-USD": {
-      "price": "1,907.37",
+      "price": "1,908.52",
       "changeText": "▲ 3.0%",
-      "changePercent": "+2.99",
+      "changePercent": "+3.05",
       "status": "up"
     },
     "KRW=X": {
@@ -74,27 +74,27 @@
       "status": "down"
     },
     "DX-Y.NYB": {
-      "price": "97.76",
+      "price": "97.77",
       "changeText": "▲ 0.1%",
-      "changePercent": "+0.06",
+      "changePercent": "+0.07",
       "status": "up"
     },
     "EURUSD=X": {
       "price": "1.18",
-      "changeText": "▼ 0.0%",
-      "changePercent": "-0.02",
-      "status": "down"
+      "changeText": "▲ 0.0%",
+      "changePercent": "+0.00",
+      "status": "up"
     },
     "JPY=X": {
-      "price": "155.88",
+      "price": "155.83",
       "changeText": "▲ 0.8%",
-      "changePercent": "+0.81",
+      "changePercent": "+0.77",
       "status": "up"
     },
     "GBPUSD=X": {
       "price": "1.35",
       "changeText": "▲ 0.1%",
-      "changePercent": "+0.13",
+      "changePercent": "+0.14",
       "status": "up"
     },
     "^TNX": {
