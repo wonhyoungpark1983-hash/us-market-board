@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T04:19:30.697Z",
+  "lastUpdated": "2026-02-25T04:41:11.391Z",
   "indices": {
     "^GSPC": {
       "price": "6,890.07",
@@ -32,69 +32,69 @@
       "status": "down"
     },
     "CL=F": {
-      "price": "66.04",
-      "changeText": "▼ 0.4%",
-      "changePercent": "-0.41",
+      "price": "66.12",
+      "changeText": "▼ 0.3%",
+      "changePercent": "-0.29",
       "status": "down"
     },
     "BZ=F": {
-      "price": "71.03",
+      "price": "71.08",
       "changeText": "▼ 0.6%",
-      "changePercent": "-0.64",
+      "changePercent": "-0.57",
       "status": "down"
     },
     "GC=F": {
-      "price": "5,194.00",
-      "changeText": "▼ 0.2%",
-      "changePercent": "-0.21",
+      "price": "5,202.60",
+      "changeText": "▼ 0.0%",
+      "changePercent": "-0.04",
       "status": "down"
     },
     "SI=F": {
-      "price": "89.19",
-      "changeText": "▲ 3.1%",
-      "changePercent": "+3.08",
+      "price": "89.51",
+      "changeText": "▲ 3.5%",
+      "changePercent": "+3.45",
       "status": "up"
     },
     "BTC-USD": {
-      "price": "65,407.48",
-      "changeText": "▲ 2.1%",
-      "changePercent": "+2.12",
+      "price": "65,550.44",
+      "changeText": "▲ 2.3%",
+      "changePercent": "+2.34",
       "status": "up"
     },
     "ETH-USD": {
-      "price": "1,905.43",
-      "changeText": "▲ 2.9%",
-      "changePercent": "+2.88",
+      "price": "1,911.46",
+      "changeText": "▲ 3.2%",
+      "changePercent": "+3.21",
       "status": "up"
     },
     "KRW=X": {
-      "price": "1,433.6",
-      "changeText": "▼ 0.6%",
-      "changePercent": "-0.59",
+      "price": "1,432.1",
+      "changeText": "▼ 0.7%",
+      "changePercent": "-0.70",
       "status": "down"
     },
     "DX-Y.NYB": {
-      "price": "97.77",
+      "price": "97.75",
       "changeText": "▲ 0.1%",
-      "changePercent": "+0.07",
+      "changePercent": "+0.05",
       "status": "up"
     },
     "EURUSD=X": {
       "price": "1.18",
       "changeText": "▲ 0.0%",
-      "changePercent": "+0.00",
+      "changePercent": "+0.03",
       "status": "up"
     },
     "JPY=X": {
-      "price": "155.93",
+      "price": "155.87",
       "changeText": "▲ 0.8%",
-      "changePercent": "+0.84",
+      "changePercent": "+0.80",
       "status": "up"
     },
     "GBPUSD=X": {
       "price": "1.35",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.13",
+      "changeText": "▲ 0.2%",
+      "changePercent": "+0.16",
       "status": "up"
     },
     "^TNX": {
@@ -255,33 +255,33 @@
     }
   },
   "commentary": {
-    "brief": "오늘 미국 증시는 주요 지수들이 소폭 하락하며 숨고르기 장세를 보였으나, 변동성 지수(VIX)의 큰 폭 하락은 시장의 불안감이 진정되고 있음을 시사했습니다. 비트코인은 홀로 상승세를 이어갔습니다.",
+    "brief": "미국 증시는 주요 지수가 소폭 하락하며 혼조세를 보였으나, 변동성 지수는 크게 하락하여 시장의 전반적인 우려가 완화되었음을 시사했습니다. 비트코인은 강세를 보이며 투자자들의 위험 선호 심리가 일부 자산으로 유입되었음을 나타냈습니다.",
     "topics": [
       {
-        "title": "주요 지수 하락 및 변동성 완화",
-        "description": "S&P 500, 나스닥, 다우존스 모두 하락 마감했으나, 시장의 공포 심리를 나타내는 VIX 지수가 큰 폭으로 떨어지며 투자자들의 불안감은 다소 진정되는 모습을 보였습니다."
+        "title": "기술주 실적 및 신중한 전망",
+        "description": "최근 발표된 주요 기술 기업들의 실적은 대체로 예상치를 충족했으나, 일부 기업의 신중한 미래 성장 전망은 기술주 전반에 걸쳐 이익 실현 매물을 유발했습니다. 이는 특히 인공지능 관련주의 급등세에 대한 투자자들의 차익 실현 욕구가 반영된 것으로 보입니다."
       },
       {
-        "title": "인플레이션 우려 및 연준 정책 전망",
-        "description": "최근 발표된 경제 지표들이 혼조세를 보이면서 인플레이션 고착화에 대한 우려가 여전히 남아있으며, 연방준비제도(Fed)의 금리 인하 시점에 대한 불확실성이 시장에 영향을 미치고 있습니다."
+        "title": "연준 통화 정책 불확실성 지속",
+        "description": "최근 발표된 1월 소비자물가지수(CPI)가 예상치를 상회하며 인플레이션 둔화 속도에 대한 우려가 재점화되었습니다. 이는 연방준비제도(Fed)의 금리 인하 시점에 대한 시장의 기대감을 약화시키며 투자 심리에 부담을 주었습니다."
       },
       {
-        "title": "기술주 실적 및 AI 성장 기대감",
-        "description": "일부 주요 기술 기업들의 견고한 실적 발표와 인공지능(AI) 기술에 대한 지속적인 기대감은 시장 하방을 지지하는 요인으로 작용하고 있으나, 차익 실현 매물도 출회되었습니다."
+        "title": "지정학적 리스크 완화 및 변동성 하락",
+        "description": "최근 중동 지역을 포함한 국제 지정학적 긴장이 일부 완화되는 조짐을 보이면서, 시장의 불안감을 나타내는 VIX 지수가 큰 폭으로 하락했습니다. 이는 전반적인 시장 위험 프리미엄 감소에 긍정적인 영향을 미쳤습니다."
       },
       {
-        "title": "암호화폐 시장 강세",
-        "description": "비트코인이 2% 이상 상승하며 강력한 흐름을 이어갔습니다. 이는 주식 시장의 조정 속에서도 대체 투자 자산에 대한 관심이 유지되고 있음을 보여줍니다."
+        "title": "암호화폐 시장 강세 지속",
+        "description": "비트코인이 65,000달러를 돌파하며 강세를 이어갔습니다. 이는 전통 금융 시장의 불확실성 속에서 대안 투자처로서의 매력이 부각되거나, 기관 투자자들의 지속적인 유입에 대한 기대감이 반영된 것으로 해석됩니다."
       }
     ],
     "events": [
       {
-        "date": "6. 12. (수)",
-        "description": "FOMC 정례회의 결과 및 금리 결정: 연방공개시장위원회(FOMC) 정례회의에서 발표될 금리 결정과 경제 전망에 대한 시장의 관심이 집중되고 있습니다."
+        "date": "2. 26. (목)",
+        "description": "주간 신규 실업수당 청구건수, 1월 내구재 주문"
       },
       {
-        "date": "6. 13. (목)",
-        "description": "5월 소비자물가지수(CPI) 발표: 5월 CPI 발표는 인플레이션 추세를 가늠하고 연준의 향후 통화 정책 방향을 예측하는 중요한 지표가 될 것입니다."
+        "date": "2. 27. (금)",
+        "description": "1월 개인소비지출(PCE) 물가지수, 미시간대 소비자심리지수 최종치"
       }
     ]
   }
