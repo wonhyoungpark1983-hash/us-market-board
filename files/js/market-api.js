@@ -153,6 +153,64 @@ function updateChartsWithData(data) {
 }
 
 /**
+ * AI 해설 데이터로 DOM을 업데이트한다.
+ */
+function updateCommentaryWithData(data) {
+    if (!data || !data.commentary) return;
+
+    const comm = data.commentary;
+
+    // 1. Brief 업데이트
+    const briefEl = document.getElementById('ai-brief');
+    if (briefEl && comm.brief) {
+        briefEl.textContent = comm.brief;
+    }
+
+    // 2. Topics 업데이트
+    const topicsContainer = document.getElementById('ai-topics');
+    if (topicsContainer && comm.topics && Array.isArray(comm.topics)) {
+        topicsContainer.innerHTML = '';
+        const colors = ['var(--warn)', 'var(--cyan)', 'var(--gold)', 'var(--t1)'];
+        comm.topics.forEach((topic, idx) => {
+            const color = colors[idx % colors.length];
+            const numStr = String(idx + 1).padStart(2, '0');
+            const topicHtml = `
+              <div class="narr-item">
+                <div class="narr-head">
+                  <div class="narr-num" style="color:${color}">${numStr}</div>
+                  <div class="narr-title">${topic.title}</div>
+                </div>
+                <div class="narr-body">
+                  ${topic.description}
+                </div>
+              </div>
+            `;
+            topicsContainer.insertAdjacentHTML('beforeend', topicHtml);
+        });
+    }
+
+    // 3. Events 업데이트
+    const eventsContainer = document.getElementById('ai-events-list');
+    if (eventsContainer && comm.events && Array.isArray(comm.events)) {
+        eventsContainer.innerHTML = '';
+        const impacts = ['high', 'high', 'medium', 'low'];
+        comm.events.forEach((ev, idx) => {
+            const impactClass = impacts[idx % impacts.length];
+            const eventHtml = `
+              <div class="event-row">
+                <div class="impact-dot ${impactClass}"></div>
+                <div class="event-time">${ev.date}</div>
+                <div class="event-body">
+                  <div class="event-name">${ev.description}</div>
+                </div>
+              </div>
+            `;
+            eventsContainer.insertAdjacentHTML('beforeend', eventHtml);
+        });
+    }
+}
+
+/**
  * 수동 Refresh 버튼 핸들러
  */
 async function handleRefreshClick() {
@@ -163,6 +221,7 @@ async function handleRefreshClick() {
     if (data) {
         updateDOMWithData(data);
         updateChartsWithData(data);
+        updateCommentaryWithData(data);
     }
 
     if (btn) btn.style.opacity = "1";
@@ -193,6 +252,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await fetchMarketData(false);
     if (data) {
         updateDOMWithData(data);
+        updateCommentaryWithData(data);
         // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {

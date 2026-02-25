@@ -130,6 +130,63 @@ async function fetchMarketData() {
             }
         });
 
+        // --- Generate AI Commentary ---
+        console.log("Generating AI Commentary using Gemini...");
+        try {
+            if (!process.env.GEMINI_API_KEY) {
+                console.warn("GEMINI_API_KEY is not set. Skipping AI commentary generation.");
+            } else {
+                const { GoogleGenAI } = require('@google/genai');
+                const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+                const spx = newMarketData.indices['^GSPC'];
+                const ndx = newMarketData.indices['^IXIC'];
+                const dji = newMarketData.indices['^DJI'];
+                const vix = newMarketData.indices['^VIX'];
+                const btc = newMarketData.indices['BTC-USD'];
+
+                const prompt = `
+You are an expert financial analyst. Based on the following US market data at the close:
+S&P 500: ${spx?.price || 'N/A'} (${spx?.changePercent || 'N/A'}%)
+NASDAQ: ${ndx?.price || 'N/A'} (${ndx?.changePercent || 'N/A'}%)
+Dow Jones: ${dji?.price || 'N/A'} (${dji?.changePercent || 'N/A'}%)
+VIX: ${vix?.price || 'N/A'} (${vix?.changePercent || 'N/A'}%)
+Bitcoin: ${btc?.price || 'N/A'} (${btc?.changePercent || 'N/A'}%)
+
+Write a daily US market commentary based on today's significant market events. Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
+{
+  "brief": "A 1-2 sentence overall summary of the market today.",
+  "topics": [
+    { "title": "Topic 1 (e.g. Fed Policy)", "description": "1-2 sentence explanation." },
+    { "title": "Topic 2", "description": "..." },
+    { "title": "Topic 3", "description": "..." },
+    { "title": "Topic 4", "description": "..." }
+  ],
+  "events": [
+    { "date": "e.g. 2. 26. (목)", "description": "Event 1" },
+    { "date": "e.g. 2. 27. (금)", "description": "Event 2" }
+  ]
+}
+
+Ensure the tone is professional, objective, and written in Korean. Look up the most recent major news for the US market (e.g. CPI, Fed speeches, earnings, geopolitical events) to enrich the topics and upcoming events.
+`;
+
+                const response = await ai.models.generateContent({
+                    model: 'gemini-2.5-flash',
+                    contents: prompt,
+                    config: {
+                        responseMimeType: "application/json",
+                    }
+                });
+
+                const commentaryJson = JSON.parse(response.text);
+                newMarketData.commentary = commentaryJson;
+                console.log("Successfully generated AI Commentary.");
+            }
+        } catch (e) {
+            console.error("Failed to generate AI commentary:", e.message);
+        }
+
         const outputPath = path.join(__dirname, '../files/data/market_data.json');
 
         // Ensure data directory exists

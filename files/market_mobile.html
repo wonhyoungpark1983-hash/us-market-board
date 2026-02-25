@@ -1820,88 +1820,31 @@
         <!-- ══════════ PAGE 5: 해설 ══════════ -->
         <div class="page" id="p5">
 
-          <div class="narr-item">
-            <div class="narr-head">
-              <div class="narr-num" style="color:var(--warn)">01</div>
-              <div class="narr-title">트럼프 관세 확전 — 증시 하방 압력</div>
+          <!-- AI Commentary Container -->
+          <div id="ai-commentary-container">
+            <div class="narr-item">
+              <div class="narr-head">
+                <div class="narr-title">오늘의 시장 브리핑</div>
+              </div>
+              <div class="narr-body" id="ai-brief">
+                최신 시황 데이터를 분석 중입니다...
+              </div>
             </div>
-            <div class="narr-body">
-              트럼프 행정부가 <strong>캐나다·멕시코·EU 추가 관세 확대</strong>를 예고하며 글로벌 무역 리스크가 재부상했습니다. S&P 500은 고점 대비 <strong>-3% 조정
-                중</strong>이며 소비재·산업재 섹터가 가장 큰 타격을 받고 있습니다. VIX는 19~21 구간에서 <strong>'경계' 영역 진입</strong>. 관세 세부 시행 일정이
-              구체화될 경우 단기 변동성 추가 확대 가능합니다.
-            </div>
-          </div>
 
-          <div class="narr-item">
-            <div class="narr-head">
-              <div class="narr-num" style="color:var(--warn)">02</div>
-              <div class="narr-title">BTC $66K 재반등 — 암호화폐 독립 행보</div>
-            </div>
-            <div class="narr-body">
-              비트코인이 $66,000을 회복하며 <strong>증시 하락과 반대 방향</strong>으로 움직였습니다. ETH도 +3.7%로 동반 상승. 기관 투자자의 BTC 현물 ETF 유입이 지속되며
-              <strong>디지털 자산의 헤지 자산 성격 강화</strong> 신호로 해석됩니다. 단, 급등 후 단기 차익 실현 구간($68K~70K) 주의가 필요합니다.
-            </div>
-          </div>
-
-          <div class="narr-item">
-            <div class="narr-head">
-              <div class="narr-num" style="color:var(--cyan)">03</div>
-              <div class="narr-title">금·은 동반 급등 — 안전자산 선호</div>
-            </div>
-            <div class="narr-body">
-              금이 <strong>$5,200/oz</strong>를 돌파하며 사상최고치를 재경신했고, 은도 <strong>+2.2%($88.4)</strong>로 동반 상승했습니다. 달러 강세(DXY
-              97.8)에도 불구하고 귀금속이 오른 것은 <strong>지정학 리스크·관세 불확실성 헤지 수요</strong>로 풀이됩니다. 금 ETF(GLD, IAU) 매수세 유입 확인이 필요합니다.
-            </div>
-          </div>
-
-          <div class="narr-item">
-            <div class="narr-head">
-              <div class="narr-num" style="color:var(--gold)">04</div>
-              <div class="narr-title">달러 강세·엔 약세 — 환율 경계선</div>
-            </div>
-            <div class="narr-body">
-              달러 지수(DXY) <strong>97.8</strong>으로 상승하며 <strong>엔화 155.8, 원화 1,440원</strong>대를 유지 중입니다. 미국 고금리 지속 기대가 달러
-              강세를 견인. 한국 수출 대형주(삼성전자, 현대차)에는 환차익 긍정 요인이나, <strong>외국인 자금 이탈 시 코스피 하방 리스크</strong>도 상존합니다.
+            <div id="ai-topics">
+              <!-- JS will inject .narr-item for each topic -->
             </div>
           </div>
 
           <!-- 내일 이벤트 -->
           <div class="card">
             <div class="card-head">
-              <div class="card-title">이번 주 주목 이벤트 (2026.02.26)</div>
+              <div class="card-title">이번 주 주요 일정</div>
               <div class="card-badge">THIS WEEK</div>
             </div>
-            <div class="event-row">
-              <div class="impact-dot high"></div>
-              <div class="event-time">수요일</div>
-              <div class="event-body">
-                <div class="event-name">GDP 2차 추정치 (Q4 2025)</div>
-                <div class="event-sub">컨센서스 2.3% — 하회 시 경기침체 우려 재부상</div>
-              </div>
-            </div>
-            <div class="event-row">
-              <div class="impact-dot high"></div>
-              <div class="event-time">목요일</div>
-              <div class="event-body">
-                <div class="event-name">PCE 물가지수 (1월)</div>
-                <div class="event-sub">컨센서스 2.6% — 상회 시 금리인하 기대 추가 후퇴 ⚠</div>
-              </div>
-            </div>
-            <div class="event-row">
-              <div class="impact-dot medium"></div>
-              <div class="event-time">목요일</div>
-              <div class="event-body">
-                <div class="event-name">실업급여 청구건수</div>
-                <div class="event-sub">노동시장 견고성 점검 지표</div>
-              </div>
-            </div>
-            <div class="event-row">
-              <div class="impact-dot low"></div>
-              <div class="event-time">금요일</div>
-              <div class="event-body">
-                <div class="event-name">미시간대 소비자심리지수</div>
-                <div class="event-sub">관세 불안이 소비 심리에 미친 영향 주목</div>
-              </div>
+            <div id="ai-events-list">
+              <!-- JS will inject .event-row for each event -->
+              <div class="event-row" style="padding:16px;text-align:center;color:#888;">일정 로딩 중...</div>
             </div>
           </div>
 
