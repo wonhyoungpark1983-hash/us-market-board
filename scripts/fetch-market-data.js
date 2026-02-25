@@ -145,15 +145,22 @@ async function fetchMarketData() {
                 const vix = newMarketData.indices['^VIX'];
                 const btc = newMarketData.indices['BTC-USD'];
 
+                // 날짜 포맷 (한국 시간 기준)
+                const today = new Date();
+                const dateStr = today.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+
                 const prompt = `
-You are an expert financial analyst. Based on the following US market data at the close:
+You are an expert financial analyst. Today's date is ${dateStr}.
+Based on the following US market data at the close:
 S&P 500: ${spx?.price || 'N/A'} (${spx?.changePercent || 'N/A'}%)
 NASDAQ: ${ndx?.price || 'N/A'} (${ndx?.changePercent || 'N/A'}%)
 Dow Jones: ${dji?.price || 'N/A'} (${dji?.changePercent || 'N/A'}%)
 VIX: ${vix?.price || 'N/A'} (${vix?.changePercent || 'N/A'}%)
 Bitcoin: ${btc?.price || 'N/A'} (${btc?.changePercent || 'N/A'}%)
 
-Write a daily US market commentary based on today's significant market events. Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
+Write a daily US market commentary based on today's (${dateStr}) significant market events and most recent news. It MUST be accurate for today.
+For the "events" section, list only REAL upcoming major economic events or earnings for the U.S. market starting from TODAY or later this week. Do NOT invent past events.
+Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
 {
   "brief": "A 1-2 sentence overall summary of the market today.",
   "topics": [
