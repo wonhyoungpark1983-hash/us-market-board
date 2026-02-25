@@ -9,18 +9,22 @@ const TICKERS = [
     '^TNX', '^TYX', '^FVX', '^IRX' // Yields
 ];
 
+// Tickers that need historical chart data (main chart + sparklines)
+const HISTORY_TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT'];
+
 async function fetchMarketData() {
     const newMarketData = {
         lastUpdated: new Date().toISOString(),
-        indices: {}
+        indices: {},
+        history: {} // New: 10-day OHLC history for chart tickers
     };
 
     try {
         console.log("Fetching live market data from Yahoo Finance...");
 
+        // --- Fetch latest snapshot for all tickers ---
         const fetchPromises = TICKERS.map(async (symbol) => {
             try {
-                // Using Node's built-in fetch (Node 18+)
                 const response = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`);
                 if (!response.ok) throw new Error("API response not ok for " + symbol);
                 const result = await response.json();
@@ -36,14 +40,14 @@ async function fetchMarketData() {
                     const pctDiff = (diff / prevClose) * 100;
 
                     const isVix = symbol === '^VIX';
-                    const isYield = symbol.startsWith('^') && ['^TNX', '^TYX', '^FVX', '^IRX'].includes(symbol);
+                    const isYield = ['^TNX', '^TYX', '^FVX', '^IRX'].includes(symbol);
                     const isCrypto = symbol.includes('-USD');
                     const isFX = symbol.includes('=X') || symbol === 'DX-Y.NYB';
 
                     let decimals = 2;
-                    if (isVix || isYield || isFX) decimals = 2; // Fixed 2 decimals for FX and Yields
+                    if (isVix || isYield || isFX) decimals = 2;
                     if (isCrypto && price < 10) decimals = 4;
-                    if (symbol === 'KRW=X') decimals = 1; // KRW normally 1 decimal
+                    if (symbol === 'KRW=X') decimals = 1;
 
                     changeObj.price = price.toLocaleString(undefined, { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
                     changeObj.changePercent = (diff >= 0 ? "+" : "") + pctDiff.toFixed(2);
@@ -80,6 +84,51 @@ async function fetchMarketData() {
         if (successCount === 0) {
             throw new Error("All API requests failed");
         }
+
+        // --- Fetch 10-day history for chart tickers ---
+        console.log("Fetching 10-day history for chart tickers...");
+        const historyPromises = HISTORY_TICKERS.map(async (symbol) => {
+            try {
+                // 1mo range with 1d interval gives ~22 trading days (enough for ~10 data points)
+                const response = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1mo`);
+                if (!response.ok) throw new Error("History API response not ok for " + symbol);
+                const result = await response.json();
+
+                const chartResult = result.chart.result[0];
+                const timestamps = chartResult.timestamp;
+                const closes = chartResult.indicators.quote[0].close;
+
+                // Build label/value pairs, filter out null closes, take last 10
+                const points = [];
+                for (let i = 0; i < timestamps.length; i++) {
+                    if (closes[i] !== null && closes[i] !== undefined) {
+                        const d = new Date(timestamps[i] * 1000);
+                        const label = `${d.getMonth() + 1}/${d.getDate()}`;
+                        points.push({ label, close: parseFloat(closes[i].toFixed(2)) });
+                    }
+                }
+                const last10 = points.slice(-10);
+
+                return {
+                    symbol,
+                    labels: last10.map(p => p.label),
+                    values: last10.map(p => p.close)
+                };
+            } catch (err) {
+                console.warn("Failed to fetch history for " + symbol, err.message);
+                return null;
+            }
+        });
+
+        const histResults = await Promise.all(historyPromises);
+        histResults.forEach(res => {
+            if (res) {
+                newMarketData.history[res.symbol] = {
+                    labels: res.labels,
+                    values: res.values
+                };
+            }
+        });
 
         const outputPath = path.join(__dirname, '../files/data/market_data.json');
 

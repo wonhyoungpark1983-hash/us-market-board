@@ -224,7 +224,6 @@
       line-height: 1.5;
     }
 
-    .alert-body {}
 
     .alert-title {
       font-family: 'JetBrains Mono', monospace;
@@ -1097,31 +1096,31 @@
               <div class="idx-label">S&P 500</div>
               <div class="idx-val" data-ticker="^GSPC">6,854</div>
               <div class="idx-chg dn" data-ticker="^GSPC">▼ 0.47%</div>
-              <div class="spark-mini"><canvas id="sp0"></canvas></div>
+              <div class="spark-mini"><canvas id="sp0" data-ticker="^GSPC"></canvas></div>
             </div>
             <div class="idx-card dn">
               <div class="idx-label">NASDAQ</div>
               <div class="idx-val" data-ticker="^IXIC">22,312</div>
               <div class="idx-chg dn" data-ticker="^IXIC">▼ 0.51%</div>
-              <div class="spark-mini"><canvas id="sp1"></canvas></div>
+              <div class="spark-mini"><canvas id="sp1" data-ticker="^IXIC"></canvas></div>
             </div>
             <div class="idx-card dn">
               <div class="idx-label">DOW</div>
               <div class="idx-val" data-ticker="^DJI">49,263</div>
               <div class="idx-chg dn" data-ticker="^DJI">▼ 0.38%</div>
-              <div class="spark-mini"><canvas id="sp2"></canvas></div>
+              <div class="spark-mini"><canvas id="sp2" data-ticker="^DJI"></canvas></div>
             </div>
             <div class="idx-card warn">
               <div class="idx-label">VIX</div>
               <div class="idx-val" data-ticker="^VIX">19.8</div>
               <div class="idx-chg warn" data-ticker="^VIX">⚠ 경계</div>
-              <div class="spark-mini"><canvas id="sp3"></canvas></div>
+              <div class="spark-mini"><canvas id="sp3" data-ticker="^VIX"></canvas></div>
             </div>
             <div class="idx-card dn">
               <div class="idx-label">RUT 2000</div>
               <div class="idx-val" data-ticker="^RUT">2,214</div>
               <div class="idx-chg dn" data-ticker="^RUT">▼ 0.62%</div>
-              <div class="spark-mini"><canvas id="sp4"></canvas></div>
+              <div class="spark-mini"><canvas id="sp4" data-ticker="^RUT"></canvas></div>
             </div>
           </div>
 
@@ -1824,91 +1823,91 @@
           <div class="narr-item">
             <div class="narr-head">
               <div class="narr-num" style="color:var(--warn)">01</div>
-              <div class="narr-title">FOMC 매파 기조 — 금리 전망의 재조정</div>
+              <div class="narr-title">트럼프 관세 확전 — 증시 하방 압력</div>
             </div>
             <div class="narr-body">
-              FOMC 의사록에서 <strong>다수 위원이 인플레이션 둔화에 예상보다 긴 시간이 필요</strong>하다고 언급했습니다. 10년물 국채가 <strong>4.09%로
-                반등</strong>하며 성장주·테크주 전반에 할인율 압박을 가했습니다. 내일 PCE가 <strong>2.8% 컨센서스</strong>를 초과하면 연내 금리인하 기대가 2회 → 1회로
-              압축될 수 있습니다.
+              트럼프 행정부가 <strong>캐나다·멕시코·EU 추가 관세 확대</strong>를 예고하며 글로벌 무역 리스크가 재부상했습니다. S&P 500은 고점 대비 <strong>-3% 조정
+                중</strong>이며 소비재·산업재 섹터가 가장 큰 타격을 받고 있습니다. VIX는 19~21 구간에서 <strong>'경계' 영역 진입</strong>. 관세 세부 시행 일정이
+              구체화될 경우 단기 변동성 추가 확대 가능합니다.
             </div>
           </div>
 
           <div class="narr-item">
             <div class="narr-head">
               <div class="narr-num" style="color:var(--warn)">02</div>
-              <div class="narr-title">WTI 급등 — 에너지 수혜 vs. 비용 압박</div>
+              <div class="narr-title">BTC $66K 재반등 — 암호화폐 독립 행보</div>
             </div>
             <div class="narr-body">
-              이란-미국 긴장으로 WTI가 <strong>$66.2 (2026년 신고점)</strong>을 기록했습니다. <strong>CVX, OXY, XOM</strong>은 직접 수혜. 한국
-              투자자에게는 <strong>SK이노베이션·S-Oil 정제마진 개선</strong> 기대감, 반면 항공주(대한항공)는 유가 민감도 주의가 필요합니다.
+              비트코인이 $66,000을 회복하며 <strong>증시 하락과 반대 방향</strong>으로 움직였습니다. ETH도 +3.7%로 동반 상승. 기관 투자자의 BTC 현물 ETF 유입이 지속되며
+              <strong>디지털 자산의 헤지 자산 성격 강화</strong> 신호로 해석됩니다. 단, 급등 후 단기 차익 실현 구간($68K~70K) 주의가 필요합니다.
             </div>
           </div>
 
           <div class="narr-item">
             <div class="narr-head">
               <div class="narr-num" style="color:var(--cyan)">03</div>
-              <div class="narr-title">원/달러 1,450원 — 수출주 환차익 기회</div>
+              <div class="narr-title">금·은 동반 급등 — 안전자산 선호</div>
             </div>
             <div class="narr-body">
-              원/달러 1,450원 수준 유지 중. <strong>삼성전자·현대차·LG엔솔</strong> 등 수출 대형주에 환차익 요인으로 긍정적이나, 달러 강세가 심화되면 <strong>외국인 자금
-                이탈 리스크</strong>도 점검해야 합니다. PCE 서프라이즈 시 단기 변동성 확대 가능.
+              금이 <strong>$5,200/oz</strong>를 돌파하며 사상최고치를 재경신했고, 은도 <strong>+2.2%($88.4)</strong>로 동반 상승했습니다. 달러 강세(DXY
+              97.8)에도 불구하고 귀금속이 오른 것은 <strong>지정학 리스크·관세 불확실성 헤지 수요</strong>로 풀이됩니다. 금 ETF(GLD, IAU) 매수세 유입 확인이 필요합니다.
             </div>
           </div>
 
           <div class="narr-item">
             <div class="narr-head">
               <div class="narr-num" style="color:var(--gold)">04</div>
-              <div class="narr-title">버핏 $381.7B vs ARK Figma 매수</div>
+              <div class="narr-title">달러 강세·엔 약세 — 환율 경계선</div>
             </div>
             <div class="narr-body">
-              버핏의 역대 최대 현금은 <strong>"시장이 여전히 비싸다"는 신호</strong>. ARK는 오늘 <strong>Figma $23M 신규 매수</strong> — Adobe 인수 실패
-              후 IPO한 디자인 플랫폼으로, AI 생산성 툴 섹터 재배팅. 두 대가의 상반된 포지셔닝이 현 시장의 가치 vs. 성장 갈림길을 보여줍니다.
+              달러 지수(DXY) <strong>97.8</strong>으로 상승하며 <strong>엔화 155.8, 원화 1,440원</strong>대를 유지 중입니다. 미국 고금리 지속 기대가 달러
+              강세를 견인. 한국 수출 대형주(삼성전자, 현대차)에는 환차익 긍정 요인이나, <strong>외국인 자금 이탈 시 코스피 하방 리스크</strong>도 상존합니다.
             </div>
           </div>
 
           <!-- 내일 이벤트 -->
           <div class="card">
             <div class="card-head">
-              <div class="card-title">내일 주목 이벤트 (2026.02.20)</div>
-              <div class="card-badge">TOMORROW</div>
+              <div class="card-title">이번 주 주목 이벤트 (2026.02.26)</div>
+              <div class="card-badge">THIS WEEK</div>
             </div>
             <div class="event-row">
               <div class="impact-dot high"></div>
-              <div class="event-time">08:30</div>
+              <div class="event-time">수요일</div>
               <div class="event-body">
-                <div class="event-name">PCE 물가지수 (12월)</div>
-                <div class="event-sub">컨센서스 2.8% — 상회 시 금리인하 기대 축소 ⚠</div>
+                <div class="event-name">GDP 2차 추정치 (Q4 2025)</div>
+                <div class="event-sub">컨센서스 2.3% — 하회 시 경기침체 우려 재부상</div>
+              </div>
+            </div>
+            <div class="event-row">
+              <div class="impact-dot high"></div>
+              <div class="event-time">목요일</div>
+              <div class="event-body">
+                <div class="event-name">PCE 물가지수 (1월)</div>
+                <div class="event-sub">컨센서스 2.6% — 상회 시 금리인하 기대 추가 후퇴 ⚠</div>
               </div>
             </div>
             <div class="event-row">
               <div class="impact-dot medium"></div>
-              <div class="event-time">종일</div>
+              <div class="event-time">목요일</div>
               <div class="event-body">
-                <div class="event-name">ARK 일일 포트폴리오 공시</div>
-                <div class="event-sub">Figma 추가 매수 여부 주목</div>
-              </div>
-            </div>
-            <div class="event-row">
-              <div class="impact-dot medium"></div>
-              <div class="event-time">종일</div>
-              <div class="event-body">
-                <div class="event-name">이란 지정학 뉴스 모니터링</div>
-                <div class="event-sub">WTI 추가 상승 트리거 가능성</div>
+                <div class="event-name">실업급여 청구건수</div>
+                <div class="event-sub">노동시장 견고성 점검 지표</div>
               </div>
             </div>
             <div class="event-row">
               <div class="impact-dot low"></div>
-              <div class="event-time">장 후</div>
+              <div class="event-time">금요일</div>
               <div class="event-body">
-                <div class="event-name">연준 위원 발언</div>
-                <div class="event-sub">PCE 이후 매파/비둘기 반응 주목</div>
+                <div class="event-name">미시간대 소비자심리지수</div>
+                <div class="event-sub">관세 불안이 소비 심리에 미친 영향 주목</div>
               </div>
             </div>
           </div>
 
           <div
             style="text-align:center;padding:16px 0;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);line-height:2">
-            데이터 출처: CNBC · Edward Jones · Schwab · FRED · SEC 13F · ARK<br>
+            데이터 출처: CNBC · Bloomberg · FRED · Yahoo Finance · SEC 13F · ARK<br>
             ⚠ 본 자료는 투자 권유가 아닙니다
           </div>
 
@@ -1949,6 +1948,7 @@
 
   <div class="swipe-hint">←</div>
 
+  <script src="js/market-api.js"></script>
   <script>
     /* ═══════════════════════════════════════════
        SWIPE & PAGE NAVIGATION
@@ -2047,7 +2047,7 @@
     function spark(id, data, color) {
       const el = document.getElementById(id);
       if (!el) return;
-      new Chart(el.getContext('2d'), {
+      return new Chart(el.getContext('2d'), {
         type: 'line',
         data: {
           labels: data.map((_, i) => i), datasets: [{
@@ -2066,20 +2066,20 @@
     }
 
     /* ── SPARKLINES ──────────────────────────── */
-    spark('sp0', [6798, 6832, 6941, 6978, 6941, 6836, 6848, 6854], C.dn);
-    spark('sp1', [22540, 22597, 23066, 23817, 23102, 22546, 22400, 22312], C.dn);
-    spark('sp2', [48908, 49451, 50121, 50188, 49500, 49280, 49263], C.dn);
-    spark('sp3', [16.5, 17.2, 18.9, 19.3, 18.5, 19.0, 19.4, 19.8], C.warn);
-    spark('sp4', [2180, 2192, 2240, 2255, 2238, 2220, 2214], C.dn);
+    registerChart('sp0', spark('sp0', [6798, 6832, 6941, 6978, 6941, 6836, 6848, 6854], C.dn));
+    registerChart('sp1', spark('sp1', [22540, 22597, 23066, 23817, 23102, 22546, 22400, 22312], C.dn));
+    registerChart('sp2', spark('sp2', [48908, 49451, 50121, 50188, 49500, 49280, 49263], C.dn));
+    registerChart('sp3', spark('sp3', [16.5, 17.2, 18.9, 19.3, 18.5, 19.0, 19.4, 19.8], C.warn));
+    registerChart('sp4', spark('sp4', [2180, 2192, 2240, 2255, 2238, 2220, 2214], C.dn));
 
     /* ── MAIN CHART ──────────────────────────── */
-    new Chart(document.getElementById('mainChart').getContext('2d'), {
+    registerChart('mainChart', new Chart(document.getElementById('mainChart').getContext('2d'), {
       type: 'line',
       data: {
-        labels: ['1/27', '1/29', '1/31', '2/3', '2/5', '2/7', '2/10', '2/12', '2/14', '2/17', '2/19'],
+        labels: ['2/10', '2/12', '2/17', '2/19', '2/20', '2/23', '2/25'],
         datasets: [{
           label: 'S&P 500',
-          data: [6878, 6801, 6890, 6798, 6941, 6941, 6941, 6836, 6836, 6885, 6854],
+          data: [6941, 6832, 6843, 6861, 6909, 6837, 6890],
           borderColor: C.cyan, backgroundColor: C.cyan + '15',
           fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2
         }]
@@ -2097,7 +2097,7 @@
           y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => (v / 1000).toFixed(1) + 'K', color: '#3d5a6e' }, min: 6600, max: 7100 }
         }
       }
-    });
+    }));
 
     /* ── SECTOR CHART ────────────────────────── */
     new Chart(document.getElementById('sectorChart').getContext('2d'), {
@@ -2185,11 +2185,11 @@
       spark(id, d, col);
     });
 
+
     /* ── HIDE HINT AFTER 5s ──────────────────── */
     setTimeout(() => { if (hint) hint.style.opacity = '0'; }, 5000);
     setTimeout(() => { if (hint) hint.style.display = 'none'; }, 5500);
   </script>
-  <script src="js/market-api.js"></script>
 </body>
 
 </html>
