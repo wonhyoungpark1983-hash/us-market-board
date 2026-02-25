@@ -108,11 +108,13 @@ async function fetchMarketData() {
                     }
                 }
                 const last10 = points.slice(-10);
+                const firstClose = points.length > 0 ? points[0].close : null;
 
                 return {
                     symbol,
                     labels: last10.map(p => p.label),
-                    values: last10.map(p => p.close)
+                    values: last10.map(p => p.close),
+                    firstClose
                 };
             } catch (err) {
                 console.warn("Failed to fetch history for " + symbol, err.message);
@@ -121,14 +123,41 @@ async function fetchMarketData() {
         });
 
         const histResults = await Promise.all(historyPromises);
+
+        // 1개월 변동률 계산을 위해 저장소 추가
+        const oneMonthChanges = {};
+
         histResults.forEach(res => {
             if (res) {
                 newMarketData.history[res.symbol] = {
                     labels: res.labels,
                     values: res.values
                 };
+                // Calculate 1-month return based on the oldest vs newest close in the 1mo data
+                if (res.values.length > 0 && res.firstClose) {
+                    const firstClose = res.firstClose;
+                    const lastClose = res.values[res.values.length - 1];
+                    const change = ((lastClose - firstClose) / firstClose * 100).toFixed(2);
+                    oneMonthChanges[res.symbol] = change;
+                }
             }
         });
+
+        // --- Fetch Latest News Headlines ---
+        console.log("Fetching latest news headlines...");
+        let marketNews = [];
+        let cryptoNews = [];
+        try {
+            const spyNewsReq = await fetch('https://query2.finance.yahoo.com/v1/finance/search?q=SPY&newsCount=5');
+            const spyNewsRes = await spyNewsReq.json();
+            marketNews = spyNewsRes.news.slice(0, 5).map(n => n.title);
+
+            const btcNewsReq = await fetch('https://query2.finance.yahoo.com/v1/finance/search?q=BTC-USD&newsCount=3');
+            const btcNewsRes = await btcNewsReq.json();
+            cryptoNews = btcNewsRes.news.slice(0, 3).map(n => n.title);
+        } catch (err) {
+            console.warn("Failed to fetch news:", err.message);
+        }
 
         // --- Generate AI Commentary ---
         console.log("Generating AI Commentary using Gemini...");
@@ -152,13 +181,21 @@ async function fetchMarketData() {
                 const prompt = `
 You are an expert financial analyst. Today's date is ${dateStr}.
 Based on the following US market data at the close:
-S&P 500: ${spx?.price || 'N/A'} (${spx?.changePercent || 'N/A'}%)
-NASDAQ: ${ndx?.price || 'N/A'} (${ndx?.changePercent || 'N/A'}%)
-Dow Jones: ${dji?.price || 'N/A'} (${dji?.changePercent || 'N/A'}%)
-VIX: ${vix?.price || 'N/A'} (${vix?.changePercent || 'N/A'}%)
-Bitcoin: ${btc?.price || 'N/A'} (${btc?.changePercent || 'N/A'}%)
+1. Daily Performance & 1-Month Trend:
+- S&P 500: ${spx?.price || 'N/A'} (Daily: ${spx?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^GSPC'] || 'N/A'}%)
+- NASDAQ: ${ndx?.price || 'N/A'} (Daily: ${ndx?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^IXIC'] || 'N/A'}%)
+- Dow Jones: ${dji?.price || 'N/A'} (Daily: ${dji?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^DJI'] || 'N/A'}%)
+- VIX: ${vix?.price || 'N/A'} (Daily: ${vix?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^VIX'] || 'N/A'}%)
+- Bitcoin: ${btc?.price || 'N/A'} (Daily: ${btc?.changePercent || 'N/A'}%)
 
-Write a daily US market commentary based on today's (${dateStr}) significant market events and most recent news. It MUST be accurate for today.
+2. Latest Mainstream Market News Headlines (S&P 500 & Economy):
+${marketNews.length > 0 ? marketNews.map(n => "- " + n).join('\\n') : 'No news fetched'}
+
+3. Latest Crypto News Headlines (Bitcoin):
+${cryptoNews.length > 0 ? cryptoNews.map(n => "- " + n).join('\\n') : 'No news fetched'}
+
+Write a daily US market commentary based strictly on the provided recent news headlines and the 1-month long-term trends, NOT just the 1-day daily change. 
+It MUST be accurate for today (${dateStr}). If the market dropped 50% over the month but rose 2% today, do NOT call it a "strong market". Reflect the broader reality seen in the news and 1-month trends.
 For the "events" section, list only REAL upcoming major economic events or earnings for the U.S. market starting from TODAY or later this week. Do NOT invent past events.
 Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
 {
