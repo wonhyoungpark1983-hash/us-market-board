@@ -1,131 +1,130 @@
 {
-  "lastUpdated": "2026-02-26T21:50:50.007Z",
+  "lastUpdated": "2026-02-27T21:48:13.829Z",
   "indices": {
     "^GSPC": {
-      "price": "6,908.86",
-      "changeText": "▲ 0.3%",
-      "changePercent": "+0.27",
-      "status": "up"
+      "price": "6,878.88",
+      "changeText": "▼ 1.0%",
+      "changePercent": "-0.97",
+      "status": "down"
     },
     "^IXIC": {
-      "price": "22,878.38",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.06",
-      "status": "up"
+      "price": "22,668.21",
+      "changeText": "▼ 2.1%",
+      "changePercent": "-2.09",
+      "status": "down"
     },
     "^DJI": {
-      "price": "49,499.20",
-      "changeText": "▲ 0.7%",
-      "changePercent": "+0.66",
-      "status": "up"
+      "price": "48,977.92",
+      "changeText": "▼ 1.0%",
+      "changePercent": "-1.02",
+      "status": "down"
     },
     "^VIX": {
-      "price": "18.63",
+      "price": "19.86",
       "changeText": "⚠ 경계",
-      "changePercent": "+3.90",
+      "changePercent": "+6.60",
       "status": "warn"
     },
     "^RUT": {
-      "price": "2,677.29",
-      "changeText": "▲ 0.9%",
-      "changePercent": "+0.94",
-      "status": "up"
+      "price": "2,632.36",
+      "changeText": "▼ 1.2%",
+      "changePercent": "-1.16",
+      "status": "down"
     },
     "CL=F": {
-      "price": "65.45",
-      "changeText": "▲ 0.0%",
-      "changePercent": "+0.05",
+      "price": "67.35",
+      "changeText": "▲ 3.3%",
+      "changePercent": "+3.28",
       "status": "up"
     },
     "BZ=F": {
-      "price": "70.99",
-      "changeText": "▲ 0.2%",
-      "changePercent": "+0.20",
+      "price": "73.23",
+      "changeText": "▲ 3.5%",
+      "changePercent": "+3.51",
       "status": "up"
     },
     "GC=F": {
-      "price": "5,206.20",
-      "changeText": "▼ 0.0%",
-      "changePercent": "-0.00",
-      "status": "down"
+      "price": "5,282.60",
+      "changeText": "▲ 2.0%",
+      "changePercent": "+2.05",
+      "status": "up"
     },
     "SI=F": {
-      "price": "89.06",
-      "changeText": "▼ 2.1%",
-      "changePercent": "-2.07",
-      "status": "down"
+      "price": "94.37",
+      "changeText": "▲ 8.5%",
+      "changePercent": "+8.47",
+      "status": "up"
     },
     "BTC-USD": {
-      "price": "67,475.27",
-      "changeText": "▼ 0.7%",
-      "changePercent": "-0.71",
+      "price": "65,606.93",
+      "changeText": "▼ 2.7%",
+      "changePercent": "-2.74",
       "status": "down"
     },
     "ETH-USD": {
-      "price": "2,030.28",
-      "changeText": "▼ 1.2%",
-      "changePercent": "-1.19",
+      "price": "1,926.27",
+      "changeText": "▼ 5.0%",
+      "changePercent": "-4.96",
       "status": "down"
     },
     "KRW=X": {
-      "price": "1,433.0",
-      "changeText": "▼ 0.5%",
-      "changePercent": "-0.48",
-      "status": "down"
+      "price": "1,441.9",
+      "changeText": "▲ 1.0%",
+      "changePercent": "+1.05",
+      "status": "up"
     },
     "DX-Y.NYB": {
-      "price": "97.77",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.07",
-      "status": "up"
+      "price": "97.66",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.13",
+      "status": "down"
     },
     "EURUSD=X": {
       "price": "1.18",
-      "changeText": "▲ 0.2%",
-      "changePercent": "+0.23",
+      "changeText": "▲ 0.0%",
+      "changePercent": "+0.01",
       "status": "up"
     },
     "JPY=X": {
-      "price": "156.11",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.15",
-      "status": "up"
+      "price": "156.14",
+      "changeText": "▼ 0.0%",
+      "changePercent": "-0.04",
+      "status": "down"
     },
     "GBPUSD=X": {
       "price": "1.35",
-      "changeText": "▼ 0.1%",
-      "changePercent": "-0.10",
+      "changeText": "▼ 0.6%",
+      "changePercent": "-0.63",
       "status": "down"
     },
     "^TNX": {
-      "price": "4.02",
-      "changeText": "▼ 3.1bp",
-      "changePercent": "-0.77",
+      "price": "3.96",
+      "changeText": "▼ 5.5bp",
+      "changePercent": "-1.37",
       "status": "down"
     },
     "^TYX": {
-      "price": "4.67",
-      "changeText": "▼ 2.5bp",
-      "changePercent": "-0.53",
+      "price": "4.63",
+      "changeText": "▼ 3.6bp",
+      "changePercent": "-0.77",
       "status": "down"
     },
     "^FVX": {
-      "price": "3.58",
-      "changeText": "▼ 3.6bp",
-      "changePercent": "-0.99",
+      "price": "3.51",
+      "changeText": "▼ 7.1bp",
+      "changePercent": "-1.98",
       "status": "down"
     },
     "^IRX": {
-      "price": "3.59",
-      "changeText": "▲ 0.0bp",
-      "changePercent": "+0.00",
-      "status": "warn"
+      "price": "3.58",
+      "changeText": "▼ 1.0bp",
+      "changePercent": "-0.28",
+      "status": "down"
     }
   },
   "history": {
     "^GSPC": {
       "labels": [
-        "2/12",
         "2/13",
         "2/17",
         "2/18",
@@ -134,10 +133,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        6832.76,
         6836.17,
         6843.22,
         6881.31,
@@ -146,12 +145,12 @@
         6837.75,
         6890.07,
         6946.13,
-        6908.86
+        6908.86,
+        6878.88
       ]
     },
     "^IXIC": {
       "labels": [
-        "2/12",
         "2/13",
         "2/17",
         "2/18",
@@ -160,10 +159,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        22597.15,
         22546.67,
         22578.38,
         22753.63,
@@ -172,12 +171,12 @@
         22627.27,
         22863.68,
         23152.08,
-        22878.38
+        22878.38,
+        22668.21
       ]
     },
     "^DJI": {
       "labels": [
-        "2/12",
         "2/13",
         "2/17",
         "2/18",
@@ -186,10 +185,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        49451.98,
         49500.93,
         49533.19,
         49662.66,
@@ -198,12 +197,12 @@
         48804.06,
         49174.5,
         49482.15,
-        49499.2
+        49499.2,
+        48977.92
       ]
     },
     "^VIX": {
       "labels": [
-        "2/12",
         "2/13",
         "2/17",
         "2/18",
@@ -212,10 +211,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        20.82,
         20.6,
         20.29,
         19.62,
@@ -224,12 +223,12 @@
         21.01,
         19.55,
         17.93,
-        18.63
+        18.63,
+        19.86
       ]
     },
     "^RUT": {
       "labels": [
-        "2/12",
         "2/13",
         "2/17",
         "2/18",
@@ -238,10 +237,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        2615.83,
         2646.7,
         2646.59,
         2658.61,
@@ -250,12 +249,12 @@
         2620.99,
         2652.33,
         2663.33,
-        2677.29
+        2677.29,
+        2632.36
       ]
     },
     "BTC-USD": {
       "labels": [
-        "2/17",
         "2/18",
         "2/19",
         "2/20",
@@ -264,10 +263,10 @@
         "2/23",
         "2/24",
         "2/25",
-        "2/26"
+        "2/26",
+        "2/27"
       ],
       "values": [
-        67494.22,
         66425.32,
         66957.52,
         68005.42,
@@ -276,42 +275,43 @@
         64616.74,
         64080.04,
         67960.13,
-        67475.27
+        67453.77,
+        65606.93
       ]
     }
   },
   "commentary": {
-    "brief": "미국 주식 시장은 NVIDIA 실적 호조에 힘입어 혼조세를 보였습니다. S&P 500과 NASDAQ은 월간 하락세 속에서 반등했으나, Dow Jones는 강세를 유지했으며 비트코인은 급락했습니다.",
+    "brief": "미국 주요 증시는 인플레이션 우려와 금리 인하 기대 약화 속에 전반적인 하락세를 이어갔으며, 변동성 지수는 급등하며 시장 불확실성을 반영했습니다. 암호화폐 시장 또한 큰 폭의 하락을 기록했습니다.",
     "topics": [
       {
-        "title": "시장 동향 및 변동성",
-        "description": "S&P 500과 NASDAQ은 월간 하락세 속에서 단기 반등을 기록했으나, VIX 지수 상승은 시장의 변동성 확대 및 불확실성 증가를 시사합니다. 한편, Dow Jones는 일간 및 월간 모두 견조한 강세를 보였습니다."
+        "title": "전반적인 시장 하락세와 변동성 증가",
+        "description": "S&P 500, NASDAQ, 다우존스 모두 월간 기준으로 하락세를 보였으며, 특히 NASDAQ의 낙폭이 컸습니다. VIX 지수가 한 달간 20% 이상 급등하며 시장의 불안감이 고조되고 있음을 나타냈습니다."
       },
       {
-        "title": "NVIDIA 및 AI 섹터의 영향",
-        "description": "NVIDIA의 강력한 실적 발표와 긍정적인 가이던스는 목요일 시장 개장 전 선물 지수를 견인했습니다. 투자자들은 이제 '실질적인 수익'을 창출하는 AI 관련 주식에 더욱 주목하는 모습입니다."
+        "title": "인플레이션 우려 및 금리 인하 기대 약화",
+        "description": "최근 발표된 도매 물가 데이터의 '예상치 대폭 상회(blowout miss)' 소식 등 인플레이션 관련 지표들이 금리 인하에 대한 시장의 기대를 약화시키며 투자 심리에 부정적인 영향을 미쳤습니다."
       },
       {
-        "title": "투자 전략 논의 심화",
-        "description": "2026년 시장 환경에서 S&P 500에 대한 수동적인 투자 전략의 유효성에 대한 논의가 제기되고 있으며, 이는 시장 불확실성 속에서 투자자들이 기존 전략을 재고하고 있음을 나타냅니다."
+        "title": "일부 섹터 및 개별 종목의 차별화된 흐름",
+        "description": "전반적인 시장 하락 속에서도 중소형주 ETF는 강한 모멘텀을 보였고, S&P 500 편입 기업 중 일부는 애널리스트 예상치를 뛰어넘는 분기 실적을 발표하는 등 개별 종목에서의 차별화가 나타났습니다."
       },
       {
-        "title": "암호화폐 시장 약세 지속",
-        "description": "비트코인은 지난 한 달간 20%가 넘는 큰 폭의 하락세를 기록하며 약세를 이어갔습니다. 암호화폐 관련 제공된 뉴스 헤드라인은 시장 동향과 무관했습니다."
+        "title": "암호화폐 시장의 가파른 하락세",
+        "description": "비트코인은 지난 한 달간 26% 이상 급락하며 암호화폐 시장 전반의 침체된 분위기를 여실히 보여주었습니다."
       }
     ],
     "events": [
       {
-        "date": "2. 27. (금)",
-        "description": "1월 개인소비지출(PCE) 물가지수, 2월 미시간대 소비자심리지수 (최종)"
+        "date": "3. 2. (월)",
+        "description": "미국 ISM 제조업 PMI 발표"
       },
       {
-        "date": "3. 2. (월)",
-        "description": "2월 ISM 제조업 구매관리자지수 (PMI)"
+        "date": "3. 4. (수)",
+        "description": "미국 ADP 비농업 고용 변화 및 ISM 서비스업 PMI 발표"
       },
       {
         "date": "3. 6. (금)",
-        "description": "2월 비농업 고용보고서 및 실업률"
+        "description": "미국 비농업 고용보고서 및 실업률 발표"
       }
     ]
   }
