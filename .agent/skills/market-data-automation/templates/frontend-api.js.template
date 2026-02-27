@@ -1,0 +1,88 @@
+// Constants for versioning local storage
+const CACHE_KEY_DATA = "us_market_data_v1"; 
+const CACHE_KEY_TIME = "us_market_last_sync_v1";
+
+function isCacheExpired(lastSyncTime) {
+    if (!lastSyncTime) return true;
+
+    const syncDate = new Date(parseInt(lastSyncTime, 10));
+    const now = new Date();
+
+    // Expire cache at 8 AM local time (for post-market daily updates)
+    const today8AM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+
+    if (now >= today8AM && syncDate < today8AM) {
+        return true;
+    }
+
+    return false;
+}
+
+async function fetchMarketData(force = false) {
+    const cachedDataStr = localStorage.getItem(CACHE_KEY_DATA);
+    const lastSyncStr = localStorage.getItem(CACHE_KEY_TIME);
+
+    if (!force && cachedDataStr && !isCacheExpired(lastSyncStr)) {
+        console.log("Using cached market data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
+        return JSON.parse(cachedDataStr);
+    }
+
+    try {
+        console.log("Fetching static market data JSON...");
+
+        const response = await fetch('data/market_data.json');
+
+        if (!response.ok) {
+            throw new Error(`Failed to load static market data: ${response.statusText}`);
+        }
+
+        const newMarketData = await response.json();
+
+        localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
+        localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
+
+        return newMarketData;
+
+    } catch (error) {
+        console.error("Market data fetch error:", error);
+        
+        if (cachedDataStr) {
+            return JSON.parse(cachedDataStr);
+        }
+        return null;
+    }
+}
+
+function updateDOMWithData(data) {
+    if (!data || !data.indices) return;
+
+    const tickers = Object.keys(data.indices);
+    tickers.forEach(symbol => {
+        
+        // 1. Data Preservation Binding for Prices
+        const priceEls = document.querySelectorAll(`[data-ticker="${symbol}"].price-bind`);
+        priceEls.forEach(priceEl => {
+            let prefix = "";
+            let suffix = "";
+            const currentText = priceEl.textContent;
+            
+            if (currentText.includes("$")) prefix = "$";
+            if (currentText.includes("%")) suffix = "%";
+            
+            priceEl.textContent = prefix + data.indices[symbol].price + suffix;
+        });
+
+        // 2. Class updating for Changes
+        const chgEls = document.querySelectorAll(`[data-ticker="${symbol}"].change-bind`);
+        chgEls.forEach(chgEl => {
+            chgEl.textContent = data.indices[symbol].changeText;
+            
+            // Clean slate for status classes
+            chgEl.classList.remove('up', 'dn', 'warn', 'neu'); 
+            
+            if (data.indices[symbol].status === 'up') chgEl.classList.add('up');
+            if (data.indices[symbol].status === 'down') chgEl.classList.add('dn'); 
+            if (data.indices[symbol].status === 'warn') chgEl.classList.add('warn'); 
+        });
+    });
+}

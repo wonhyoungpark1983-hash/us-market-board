@@ -999,7 +999,7 @@
           <div class="idx-val" data-ticker="^GSPC">6,854</div>
           <div class="idx-chg down" data-ticker="^GSPC">▼ 0.47% &nbsp;–32.3pt</div>
           <div class="idx-sub">52주: 4,835 ~ 7,002</div>
-          <div class="spark-wrap"><canvas id="spark-spx"></canvas></div>
+          <div class="spark-wrap"><canvas id="spark-spx" data-ticker="^GSPC"></canvas></div>
         </div>
 
         <div class="idx-card down">
@@ -1007,7 +1007,7 @@
           <div class="idx-val">22,312</div>
           <div class="idx-chg down">▼ 0.51% &nbsp;–114pt</div>
           <div class="idx-sub">YTD: ▼ 1.0% &nbsp;|&nbsp; 50일선 하회</div>
-          <div class="spark-wrap"><canvas id="spark-nas"></canvas></div>
+          <div class="spark-wrap"><canvas id="spark-nas" data-ticker="^IXIC"></canvas></div>
         </div>
 
         <div class="idx-card down">
@@ -1015,7 +1015,7 @@
           <div class="idx-val">49,263</div>
           <div class="idx-chg down">▼ 0.38% &nbsp;–188pt</div>
           <div class="idx-sub">52주 고점: 50,188</div>
-          <div class="spark-wrap"><canvas id="spark-djia"></canvas></div>
+          <div class="spark-wrap"><canvas id="spark-djia" data-ticker="^DJI"></canvas></div>
         </div>
 
         <div class="idx-card warn">
@@ -1023,7 +1023,7 @@
           <div class="idx-val" data-ticker="^VIX">19.8</div>
           <div class="idx-chg warn" data-ticker="^VIX">▲ 경계 구간 접근</div>
           <div class="idx-sub">⚠ 20선 돌파 시 위험↑</div>
-          <div class="spark-wrap"><canvas id="spark-vix"></canvas></div>
+          <div class="spark-wrap"><canvas id="spark-vix" data-ticker="^VIX"></canvas></div>
         </div>
 
         <div class="idx-card down">
@@ -1031,7 +1031,7 @@
           <div class="idx-val" data-ticker="^RUT">2,214</div>
           <div class="idx-chg down" data-ticker="^RUT">▼ 0.62% &nbsp;–13.8pt</div>
           <div class="idx-sub">소형주 약세 지속</div>
-          <div class="spark-wrap"><canvas id="spark-rut"></canvas></div>
+          <div class="spark-wrap"><canvas id="spark-rut" data-ticker="^RUT"></canvas></div>
         </div>
 
       </div>
@@ -2193,6 +2193,7 @@
 
   </div><!-- /.page -->
 
+  <script src="js/market-api.js"></script>
   <script>
     // ────────────────────────────────────────────────────────────
     // CHART DEFAULTS
@@ -2223,9 +2224,8 @@
       const el = document.getElementById(id);
       if (!el) return;
       const ctx = el.getContext('2d');
-      const up = data[data.length - 1] >= data[0];
-      const col = up ? C.green : C.red;
-      new Chart(ctx, {
+      const col = data.length > 0 && data[data.length - 1] >= data[0] ? C.green : color;
+      return new Chart(ctx, {
         type: 'line',
         data: {
           labels: data.map((_, i) => i),
@@ -2245,24 +2245,24 @@
     }
 
     // ── SPARKLINES ────────────────────────────────────────────────
-    spark('spark-spx', [6798, 6832, 6941, 6978, 6941, 6836, 6850, 6862, 6855, 6848, 6854], C.green);
-    spark('spark-nas', [22540, 22597, 23066, 23817, 23102, 22546, 22480, 22350, 22330, 22312], C.red);
-    spark('spark-djia', [48908, 49451, 50121, 50188, 49500, 49400, 49280, 49263], C.red);
-    spark('spark-vix', [16.5, 17.2, 18.9, 20.1, 19.3, 18.5, 19.0, 19.4, 19.8], C.orange);
-    spark('spark-rut', [2180, 2192, 2240, 2255, 2238, 2220, 2214], C.red);
+    registerChart('spark-spx', spark('spark-spx', [], C.green));
+    registerChart('spark-nas', spark('spark-nas', [], C.red));
+    registerChart('spark-djia', spark('spark-djia', [], C.red));
+    registerChart('spark-vix', spark('spark-vix', [], C.orange));
+    registerChart('spark-rut', spark('spark-rut', [], C.red));
 
     // ── MAIN INDEX CHART ─────────────────────────────────────────
     (function () {
       const ctx = document.getElementById('chart-main').getContext('2d');
-      const labels = ['1/27', '1/28', '1/29', '1/30', '2/3', '2/4', '2/5', '2/6', '2/7', '2/10', '2/11', '2/12', '2/13', '2/14', '2/17', '2/18', '2/19'];
-      new Chart(ctx, {
+      const labels = [];
+      const chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
           labels,
           datasets: [
             {
               label: 'S&P 500',
-              data: [6878, 6830, 6801, 6798, 6832, 6941, 6978, 6941, 6941, 6836, 6850, 6836, 6842, 6836, 6854, 6885, 6854],
+              data: [],
               borderColor: C.cyan,
               backgroundColor: C.cyan + '12',
               fill: true, tension: 0.3, pointRadius: 2,
@@ -2270,7 +2270,7 @@
             },
             {
               label: 'NASDAQ',
-              data: [23200, 22900, 22600, 22540, 22597, 23066, 23817, 23102, 23066, 22546, 22560, 22546, 22480, 22546, 22312, 22400, 22312],
+              data: [],
               borderColor: C.purple,
               fill: false, tension: 0.3, pointRadius: 2,
               borderWidth: 1.5, borderDash: [5, 3], yAxisID: 'y2'
@@ -2294,6 +2294,7 @@
           }
         }
       });
+      registerChart('chart-main', chartInstance);
     })();
 
     // ── SECTOR CHART ─────────────────────────────────────────────
@@ -2430,9 +2431,7 @@
         t.classList.toggle('active', t.getAttribute('href') === '#' + current);
       });
     }, { passive: true });
-
   </script>
-  <script src="js/market-api.js"></script>
 </body>
 
 </html>

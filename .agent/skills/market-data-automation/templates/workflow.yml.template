@@ -1,0 +1,33 @@
+name: Daily Market Data Update
+
+on:
+  schedule:
+    # Runs at 6:30 AM KST (9:30 PM UTC Time) / Post market daily
+    - cron: '30 21 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+    contents: write # Needed to push data file back to the repo
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch and Update Data
+        run: node scripts/fetch-data.js 
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/market_data.json
+          git commit -m "Auto Update: Daily Market Data [skip ci]" || echo "No changes to commit"
+          git push

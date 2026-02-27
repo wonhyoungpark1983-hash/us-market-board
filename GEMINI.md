@@ -136,6 +136,7 @@ Never guess
 | `/zero-script-qa` | Run Zero Script QA |
 | `/claude-code-learning` | Claude Code learning guide |
 | `/code-review` | Code review and quality analysis |
+| `/market-data-automation` | Guidance for static server-side polling data pipelines |
 
 ## ⚡ Trigger Keywords (8 Languages)
 

@@ -1,1134 +1,1256 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>미국 시황 대시보드 | US Market Intel</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap');
-
-  :root {
-    --bg: #060a0f;
-    --surface: #0d1520;
-    --surface2: #111d2e;
-    --border: #1e3050;
-    --accent: #00e5ff;
-    --accent2: #ff6b35;
-    --accent3: #39ff14;
-    --red: #ff3838;
-    --green: #00ff87;
-    --text: #c8d8ea;
-    --text-dim: #5a7a9a;
-    --gold: #ffd700;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans KR', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Grid background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* HEADER */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .header-left h1 {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 52px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(0,229,255,0.4);
-    line-height: 1;
-  }
-
-  .header-left .subtitle {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    margin-top: 6px;
-  }
-
-  .header-right {
-    text-align: right;
-  }
-
-  .date-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    background: rgba(0,229,255,0.08);
-    border: 1px solid rgba(0,229,255,0.2);
-    padding: 6px 14px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 6px;
-  }
-
-  .market-status {
-    font-size: 11px;
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    justify-content: flex-end;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent2);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.3); }
-  }
-
-  /* SECTION LABELS */
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* INDEX CARDS */
-  .index-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .index-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
-    cursor: default;
-  }
-
-  .index-card:hover {
-    border-color: rgba(0,229,255,0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
-  .index-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-  }
-
-  .index-card.up::before { background: var(--green); }
-  .index-card.down::before { background: var(--red); }
-  .index-card.neutral::before { background: var(--text-dim); }
-
-  .index-name {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-  }
-
-  .index-value {
-    font-family: 'Space Mono', monospace;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .index-change {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .index-change.up { color: var(--green); }
-  .index-change.down { color: var(--red); }
-  .index-change.neutral { color: var(--text-dim); }
-
-  .index-sub {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
-
-  /* MINI SPARKLINE */
-  .sparkline-container {
-    margin-top: 12px;
-    height: 40px;
-    position: relative;
-  }
-
-  /* TWO COLUMN LAYOUT */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .three-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  /* PANELS */
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-  }
-
-  .panel-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 2px;
-    margin-bottom: 16px;
-    text-transform: uppercase;
-  }
-
-  /* CHART CONTAINER */
-  .chart-wrap {
-    position: relative;
-    height: 220px;
-  }
-
-  /* BUFFETT PORTFOLIO */
-  .holding-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .holding-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    background: var(--surface2);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    transition: all 0.2s;
-  }
-
-  .holding-item:hover {
-    border-color: rgba(0,229,255,0.2);
-  }
-
-  .ticker {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    width: 50px;
-    flex-shrink: 0;
-  }
-
-  .holding-name {
-    font-size: 12px;
-    color: var(--text-dim);
-    flex: 1;
-  }
-
-  .holding-weight {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--text);
-  }
-
-  .weight-bar {
-    width: 80px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .weight-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 2px;
-    transition: width 1s ease;
-  }
-
-  .holding-change {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    width: 60px;
-    text-align: right;
-  }
-
-  /* MARKET INDICATORS */
-  .indicator-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .indicator-item {
-    padding: 14px;
-    background: var(--surface2);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-  }
-
-  .indicator-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-
-  .indicator-value {
-    font-family: 'Space Mono', monospace;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .indicator-note {
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
-
-  /* ALERT BANNER */
-  .alert-banner {
-    background: rgba(255,107,53,0.1);
-    border: 1px solid rgba(255,107,53,0.3);
-    border-left: 3px solid var(--accent2);
-    border-radius: 4px;
-    padding: 12px 16px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .alert-icon {
-    font-size: 16px;
-  }
-
-  .alert-text {
-    font-size: 12px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  .alert-text strong {
-    color: var(--accent2);
-    font-family: 'Space Mono', monospace;
-  }
-
-  /* NARRATIVE BOX */
-  .narrative {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 4px;
-    padding: 16px;
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--text);
-  }
-
-  .narrative p + p {
-    margin-top: 10px;
-  }
-
-  /* HOT STOCKS TABLE */
-  .stock-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .stock-table th {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    text-align: left;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .stock-table td {
-    padding: 10px 12px;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(30,48,80,0.5);
-  }
-
-  .stock-table tr:last-child td { border-bottom: none; }
-
-  .stock-table tr:hover td {
-    background: rgba(0,229,255,0.03);
-  }
-
-  .stock-ticker {
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 13px;
-  }
-
-  /* YIELD CURVE */
-  .yield-chart-wrap {
-    height: 180px;
-    position: relative;
-  }
-
-  /* SENTIMENT METER */
-  .sentiment-wrap {
-    text-align: center;
-    padding: 20px 0;
-  }
-
-  .sentiment-label {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 36px;
-    color: var(--accent2);
-    letter-spacing: 2px;
-  }
-
-  .sentiment-sub {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
-
-  /* FOOTER */
-  footer {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-note {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
-
-  .footer-brand {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 18px;
-    color: var(--border);
-    letter-spacing: 2px;
-  }
-
-  /* CHANGE TAG */
-  .tag {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-weight: 700;
-  }
-
-  .tag.buy { background: rgba(0,255,135,0.15); color: var(--green); border: 1px solid rgba(0,255,135,0.3); }
-  .tag.sell { background: rgba(255,56,56,0.15); color: var(--red); border: 1px solid rgba(255,56,56,0.3); }
-  .tag.hold { background: rgba(90,122,154,0.15); color: var(--text-dim); border: 1px solid var(--border); }
-  .tag.new { background: rgba(0,229,255,0.15); color: var(--accent); border: 1px solid rgba(0,229,255,0.3); }
-
-  /* ANIMATION */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate { animation: fadeUp 0.5s ease forwards; opacity: 0; }
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-  .delay-4 { animation-delay: 0.4s; }
-  .delay-5 { animation-delay: 0.5s; }
-
-  @media (max-width: 1000px) {
-    .index-grid { grid-template-columns: repeat(2, 1fr); }
-    .two-col, .three-col { grid-template-columns: 1fr; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국 시황 대시보드 | US Market Intel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/market-api.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap');
+
+    :root {
+      --bg: #060a0f;
+      --surface: #0d1520;
+      --surface2: #111d2e;
+      --border: #1e3050;
+      --accent: #00e5ff;
+      --accent2: #ff6b35;
+      --accent3: #39ff14;
+      --red: #ff3838;
+      --green: #00ff87;
+      --text: #c8d8ea;
+      --text-dim: #5a7a9a;
+      --gold: #ffd700;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-left h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 52px;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-shadow: 0 0 30px rgba(0, 229, 255, 0.4);
+      line-height: 1;
+    }
+
+    .header-left .subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-top: 6px;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .date-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .market-status {
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.3);
+      }
+    }
+
+    /* SECTION LABELS */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* INDEX CARDS */
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .index-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .index-card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .index-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+
+    .index-card.up::before {
+      background: var(--green);
+    }
+
+    .index-card.down::before {
+      background: var(--red);
+    }
+
+    .index-card.neutral::before {
+      background: var(--text-dim);
+    }
+
+    .index-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .index-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .index-change {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .index-change.up {
+      color: var(--green);
+    }
+
+    .index-change.down {
+      color: var(--red);
+    }
+
+    .index-change.neutral {
+      color: var(--text-dim);
+    }
+
+    .index-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* MINI SPARKLINE */
+    .sparkline-container {
+      margin-top: 12px;
+      height: 40px;
+      position: relative;
+    }
+
+    /* TWO COLUMN LAYOUT */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    /* PANELS */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .panel-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    /* CHART CONTAINER */
+    .chart-wrap {
+      position: relative;
+      height: 220px;
+    }
+
+    /* BUFFETT PORTFOLIO */
+    .holding-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .holding-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .holding-item:hover {
+      border-color: rgba(0, 229, 255, 0.2);
+    }
+
+    .ticker {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      width: 50px;
+      flex-shrink: 0;
+    }
+
+    .holding-name {
+      font-size: 12px;
+      color: var(--text-dim);
+      flex: 1;
+    }
+
+    .holding-weight {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .weight-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .weight-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+
+    .holding-change {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      width: 60px;
+      text-align: right;
+    }
+
+    /* MARKET INDICATORS */
+    .indicator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .indicator-item {
+      padding: 14px;
+      background: var(--surface2);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .indicator-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .indicator-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .indicator-note {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ALERT BANNER */
+    .alert-banner {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-left: 3px solid var(--accent2);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alert-icon {
+      font-size: 16px;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .alert-text strong {
+      color: var(--accent2);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* NARRATIVE BOX */
+    .narrative {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .narrative p+p {
+      margin-top: 10px;
+    }
+
+    /* HOT STOCKS TABLE */
+    .stock-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .stock-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stock-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(30, 48, 80, 0.5);
+    }
+
+    .stock-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .stock-table tr:hover td {
+      background: rgba(0, 229, 255, 0.03);
+    }
+
+    .stock-ticker {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    /* YIELD CURVE */
+    .yield-chart-wrap {
+      height: 180px;
+      position: relative;
+    }
+
+    /* SENTIMENT METER */
+    .sentiment-wrap {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .sentiment-label {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 36px;
+      color: var(--accent2);
+      letter-spacing: 2px;
+    }
+
+    .sentiment-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 18px;
+      color: var(--border);
+      letter-spacing: 2px;
+    }
+
+    /* CHANGE TAG */
+    .tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    .tag.buy {
+      background: rgba(0, 255, 135, 0.15);
+      color: var(--green);
+      border: 1px solid rgba(0, 255, 135, 0.3);
+    }
+
+    .tag.sell {
+      background: rgba(255, 56, 56, 0.15);
+      color: var(--red);
+      border: 1px solid rgba(255, 56, 56, 0.3);
+    }
+
+    .tag.hold {
+      background: rgba(90, 122, 154, 0.15);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+
+    .tag.new {
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.4s;
+    }
+
+    .delay-5 {
+      animation-delay: 0.5s;
+    }
+
+    @media (max-width: 1000px) {
+      .index-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
+  <div class="container">
 
-  <!-- HEADER -->
-  <header class="animate">
-    <div class="header-left">
-      <h1>US MARKET INTEL</h1>
-      <div class="subtitle">미국 시황 분석 대시보드 // DAILY REPORT</div>
-    </div>
-    <div class="header-right">
-      <div class="date-badge">2026.02.19 (목) — 전일 마감 기준</div>
-      <div class="market-status">
-        <span class="status-dot"></span>
-        <span>지연 데이터 기준 | 실시간 아님</span>
+    <!-- HEADER -->
+    <header class="animate">
+      <div class="header-left">
+        <h1>US MARKET INTEL</h1>
+        <div class="subtitle">미국 시황 분석 대시보드 // DAILY REPORT</div>
       </div>
-    </div>
-  </header>
+      <div class="header-right">
+        <div class="date-badge">2026.02.19 (목) — 전일 마감 기준</div>
+        <div class="market-status">
+          <span class="status-dot"></span>
+          <span>지연 데이터 기준 | 실시간 아님</span>
+        </div>
+      </div>
+    </header>
 
-  <!-- ALERT -->
-  <div class="alert-banner animate delay-1">
-    <div class="alert-icon">⚠</div>
-    <div class="alert-text">
-      <strong>FOMC 매파 신호:</strong> 연준 의사록에서 다수 위원이 "인플레이션 둔화에 예상보다 긴 시간 필요"를 언급. 국채 장기금리 반등 + 원유 급등(이란 긴장) → 위험자산 압박. PCE 데이터(2/20) 대기 중 — 전년비 2.8% 예상, 연준 목표 2.0% 크게 상회 예정.
-    </div>
-  </div>
-
-  <!-- MAJOR INDICES -->
-  <div class="section-label animate delay-2">주요 지수</div>
-  <div class="index-grid animate delay-2">
-
-    <div class="index-card down">
-      <div class="index-name">S&P 500</div>
-      <div class="index-value">6,854</div>
-      <div class="index-change down">▼ 0.47% (-32.3pt)</div>
-      <div class="index-sub">52주: 4,835 — 7,002</div>
-      <div class="sparkline-container">
-        <canvas id="sp500spark"></canvas>
+    <!-- ALERT -->
+    <div class="alert-banner animate delay-1">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-text">
+        <strong>FOMC 매파 신호:</strong> 연준 의사록에서 다수 위원이 "인플레이션 둔화에 예상보다 긴 시간 필요"를 언급. 국채 장기금리 반등 + 원유 급등(이란 긴장) → 위험자산 압박.
+        PCE 데이터(2/20) 대기 중 — 전년비 2.8% 예상, 연준 목표 2.0% 크게 상회 예정.
       </div>
     </div>
 
-    <div class="index-card down">
-      <div class="index-name">NASDAQ COMP.</div>
-      <div class="index-value">22,312</div>
-      <div class="index-change down">▼ 0.51% (-114pt)</div>
-      <div class="index-sub">YTD: ▼ 1.0%</div>
-      <div class="sparkline-container">
-        <canvas id="nasdaqspark"></canvas>
+    <!-- MAJOR INDICES -->
+    <div class="section-label animate delay-2">주요 지수</div>
+    <div class="index-grid animate delay-2">
+
+      <div class="index-card down">
+        <div class="index-name">S&P 500</div>
+        <div class="index-value">6,854</div>
+        <div class="index-change down">▼ 0.47% (-32.3pt)</div>
+        <div class="index-sub">52주: 4,835 — 7,002</div>
+        <div class="sparkline-container">
+          <canvas id="sp500spark" data-ticker="^GSPC"></canvas>
+        </div>
       </div>
+
+      <div class="index-card down">
+        <div class="index-name">NASDAQ COMP.</div>
+        <div class="index-value">22,312</div>
+        <div class="index-change down">▼ 0.51% (-114pt)</div>
+        <div class="index-sub">YTD: ▼ 1.0%</div>
+        <div class="sparkline-container">
+          <canvas id="nasdaqspark" data-ticker="^IXIC"></canvas>
+        </div>
+      </div>
+
+      <div class="index-card down">
+        <div class="index-name">DOW JONES</div>
+        <div class="index-value">49,263</div>
+        <div class="index-change down">▼ 0.38% (-188pt)</div>
+        <div class="index-sub">52주 고점: 50,188</div>
+        <div class="sparkline-container">
+          <canvas id="dowspark" data-ticker="^DJI"></canvas>
+        </div>
+      </div>
+
+      <div class="index-card up">
+        <div class="index-name">VIX 공포지수</div>
+        <div class="index-value" style="color: var(--accent2);">19.8</div>
+        <div class="index-change up" style="color: var(--accent2);">▲ 위험 경계 수준</div>
+        <div class="index-sub">20 근접 — 주의 필요</div>
+        <div class="sparkline-container">
+          <canvas id="vixspark" data-ticker="^VIX"></canvas>
+        </div>
+      </div>
+
     </div>
 
-    <div class="index-card down">
-      <div class="index-name">DOW JONES</div>
-      <div class="index-value">49,263</div>
-      <div class="index-change down">▼ 0.38% (-188pt)</div>
-      <div class="index-sub">52주 고점: 50,188</div>
-      <div class="sparkline-container">
-        <canvas id="dowspark"></canvas>
+    <!-- BONDS & FX & COMMODITIES -->
+    <div class="three-col">
+
+      <!-- BOND YIELDS -->
+      <div class="panel animate delay-3">
+        <div class="panel-title">📊 국채 금리 / 수익률 곡선</div>
+        <div class="yield-chart-wrap">
+          <canvas id="yieldChart"></canvas>
+        </div>
+        <div class="indicator-grid" style="margin-top:14px; gap:8px;">
+          <div class="indicator-item">
+            <div class="indicator-label">2Y YIELD</div>
+            <div class="indicator-value" style="color: var(--accent); font-size:18px;">3.44%</div>
+            <div class="indicator-note">단기 금리</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">10Y YIELD</div>
+            <div class="indicator-value" style="color: var(--accent2); font-size:18px;">4.09%</div>
+            <div class="indicator-note">장기 금리 반등</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">스프레드 2s10s</div>
+            <div class="indicator-value" style="color: var(--green); font-size:18px;">+65bp</div>
+            <div class="indicator-note">정상 (양의 기울기)</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">연준 기준금리</div>
+            <div class="indicator-value" style="color: var(--text); font-size:18px;">3.5%</div>
+            <div class="indicator-note">동결 기조 유지</div>
+          </div>
+        </div>
       </div>
+
+      <!-- FX & COMMODITIES -->
+      <div class="panel animate delay-3">
+        <div class="panel-title">💱 외환 & 원자재</div>
+        <div class="holding-list" style="gap:10px;">
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">USD/KRW
+            </div>
+            <div class="holding-name">원/달러 환율</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">1,450
+            </div>
+            <div class="holding-change" style="color:var(--red);">▲ 0.7%</div>
+          </div>
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">DXY
+            </div>
+            <div class="holding-name">달러 인덱스</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">97.4
+            </div>
+            <div class="holding-change" style="color:var(--red);">▲ 0.3%</div>
+          </div>
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">WTI
+            </div>
+            <div class="holding-name">서부텍사스유 (USD/bbl)</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">$66.2
+            </div>
+            <div class="holding-change" style="color:var(--green);">▲ 2.1%</div>
+          </div>
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">GOLD
+            </div>
+            <div class="holding-name">금 현물 (USD/oz)</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--gold);">$2,924
+            </div>
+            <div class="holding-change" style="color:var(--text-dim);">▼ 0.4%</div>
+          </div>
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">BTC
+            </div>
+            <div class="holding-name">비트코인 (USD)</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--accent);">
+              $97,800</div>
+            <div class="holding-change" style="color:var(--text-dim);">▼ 0.8%</div>
+          </div>
+
+          <div class="holding-item">
+            <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">EUR/USD
+            </div>
+            <div class="holding-name">유로/달러</div>
+            <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">1.046
+            </div>
+            <div class="holding-change" style="color:var(--text-dim);">→ 보합</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MARKET SENTIMENT -->
+      <div class="panel animate delay-4">
+        <div class="panel-title">🧭 시장 심리 & 지표</div>
+
+        <div class="sentiment-wrap" style="padding: 10px 0 16px;">
+          <div style="font-size:11px; color:var(--text-dim); font-family:'Space Mono',monospace; margin-bottom:8px;">
+            MARKET MOOD</div>
+          <div class="sentiment-label">경계 · 매파</div>
+          <div class="sentiment-sub">FOMC 의사록 매파 + WTI 급등 압박</div>
+        </div>
+
+        <div class="indicator-grid">
+          <div class="indicator-item">
+            <div class="indicator-label">S&P RSI (14)</div>
+            <div class="indicator-value" style="color:var(--text); font-size:20px;">48.2</div>
+            <div class="indicator-note">중립 (70 과매수)</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">VIX 레벨</div>
+            <div class="indicator-value" style="color:var(--accent2); font-size:20px;">19.8</div>
+            <div class="indicator-note">⚠ 20 경계선</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">CPI (1월 YoY)</div>
+            <div class="indicator-value" style="color:var(--green); font-size:20px;">2.4%</div>
+            <div class="indicator-note">예상↓ (2.5% 컨센)</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">PCE (예상)</div>
+            <div class="indicator-value" style="color:var(--accent2); font-size:20px;">2.8%</div>
+            <div class="indicator-note">2/20 발표 예정</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">실업률</div>
+            <div class="indicator-value" style="color:var(--green); font-size:20px;">4.3%</div>
+            <div class="indicator-note">1월 NFP +130K↑</div>
+          </div>
+          <div class="indicator-item">
+            <div class="indicator-label">연준 금리인하</div>
+            <div class="indicator-value" style="color:var(--text-dim); font-size:20px;">2회</div>
+            <div class="indicator-note">2026년 내 예상</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="index-card up">
-      <div class="index-name">VIX 공포지수</div>
-      <div class="index-value" style="color: var(--accent2);">19.8</div>
-      <div class="index-change up" style="color: var(--accent2);">▲ 위험 경계 수준</div>
-      <div class="index-sub">20 근접 — 주의 필요</div>
-      <div class="sparkline-container">
-        <canvas id="vixspark"></canvas>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BONDS & FX & COMMODITIES -->
-  <div class="three-col">
-
-    <!-- BOND YIELDS -->
-    <div class="panel animate delay-3">
-      <div class="panel-title">📊 국채 금리 / 수익률 곡선</div>
-      <div class="yield-chart-wrap">
-        <canvas id="yieldChart"></canvas>
-      </div>
-      <div class="indicator-grid" style="margin-top:14px; gap:8px;">
-        <div class="indicator-item">
-          <div class="indicator-label">2Y YIELD</div>
-          <div class="indicator-value" style="color: var(--accent); font-size:18px;">3.44%</div>
-          <div class="indicator-note">단기 금리</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">10Y YIELD</div>
-          <div class="indicator-value" style="color: var(--accent2); font-size:18px;">4.09%</div>
-          <div class="indicator-note">장기 금리 반등</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">스프레드 2s10s</div>
-          <div class="indicator-value" style="color: var(--green); font-size:18px;">+65bp</div>
-          <div class="indicator-note">정상 (양의 기울기)</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">연준 기준금리</div>
-          <div class="indicator-value" style="color: var(--text); font-size:18px;">3.5%</div>
-          <div class="indicator-note">동결 기조 유지</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FX & COMMODITIES -->
-    <div class="panel animate delay-3">
-      <div class="panel-title">💱 외환 & 원자재</div>
-      <div class="holding-list" style="gap:10px;">
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">USD/KRW</div>
-          <div class="holding-name">원/달러 환율</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">1,450</div>
-          <div class="holding-change" style="color:var(--red);">▲ 0.7%</div>
-        </div>
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">DXY</div>
-          <div class="holding-name">달러 인덱스</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">97.4</div>
-          <div class="holding-change" style="color:var(--red);">▲ 0.3%</div>
-        </div>
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">WTI</div>
-          <div class="holding-name">서부텍사스유 (USD/bbl)</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">$66.2</div>
-          <div class="holding-change" style="color:var(--green);">▲ 2.1%</div>
-        </div>
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">GOLD</div>
-          <div class="holding-name">금 현물 (USD/oz)</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--gold);">$2,924</div>
-          <div class="holding-change" style="color:var(--text-dim);">▼ 0.4%</div>
-        </div>
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">BTC</div>
-          <div class="holding-name">비트코인 (USD)</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--accent);">$97,800</div>
-          <div class="holding-change" style="color:var(--text-dim);">▼ 0.8%</div>
-        </div>
-
-        <div class="holding-item">
-          <div style="width:60px; font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dim);">EUR/USD</div>
-          <div class="holding-name">유로/달러</div>
-          <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--text);">1.046</div>
-          <div class="holding-change" style="color:var(--text-dim);">→ 보합</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- MARKET SENTIMENT -->
-    <div class="panel animate delay-4">
-      <div class="panel-title">🧭 시장 심리 & 지표</div>
-
-      <div class="sentiment-wrap" style="padding: 10px 0 16px;">
-        <div style="font-size:11px; color:var(--text-dim); font-family:'Space Mono',monospace; margin-bottom:8px;">MARKET MOOD</div>
-        <div class="sentiment-label">경계 · 매파</div>
-        <div class="sentiment-sub">FOMC 의사록 매파 + WTI 급등 압박</div>
-      </div>
-
-      <div class="indicator-grid">
-        <div class="indicator-item">
-          <div class="indicator-label">S&P RSI (14)</div>
-          <div class="indicator-value" style="color:var(--text); font-size:20px;">48.2</div>
-          <div class="indicator-note">중립 (70 과매수)</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">VIX 레벨</div>
-          <div class="indicator-value" style="color:var(--accent2); font-size:20px;">19.8</div>
-          <div class="indicator-note">⚠ 20 경계선</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">CPI (1월 YoY)</div>
-          <div class="indicator-value" style="color:var(--green); font-size:20px;">2.4%</div>
-          <div class="indicator-note">예상↓ (2.5% 컨센)</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">PCE (예상)</div>
-          <div class="indicator-value" style="color:var(--accent2); font-size:20px;">2.8%</div>
-          <div class="indicator-note">2/20 발표 예정</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">실업률</div>
-          <div class="indicator-value" style="color:var(--green); font-size:20px;">4.3%</div>
-          <div class="indicator-note">1월 NFP +130K↑</div>
-        </div>
-        <div class="indicator-item">
-          <div class="indicator-label">연준 금리인하</div>
-          <div class="indicator-value" style="color:var(--text-dim); font-size:20px;">2회</div>
-          <div class="indicator-note">2026년 내 예상</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- S&P 500 WEEKLY CHART -->
-  <div class="section-label animate delay-3">주간 지수 흐름 (최근 4주)</div>
-  <div class="two-col animate delay-3">
-    <div class="panel">
-      <div class="panel-title">📈 S&P 500 & NASDAQ — 주간 추이</div>
-      <div class="chart-wrap">
-        <canvas id="indexChart"></canvas>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title">🔥 주목 주식 — 주간 등락 TOP 무버</div>
-      <table class="stock-table">
-        <thead>
-          <tr>
-            <th>TICKER</th>
-            <th>종목명</th>
-            <th>현재가</th>
-            <th>주간등락</th>
-            <th>사유</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="stock-ticker">RIVN</td>
-            <td>리비안</td>
-            <td>$16.8</td>
-            <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 20%</td>
-            <td><span class="tag buy">실적↑</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">ROKU</td>
-            <td>로쿠</td>
-            <td>$83.4</td>
-            <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 15%</td>
-            <td><span class="tag buy">목표가↑</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">WMT</td>
-            <td>월마트</td>
-            <td>$98.2</td>
-            <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 2.2%</td>
-            <td><span class="tag hold">실적 OK</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">DKNG</td>
-            <td>드래프트킹스</td>
-            <td>$34.1</td>
-            <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 17%</td>
-            <td><span class="tag sell">가이던스↓</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">CSCO</td>
-            <td>시스코</td>
-            <td>$54.2</td>
-            <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 12%</td>
-            <td><span class="tag sell">실적 실망</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">AAPL</td>
-            <td>애플</td>
-            <td>$228.4</td>
-            <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 5%</td>
-            <td><span class="tag sell">Siri 지연</span></td>
-          </tr>
-          <tr>
-            <td class="stock-ticker">PLTR</td>
-            <td>팔란티어</td>
-            <td>$74.3</td>
-            <td style="color:var(--text-dim); font-family:'Space Mono',monospace; font-weight:700;">▼ 20%</td>
-            <td><span class="tag sell">YTD 조정</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- BUFFETT PORTFOLIO -->
-  <div class="section-label animate delay-4">대가 포트폴리오 — 워런 버핏 / 버크셔 해서웨이 (Q4 2025 13F 기준, 2026.02.17 제출)</div>
-  <div class="two-col animate delay-4">
-
-    <div class="panel">
-      <div class="panel-title">🏦 버크셔 해서웨이 TOP 10 홀딩스 ($274B)</div>
-      <div class="holding-list">
-
-        <div class="holding-item">
-          <div class="ticker">AAPL</div>
-          <div class="holding-name">Apple — 소비재/테크</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:28%"></div></div>
-          <div class="holding-weight">~28%</div>
-          <div class="holding-change" style="color:var(--red);">▼ 축소중</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">AXP</div>
-          <div class="holding-name">American Express — 금융</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:17%"></div></div>
-          <div class="holding-weight">~17%</div>
-          <div class="holding-change" style="color:var(--green);">▲ 불변</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">BAC</div>
-          <div class="holding-name">Bank of America — 금융</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:10%"></div></div>
-          <div class="holding-weight">~10%</div>
-          <div class="holding-change" style="color:var(--red);">▼ 지속 매도</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">KO</div>
-          <div class="holding-name">Coca-Cola — 필수소비재</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:9%"></div></div>
-          <div class="holding-weight">~9%</div>
-          <div class="holding-change" style="color:var(--text-dim);">→ 불변</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">CVX</div>
-          <div class="holding-name">Chevron — 에너지</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:7%"></div></div>
-          <div class="holding-weight">~7%</div>
-          <div class="holding-change" style="color:var(--green);">▲ 추가 매수</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">CB</div>
-          <div class="holding-name">Chubb — 보험</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:5%"></div></div>
-          <div class="holding-weight">~5%</div>
-          <div class="holding-change" style="color:var(--green);">▲ 대폭 매수</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">OXY</div>
-          <div class="holding-name">Occidental Petroleum — 에너지</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:4%"></div></div>
-          <div class="holding-weight">~4%</div>
-          <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">MCO</div>
-          <div class="holding-name">Moody's — 금융서비스</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:4%"></div></div>
-          <div class="holding-weight">~4%</div>
-          <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">GOOGL</div>
-          <div class="holding-name">Alphabet — 테크/광고</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:3%"></div></div>
-          <div class="holding-weight">~3%</div>
-          <div class="holding-change" style="color:var(--accent);">✦ Q3 신규</div>
-        </div>
-
-        <div class="holding-item">
-          <div class="ticker">KHC</div>
-          <div class="holding-name">Kraft Heinz — 식품</div>
-          <div class="weight-bar"><div class="weight-fill" style="width:3%"></div></div>
-          <div class="holding-weight">~3%</div>
-          <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- PORTFOLIO CHART + KEY MOVES -->
-    <div style="display:flex; flex-direction:column; gap:16px;">
+    <!-- S&P 500 WEEKLY CHART -->
+    <div class="section-label animate delay-3">주간 지수 흐름 (최근 4주)</div>
+    <div class="two-col animate delay-3">
       <div class="panel">
-        <div class="panel-title">📊 버크셔 포트폴리오 섹터 비중</div>
-        <div class="chart-wrap" style="height:200px;">
-          <canvas id="buffettPieChart"></canvas>
+        <div class="panel-title">📈 S&P 500 & NASDAQ — 주간 추이</div>
+        <div class="chart-wrap">
+          <canvas id="indexChart"></canvas>
         </div>
       </div>
 
       <div class="panel">
-        <div class="panel-title">🔑 Q4 2025 핵심 변화 (2026.02.17 공시)</div>
-        <div class="holding-list" style="gap:8px;">
-          <div class="holding-item" style="padding:8px 12px;">
-            <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">신규 매수</div>
-            <div class="holding-name" style="font-size:12px;">NYT (뉴욕타임스) — 신규 편입</div>
-            <span class="tag new">NEW</span>
+        <div class="panel-title">🔥 주목 주식 — 주간 등락 TOP 무버</div>
+        <table class="stock-table">
+          <thead>
+            <tr>
+              <th>TICKER</th>
+              <th>종목명</th>
+              <th>현재가</th>
+              <th>주간등락</th>
+              <th>사유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="stock-ticker">RIVN</td>
+              <td>리비안</td>
+              <td>$16.8</td>
+              <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 20%</td>
+              <td><span class="tag buy">실적↑</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">ROKU</td>
+              <td>로쿠</td>
+              <td>$83.4</td>
+              <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 15%</td>
+              <td><span class="tag buy">목표가↑</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">WMT</td>
+              <td>월마트</td>
+              <td>$98.2</td>
+              <td style="color:var(--green); font-family:'Space Mono',monospace; font-weight:700;">▲ 2.2%</td>
+              <td><span class="tag hold">실적 OK</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">DKNG</td>
+              <td>드래프트킹스</td>
+              <td>$34.1</td>
+              <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 17%</td>
+              <td><span class="tag sell">가이던스↓</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">CSCO</td>
+              <td>시스코</td>
+              <td>$54.2</td>
+              <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 12%</td>
+              <td><span class="tag sell">실적 실망</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">AAPL</td>
+              <td>애플</td>
+              <td>$228.4</td>
+              <td style="color:var(--red); font-family:'Space Mono',monospace; font-weight:700;">▼ 5%</td>
+              <td><span class="tag sell">Siri 지연</span></td>
+            </tr>
+            <tr>
+              <td class="stock-ticker">PLTR</td>
+              <td>팔란티어</td>
+              <td>$74.3</td>
+              <td style="color:var(--text-dim); font-family:'Space Mono',monospace; font-weight:700;">▼ 20%</td>
+              <td><span class="tag sell">YTD 조정</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BUFFETT PORTFOLIO -->
+    <div class="section-label animate delay-4">대가 포트폴리오 — 워런 버핏 / 버크셔 해서웨이 (Q4 2025 13F 기준, 2026.02.17 제출)</div>
+    <div class="two-col animate delay-4">
+
+      <div class="panel">
+        <div class="panel-title">🏦 버크셔 해서웨이 TOP 10 홀딩스 ($274B)</div>
+        <div class="holding-list">
+
+          <div class="holding-item">
+            <div class="ticker">AAPL</div>
+            <div class="holding-name">Apple — 소비재/테크</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:28%"></div>
+            </div>
+            <div class="holding-weight">~28%</div>
+            <div class="holding-change" style="color:var(--red);">▼ 축소중</div>
           </div>
-          <div class="holding-item" style="padding:8px 12px;">
-            <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">대폭 매수</div>
-            <div class="holding-name" style="font-size:12px;">CB(Chubb), CVX(Chevron), DPZ(도미노피자)</div>
-            <span class="tag buy">ADD</span>
+
+          <div class="holding-item">
+            <div class="ticker">AXP</div>
+            <div class="holding-name">American Express — 금융</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:17%"></div>
+            </div>
+            <div class="holding-weight">~17%</div>
+            <div class="holding-change" style="color:var(--green);">▲ 불변</div>
           </div>
-          <div class="holding-item" style="padding:8px 12px;">
-            <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">대폭 매도</div>
-            <div class="holding-name" style="font-size:12px;">AMZN(아마존) 대규모 축소</div>
-            <span class="tag sell">TRIM</span>
+
+          <div class="holding-item">
+            <div class="ticker">BAC</div>
+            <div class="holding-name">Bank of America — 금융</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:10%"></div>
+            </div>
+            <div class="holding-weight">~10%</div>
+            <div class="holding-change" style="color:var(--red);">▼ 지속 매도</div>
           </div>
-          <div class="holding-item" style="padding:8px 12px;">
-            <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">현금 보유</div>
-            <div class="holding-name" style="font-size:12px;">현금 + 단기국채 약 $381.7B (사상 최대)</div>
-            <span class="tag hold">CASH</span>
+
+          <div class="holding-item">
+            <div class="ticker">KO</div>
+            <div class="holding-name">Coca-Cola — 필수소비재</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:9%"></div>
+            </div>
+            <div class="holding-weight">~9%</div>
+            <div class="holding-change" style="color:var(--text-dim);">→ 불변</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">CVX</div>
+            <div class="holding-name">Chevron — 에너지</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:7%"></div>
+            </div>
+            <div class="holding-weight">~7%</div>
+            <div class="holding-change" style="color:var(--green);">▲ 추가 매수</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">CB</div>
+            <div class="holding-name">Chubb — 보험</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:5%"></div>
+            </div>
+            <div class="holding-weight">~5%</div>
+            <div class="holding-change" style="color:var(--green);">▲ 대폭 매수</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">OXY</div>
+            <div class="holding-name">Occidental Petroleum — 에너지</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:4%"></div>
+            </div>
+            <div class="holding-weight">~4%</div>
+            <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">MCO</div>
+            <div class="holding-name">Moody's — 금융서비스</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:4%"></div>
+            </div>
+            <div class="holding-weight">~4%</div>
+            <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">GOOGL</div>
+            <div class="holding-name">Alphabet — 테크/광고</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:3%"></div>
+            </div>
+            <div class="holding-weight">~3%</div>
+            <div class="holding-change" style="color:var(--accent);">✦ Q3 신규</div>
+          </div>
+
+          <div class="holding-item">
+            <div class="ticker">KHC</div>
+            <div class="holding-name">Kraft Heinz — 식품</div>
+            <div class="weight-bar">
+              <div class="weight-fill" style="width:3%"></div>
+            </div>
+            <div class="holding-weight">~3%</div>
+            <div class="holding-change" style="color:var(--text-dim);">→ 유지</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PORTFOLIO CHART + KEY MOVES -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="panel">
+          <div class="panel-title">📊 버크셔 포트폴리오 섹터 비중</div>
+          <div class="chart-wrap" style="height:200px;">
+            <canvas id="buffettPieChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">🔑 Q4 2025 핵심 변화 (2026.02.17 공시)</div>
+          <div class="holding-list" style="gap:8px;">
+            <div class="holding-item" style="padding:8px 12px;">
+              <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">신규 매수
+              </div>
+              <div class="holding-name" style="font-size:12px;">NYT (뉴욕타임스) — 신규 편입</div>
+              <span class="tag new">NEW</span>
+            </div>
+            <div class="holding-item" style="padding:8px 12px;">
+              <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">대폭 매수
+              </div>
+              <div class="holding-name" style="font-size:12px;">CB(Chubb), CVX(Chevron), DPZ(도미노피자)</div>
+              <span class="tag buy">ADD</span>
+            </div>
+            <div class="holding-item" style="padding:8px 12px;">
+              <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">대폭 매도
+              </div>
+              <div class="holding-name" style="font-size:12px;">AMZN(아마존) 대규모 축소</div>
+              <span class="tag sell">TRIM</span>
+            </div>
+            <div class="holding-item" style="padding:8px 12px;">
+              <div style="font-size:11px; color:var(--text-dim); width:80px; font-family:'Space Mono',monospace;">현금 보유
+              </div>
+              <div class="holding-name" style="font-size:12px;">현금 + 단기국채 약 $381.7B (사상 최대)</div>
+              <span class="tag hold">CASH</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ANALYST NARRATIVE -->
-  <div class="section-label animate delay-5">💬 시황 해설 & 한국 투자자 시각</div>
-  <div class="narrative animate delay-5">
-    <p><strong style="color:var(--accent);">📌 FOMC 매파 기조와 금리 전망:</strong> 2/19 발표된 FOMC 의사록에서 다수 위원이 물가 둔화에 예상보다 더 긴 시간이 필요할 것으로 우려했습니다. 2026년 연내 2회 금리인하 기대는 유지되고 있으나, PCE 데이터(2/20)가 예상치(2.8%)를 상회할 경우 인하 기대가 후퇴할 수 있습니다. 10년물 국채 금리가 4.09%로 반등하며 성장주와 테크주에 부담을 주고 있습니다.</p>
-    <p><strong style="color:var(--accent2);">🛢 WTI 원유 급등의 파급효과:</strong> 이란-미국 긴장 고조로 WTI가 $66 돌파, 2026년 신고점을 기록했습니다. 에너지 섹터(CVX, OXY)는 수혜인 반면, 항공·화학·물류 업종엔 비용 압박 요인입니다. 한국 정유주(SK이노, S-Oil)에는 정제마진 개선 기대감이 작용할 수 있습니다.</p>
-    <p><strong style="color:var(--green);">💱 원/달러 환율 1,450원 수준:</strong> DXY 소폭 강세와 함께 원화는 약세를 유지 중입니다. 달러 강세는 수출 의존도가 높은 삼성전자, 현대차 등 국내 대형 수출주에 환차익 요인으로 작용할 수 있지만, 외인 자금 이탈 위험도 함께 점검해야 합니다.</p>
-    <p><strong style="color:var(--gold);">🏛 버핏의 메시지:</strong> 버크셔의 현금성 자산이 $381.7B에 달한다는 사실은 시장이 여전히 고평가 구간이라는 버핏의 판단을 시사합니다. 새로운 CEO(그렉 아벨) 체제에서도 보험(CB)·에너지(CVX)·음식료(KO, DPZ) 중심의 방어적 포트폴리오 기조는 유지될 것으로 예상됩니다.</p>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="animate delay-5">
-    <div class="footer-note">
-      데이터 출처: CNBC, Edward Jones, Schwab Market Update, FRED (St. Louis Fed), Buffett.online, Investing.com<br>
-      본 보고서는 투자 권유가 아닙니다. 투자 결정은 본인의 판단과 책임하에 이루어져야 합니다.<br>
-      기준: 2026.02.19 미국 동부시간 장 중 및 전일 마감 데이터
+    <!-- ANALYST NARRATIVE -->
+    <div class="section-label animate delay-5">💬 시황 해설 & 한국 투자자 시각</div>
+    <div class="narrative animate delay-5">
+      <p><strong style="color:var(--accent);">📌 FOMC 매파 기조와 금리 전망:</strong> 2/19 발표된 FOMC 의사록에서 다수 위원이 물가 둔화에 예상보다 더 긴
+        시간이 필요할 것으로 우려했습니다. 2026년 연내 2회 금리인하 기대는 유지되고 있으나, PCE 데이터(2/20)가 예상치(2.8%)를 상회할 경우 인하 기대가 후퇴할 수 있습니다. 10년물 국채
+        금리가 4.09%로 반등하며 성장주와 테크주에 부담을 주고 있습니다.</p>
+      <p><strong style="color:var(--accent2);">🛢 WTI 원유 급등의 파급효과:</strong> 이란-미국 긴장 고조로 WTI가 $66 돌파, 2026년 신고점을 기록했습니다.
+        에너지 섹터(CVX, OXY)는 수혜인 반면, 항공·화학·물류 업종엔 비용 압박 요인입니다. 한국 정유주(SK이노, S-Oil)에는 정제마진 개선 기대감이 작용할 수 있습니다.</p>
+      <p><strong style="color:var(--green);">💱 원/달러 환율 1,450원 수준:</strong> DXY 소폭 강세와 함께 원화는 약세를 유지 중입니다. 달러 강세는 수출
+        의존도가 높은 삼성전자, 현대차 등 국내 대형 수출주에 환차익 요인으로 작용할 수 있지만, 외인 자금 이탈 위험도 함께 점검해야 합니다.</p>
+      <p><strong style="color:var(--gold);">🏛 버핏의 메시지:</strong> 버크셔의 현금성 자산이 $381.7B에 달한다는 사실은 시장이 여전히 고평가 구간이라는 버핏의
+        판단을 시사합니다. 새로운 CEO(그렉 아벨) 체제에서도 보험(CB)·에너지(CVX)·음식료(KO, DPZ) 중심의 방어적 포트폴리오 기조는 유지될 것으로 예상됩니다.</p>
     </div>
-    <div class="footer-brand">US MARKET INTEL</div>
-  </footer>
 
-</div>
+    <!-- FOOTER -->
+    <footer class="animate delay-5">
+      <div class="footer-note">
+        데이터 출처: CNBC, Edward Jones, Schwab Market Update, FRED (St. Louis Fed), Buffett.online, Investing.com<br>
+        본 보고서는 투자 권유가 아닙니다. 투자 결정은 본인의 판단과 책임하에 이루어져야 합니다.<br>
+        기준: 2026.02.19 미국 동부시간 장 중 및 전일 마감 데이터
+      </div>
+      <div class="footer-brand">US MARKET INTEL</div>
+    </footer>
 
-<script>
-// ─── CHART DEFAULTS ───────────────────────────────────────────────
-Chart.defaults.color = '#5a7a9a';
-Chart.defaults.font.family = "'Space Mono', monospace";
-Chart.defaults.font.size = 10;
+  </div>
 
-const accentColor = '#00e5ff';
-const accent2 = '#ff6b35';
-const greenColor = '#00ff87';
-const redColor = '#ff3838';
+  <script>
+    // ─── CHART DEFAULTS ───────────────────────────────────────────────
+    Chart.defaults.color = '#5a7a9a';
+    Chart.defaults.font.family = "'Space Mono', monospace";
+    Chart.defaults.font.size = 10;
 
-// ─── SPARKLINE HELPER ─────────────────────────────────────────────
-function sparkline(id, data, color, fill=false) {
-  const ctx = document.getElementById(id).getContext('2d');
-  const grad = ctx.createLinearGradient(0, 0, 0, 40);
-  grad.addColorStop(0, color + '33');
-  grad.addColorStop(1, 'transparent');
-  
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map((_,i) => i),
-      datasets: [{ data, borderColor: color, borderWidth: 1.5,
-        fill: fill, backgroundColor: fill ? grad : 'transparent',
-        pointRadius: 0, tension: 0.4 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { enabled: false } },
-      scales: { x: { display: false }, y: { display: false } },
-      animation: { duration: 1000, easing: 'easeInOutQuart' }
+    const accentColor = '#00e5ff';
+    const accent2 = '#ff6b35';
+    const greenColor = '#00ff87';
+    const redColor = '#ff3838';
+
+    // ─── SPARKLINE HELPER ─────────────────────────────────────────────
+    function sparkline(id, data, color, fill = false) {
+      const ctx = document.getElementById(id).getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 40);
+      grad.addColorStop(0, color + '33');
+      grad.addColorStop(1, 'transparent');
+
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map((_, i) => i),
+          datasets: [{
+            data, borderColor: color, borderWidth: 1.5,
+            fill: fill, backgroundColor: fill ? grad : 'transparent',
+            pointRadius: 0, tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: { x: { display: false }, y: { display: false } },
+          animation: { duration: 1000, easing: 'easeInOutQuart' }
+        }
+      });
     }
-  });
-}
 
-// S&P 500 - recent 20 days simulated from context
-sparkline('sp500spark', 
-  [6798,6832,6941,6978,6941,6941,6836,6850,6862,6870,6855,6848,6860,6854],
-  redColor, true);
+    // S&P 500
+    registerChart('sp500spark', sparkline('sp500spark', [], redColor, true));
 
-// NASDAQ sparkline
-sparkline('nasdaqspark',
-  [22540,22597,23066,23817,23102,23066,22546,22560,22480,22400,22380,22350,22330,22312],
-  redColor, true);
+    // NASDAQ sparkline
+    registerChart('nasdaqspark', sparkline('nasdaqspark', [], redColor, true));
 
-// DOW sparkline
-sparkline('dowspark',
-  [48908,49451,50121,49003,50121,50188,49500,49400,49350,49300,49280,49263],
-  redColor, true);
+    // DOW sparkline
+    registerChart('dowspark', sparkline('dowspark', [], redColor, true));
 
-// VIX sparkline
-sparkline('vixspark',
-  [18.2, 19.1, 17.8, 16.5, 17.2, 18.9, 20.1, 19.3, 18.5, 19.0, 19.4, 19.8],
-  accent2, true);
+    // VIX sparkline
+    registerChart('vixspark', sparkline('vixspark', [], accent2, true));
 
-// ─── YIELD CURVE CHART ────────────────────────────────────────────
-new Chart(document.getElementById('yieldChart').getContext('2d'), {
-  type: 'line',
-  data: {
-    labels: ['3M', '6M', '1Y', '2Y', '5Y', '7Y', '10Y', '20Y', '30Y'],
-    datasets: [
-      {
-        label: '현재 (2026.02.19)',
-        data: [4.32, 4.28, 4.12, 3.44, 3.95, 4.05, 4.09, 4.43, 4.52],
-        borderColor: accentColor,
-        backgroundColor: accentColor + '15',
-        fill: true,
-        tension: 0.4,
-        pointRadius: 3,
-        borderWidth: 2
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (ctx) => `${ctx.parsed.y.toFixed(2)}%`
+    // ─── YIELD CURVE CHART ────────────────────────────────────────────
+    new Chart(document.getElementById('yieldChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['3M', '6M', '1Y', '2Y', '5Y', '7Y', '10Y', '20Y', '30Y'],
+        datasets: [
+          {
+            label: '현재 (2026.02.19)',
+            data: [4.32, 4.28, 4.12, 3.44, 3.95, 4.05, 4.09, 4.43, 4.52],
+            borderColor: accentColor,
+            backgroundColor: accentColor + '15',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 3,
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.parsed.y.toFixed(2)}%`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: '#1e3050' }, ticks: { font: { size: 9 } } },
+          y: {
+            grid: { color: '#1e3050' },
+            ticks: { callback: v => v + '%', font: { size: 9 } },
+            min: 3.0, max: 5.0
+          }
         }
       }
-    },
-    scales: {
-      x: { grid: { color: '#1e3050' }, ticks: { font: { size: 9 } } },
-      y: {
-        grid: { color: '#1e3050' },
-        ticks: { callback: v => v + '%', font: { size: 9 } },
-        min: 3.0, max: 5.0
-      }
-    }
-  }
-});
+    });
 
-// ─── S&P + NASDAQ INDEX CHART ─────────────────────────────────────
-const weekLabels = ['1/27','1/28','1/29','1/30','1/31','2/3','2/4','2/5','2/6','2/7','2/10','2/11','2/12','2/13','2/14','2/17','2/18','2/19'];
+    // ─── S&P + NASDAQ INDEX CHART ─────────────────────────────────────
+    const weekLabels = [];
 
-const sp500Data = [6878,6830,6801,6802,6040,6798,6883,6950,6006,6025,6941,6941,6836,6850,6836,6842,6885,6854].map((v,i) => {
-  const arr = [6878,6830,6801,6802,6890,6798,6832,6941,6978,6941,6941,6941,6836,6850,6836,6842,6885,6854];
-  return arr[i] || v;
-});
+    const sp500Data = [];
 
-const nasdaqData = [23200,22900,22600,22700,22800,22540,22597,23066,23817,23100,23066,23066,22546,22560,22546,22480,22400,22312];
+    const nasdaqData = [];
 
-new Chart(document.getElementById('indexChart').getContext('2d'), {
-  type: 'line',
-  data: {
-    labels: weekLabels,
-    datasets: [
-      {
-        label: 'S&P 500',
-        data: sp500Data,
-        borderColor: accentColor,
-        backgroundColor: accentColor + '10',
-        fill: false, tension: 0.3,
-        pointRadius: 2, borderWidth: 2, yAxisID: 'y'
+    const indexChartInstance = new Chart(document.getElementById('indexChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: weekLabels,
+        datasets: [
+          {
+            label: 'S&P 500',
+            data: sp500Data,
+            borderColor: accentColor,
+            backgroundColor: accentColor + '10',
+            fill: false, tension: 0.3,
+            pointRadius: 2, borderWidth: 2, yAxisID: 'y'
+          },
+          {
+            label: 'NASDAQ',
+            data: nasdaqData,
+            borderColor: accent2,
+            fill: false, tension: 0.3,
+            pointRadius: 2, borderWidth: 2,
+            borderDash: [4, 2], yAxisID: 'y2'
+          }
+        ]
       },
-      {
-        label: 'NASDAQ',
-        data: nasdaqData,
-        borderColor: accent2,
-        fill: false, tension: 0.3,
-        pointRadius: 2, borderWidth: 2,
-        borderDash: [4, 2], yAxisID: 'y2'
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: {
-        display: true,
-        labels: { usePointStyle: true, pointStyle: 'line', padding: 16, font: { size: 10 } }
-      }
-    },
-    scales: {
-      x: { grid: { color: '#1e3050' }, ticks: { maxRotation: 45, font: { size: 9 } } },
-      y: {
-        position: 'left',
-        grid: { color: '#1e3050' },
-        ticks: { callback: v => v.toLocaleString(), font: { size: 9 } },
-        min: 6600, max: 7100
-      },
-      y2: {
-        position: 'right',
-        grid: { drawOnChartArea: false },
-        ticks: { callback: v => (v/1000).toFixed(1)+'K', font: { size: 9 } },
-        min: 22000, max: 24200
-      }
-    }
-  }
-});
-
-// ─── BUFFETT PIE CHART ────────────────────────────────────────────
-new Chart(document.getElementById('buffettPieChart').getContext('2d'), {
-  type: 'doughnut',
-  data: {
-    labels: ['테크 (AAPL)', '금융 (AXP·BAC·MCO)', '에너지 (CVX·OXY)', '필수소비재 (KO·KHC)', '보험 (CB)', '기타'],
-    datasets: [{
-      data: [28, 22, 11, 12, 5, 22],
-      backgroundColor: [
-        '#00e5ff33', '#ff6b3533', '#39ff1433', '#ffd70033', '#bf6fff33', '#5a7a9a33'
-      ],
-      borderColor: [
-        '#00e5ff', '#ff6b35', '#39ff14', '#ffd700', '#bf6fff', '#5a7a9a'
-      ],
-      borderWidth: 1.5,
-      hoverOffset: 6
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'right',
-        labels: { padding: 10, font: { size: 9 }, boxWidth: 10 }
-      },
-      tooltip: {
-        callbacks: {
-          label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true,
+            labels: { usePointStyle: true, pointStyle: 'line', padding: 16, font: { size: 10 } }
+          }
+        },
+        scales: {
+          x: { grid: { color: '#1e3050' }, ticks: { maxRotation: 45, font: { size: 9 } } },
+          y: {
+            position: 'left',
+            grid: { color: '#1e3050' },
+            ticks: { callback: v => v.toLocaleString(), font: { size: 9 } },
+            min: 6600, max: 7100
+          },
+          y2: {
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            ticks: { callback: v => (v / 1000).toFixed(1) + 'K', font: { size: 9 } },
+            min: 22000, max: 24200
+          }
         }
       }
-    },
-    cutout: '65%'
-  }
-});
-</script>
+    });
+    registerChart('indexChart', indexChartInstance);
+
+    // ─── BUFFETT PIE CHART ────────────────────────────────────────────
+    new Chart(document.getElementById('buffettPieChart').getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['테크 (AAPL)', '금융 (AXP·BAC·MCO)', '에너지 (CVX·OXY)', '필수소비재 (KO·KHC)', '보험 (CB)', '기타'],
+        datasets: [{
+          data: [28, 22, 11, 12, 5, 22],
+          backgroundColor: [
+            '#00e5ff33', '#ff6b3533', '#39ff1433', '#ffd70033', '#bf6fff33', '#5a7a9a33'
+          ],
+          borderColor: [
+            '#00e5ff', '#ff6b35', '#39ff14', '#ffd700', '#bf6fff', '#5a7a9a'
+          ],
+          borderWidth: 1.5,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: { padding: 10, font: { size: 9 }, boxWidth: 10 }
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+            }
+          }
+        },
+        cutout: '65%'
+      }
+    });
+  </script>
 </body>
+
 </html>

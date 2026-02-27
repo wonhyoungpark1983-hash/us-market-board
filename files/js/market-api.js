@@ -18,8 +18,13 @@ function isCacheExpired(lastSyncTime) {
     if (!lastSyncTime) return true;
     const syncDate = new Date(parseInt(lastSyncTime, 10));
     const now = new Date();
-    const today8AM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
-    if (now >= today8AM && syncDate < today8AM) return true;
+    // 기준시각: 오늘 오전 8시. 단, 현재 시각이 8시 이전이면 어제 오전 8시를 기준시각으로 삼는다.
+    const target8AM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+    if (now < target8AM) {
+        target8AM.setDate(target8AM.getDate() - 1);
+    }
+    // 동기화 시점이 기준시각 이전이라면 만료된 것
+    if (syncDate < target8AM) return true;
     return false;
 }
 
@@ -124,6 +129,8 @@ function updateChartsWithData(data) {
         const chartInst = _chartRegistry[canvas.id];
         if (!chartInst) return;
 
+        if (chartInst.stop) chartInst.stop(); // Stop any pending initial animation
+
         const vals = hist.values;
         const last = vals[vals.length - 1];
         const first = vals[0];
@@ -137,9 +144,11 @@ function updateChartsWithData(data) {
     });
 
     // 메인 S&P500 차트 업데이트
-    const mainChart = _chartRegistry['mainChart'];
+    const mainChart = _chartRegistry['mainChart'] || _chartRegistry['indexChart'] || _chartRegistry['chart-main'];
     const gspc = data.history['^GSPC'];
     if (mainChart && gspc) {
+        if (mainChart.stop) mainChart.stop(); // Stop any pending initial animation
+
         const vals = gspc.values;
         const minY = Math.floor(Math.min(...vals) / 100) * 100 - 100;
         const maxY = Math.ceil(Math.max(...vals) / 100) * 100 + 100;
