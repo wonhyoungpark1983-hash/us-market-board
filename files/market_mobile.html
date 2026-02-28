@@ -1066,9 +1066,8 @@
       <div class="alert-icon">⚡</div>
       <div class="alert-body">
         <div class="alert-title">TODAY'S KEY DRIVER</div>
-        <div class="alert-msg">
-          <strong>FOMC 매파</strong> · 10Y 금리 4.09% 반등 ·
-          <strong>WTI $66 돌파</strong> (이란 긴장) · 내일 PCE 발표 <strong>2.8% 예상</strong>
+        <div class="alert-msg" id="key-driver-text">
+          최신 시황을 분석 중입니다...
         </div>
       </div>
     </div>
@@ -1166,10 +1165,10 @@
                 </div>
                 <div class="metric-box">
                   <div class="metric-label">VIX</div>
-                  <div class="metric-val" style="color:var(--warn)">19.8</div>
-                  <div class="metric-sub">⚠ 20선 경계</div>
+                  <div class="metric-val" data-ticker="^VIX" style="color:var(--warn)">--</div>
+                  <div class="metric-sub" data-ticker="^VIX">⚠ 20선 경계</div>
                   <div class="prog">
-                    <div class="prog-fill" style="width:66%;background:var(--warn)"></div>
+                    <div class="prog-fill" id="vix-prog" style="width:66%;background:var(--warn)"></div>
                   </div>
                 </div>
                 <div class="metric-box">

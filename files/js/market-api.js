@@ -217,6 +217,24 @@ function updateCommentaryWithData(data) {
             eventsContainer.insertAdjacentHTML('beforeend', eventHtml);
         });
     }
+
+    // 4. TODAY'S KEY DRIVER banner
+    const keyDriverEl = document.getElementById('key-driver-text');
+    if (keyDriverEl && comm.brief) {
+        keyDriverEl.textContent = comm.brief;
+    }
+}
+
+/**
+ * VIX progress bar dynamic update.
+ */
+function updateVixProgress(data) {
+    if (!data || !data.indices || !data.indices['^VIX']) return;
+    const vixVal = parseFloat(data.indices['^VIX'].price);
+    if (isNaN(vixVal)) return;
+    const pct = Math.min(100, Math.max(0, ((vixVal - 10) / 30) * 100));
+    const vixProg = document.getElementById('vix-prog');
+    if (vixProg) vixProg.style.width = pct.toFixed(0) + '%';
 }
 
 /**
@@ -231,6 +249,7 @@ async function handleRefreshClick() {
         updateDOMWithData(data);
         updateChartsWithData(data);
         updateCommentaryWithData(data);
+        updateVixProgress(data);
     }
 
     if (btn) btn.style.opacity = "1";
@@ -262,6 +281,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
+        updateVixProgress(data);
         // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
