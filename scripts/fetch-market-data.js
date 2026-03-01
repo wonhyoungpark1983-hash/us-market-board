@@ -1,22 +1,45 @@
 const fs = require('fs');
 const path = require('path');
 
+const SECTOR_TICKERS = {
+    'Energy': 'XLE',
+    'Utilities': 'XLU',
+    'Health Care': 'XLV',
+    'Financials': 'XLF',
+    'Materials': 'XLB',
+    'Industrials': 'XLI',
+    'Real Estate': 'XLRE',
+    'Consumer Staples': 'XLP',
+    'Consumer Discretionary': 'XLY',
+    'Communication': 'VOX',
+    'Technology': 'XLK'
+};
+
+const YIELD_TICKERS = ['^IRX', '^FVX', '^TNX', '^TYX']; // 13W, 5Y, 10Y, 30Y
+const MAG7_TICKERS = ['AAPL', 'NVDA', 'META', 'MSFT', 'AMZN', 'GOOGL', 'TSLA'];
+
 const TICKERS = [
     '^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT', // Indices
     'CL=F', 'BZ=F', 'GC=F', 'SI=F', // Commodities
     'BTC-USD', 'ETH-USD', // Crypto
     'KRW=X', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'GBPUSD=X', // FX
-    '^TNX', '^TYX', '^FVX', '^IRX' // Yields
+    '^TNX', '^TYX', '^FVX', '^IRX', // Yields
+    ...MAG7_TICKERS, // Mag 7
+    'AMD', 'AVGO', 'PLTR', 'TSM', 'ARM', // AI Watchlist
+    'COIN', 'MSTR', 'SMCI', // Top Movers
+    ...Object.values(SECTOR_TICKERS) // Sectors
 ];
 
 // Tickers that need historical chart data (main chart + sparklines)
-const HISTORY_TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT', 'BTC-USD'];
+const HISTORY_TICKERS = ['^GSPC', '^IXIC', '^DJI', '^VIX', '^RUT', 'BTC-USD', ...MAG7_TICKERS];
 
 async function fetchMarketData() {
     const newMarketData = {
         lastUpdated: new Date().toISOString(),
         indices: {},
-        history: {} // New: 10-day OHLC history for chart tickers
+        history: {}, // 10-day OHLC history for chart tickers
+        sectors: {}, // Sector ETF daily performance
+        yields: {}   // Yield curve data (3M, 5Y, 10Y, 30Y)
     };
 
     try {
@@ -84,6 +107,19 @@ async function fetchMarketData() {
         if (successCount === 0) {
             throw new Error("All API requests failed");
         }
+
+        // --- Populate sectors and yields from indices ---
+        Object.entries(SECTOR_TICKERS).forEach(([name, ticker]) => {
+            if (newMarketData.indices[ticker]) {
+                newMarketData.sectors[name] = newMarketData.indices[ticker];
+            }
+        });
+
+        YIELD_TICKERS.forEach(ticker => {
+            if (newMarketData.indices[ticker]) {
+                newMarketData.yields[ticker] = newMarketData.indices[ticker];
+            }
+        });
 
         // --- Fetch 10-day history for chart tickers ---
         console.log("Fetching 10-day history for chart tickers...");

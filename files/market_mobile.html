@@ -206,10 +206,9 @@
    ALERT BANNER
 ═══════════════════════════════════════════ */
     .alert-band {
-      flex-shrink: 0;
-      margin: 10px 14px 0;
-      background: rgba(255, 154, 60, 0.07);
-      border: 1px solid rgba(255, 154, 60, 0.2);
+      margin: 10px 0;
+      background: rgba(255, 154, 154, 0.05);
+      border: 1px solid rgba(255, 154, 154, 0.15);
       border-left: 3px solid var(--warn);
       border-radius: var(--r2);
       padding: 10px 13px;
@@ -1061,830 +1060,532 @@
       </div>
     </div>
 
-    <!-- ALERT -->
-    <div class="alert-band">
-      <div class="alert-icon">⚡</div>
-      <div class="alert-body">
-        <div class="alert-title">TODAY'S KEY DRIVER</div>
-        <div class="alert-msg" id="key-driver-text">
-          최신 시황을 분석 중입니다...
+  </div><!-- /header -->
+
+  <!-- SWIPE PAGES -->
+  <div class="page-dots" id="pageDots">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <!-- SWIPE PAGES -->
+  <div class="pages-wrap">
+    <div class="pages" id="pages">
+
+      <!-- ══════════ PAGE 0: 지수 ══════════ -->
+      <div class="page" id="p0">
+
+        <!-- Index horizontal strip -->
+        <div class="idx-strip">
+          <div class="idx-card dn">
+            <div class="idx-label">S&P 500</div>
+            <div class="idx-val" data-ticker="^GSPC">6,854</div>
+            <div class="idx-chg dn" data-ticker="^GSPC">▼ 0.47%</div>
+            <div class="spark-mini"><canvas id="sp0" data-ticker="^GSPC"></canvas></div>
+          </div>
+          <div class="idx-card dn">
+            <div class="idx-label">NASDAQ</div>
+            <div class="idx-val" data-ticker="^IXIC">22,312</div>
+            <div class="idx-chg dn" data-ticker="^IXIC">▼ 0.51%</div>
+            <div class="spark-mini"><canvas id="sp1" data-ticker="^IXIC"></canvas></div>
+          </div>
+          <div class="idx-card dn">
+            <div class="idx-label">DOW</div>
+            <div class="idx-val" data-ticker="^DJI">49,263</div>
+            <div class="idx-chg dn" data-ticker="^DJI">▼ 0.38%</div>
+            <div class="spark-mini"><canvas id="sp2" data-ticker="^DJI"></canvas></div>
+          </div>
+          <div class="idx-card warn">
+            <div class="idx-label">VIX</div>
+            <div class="idx-val" data-ticker="^VIX">19.8</div>
+            <div class="idx-chg warn" data-ticker="^VIX">⚠ 경계</div>
+            <div class="spark-mini"><canvas id="sp3" data-ticker="^VIX"></canvas></div>
+          </div>
+          <div class="idx-card dn">
+            <div class="idx-label">RUT 2000</div>
+            <div class="idx-val" data-ticker="^RUT">2,214</div>
+            <div class="idx-chg dn" data-ticker="^RUT">▼ 0.62%</div>
+            <div class="spark-mini"><canvas id="sp4" data-ticker="^RUT"></canvas></div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- PAGE DOTS -->
-    <div class="page-dots" id="pageDots">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-
-    <!-- SWIPE PAGES -->
-    <div class="pages-wrap">
-      <div class="pages" id="pages">
-
-        <!-- ══════════ PAGE 0: 지수 ══════════ -->
-        <div class="page" id="p0">
-
-          <!-- Index horizontal strip -->
-          <div class="idx-strip">
-            <div class="idx-card dn">
-              <div class="idx-label">S&P 500</div>
-              <div class="idx-val" data-ticker="^GSPC">6,854</div>
-              <div class="idx-chg dn" data-ticker="^GSPC">▼ 0.47%</div>
-              <div class="spark-mini"><canvas id="sp0" data-ticker="^GSPC"></canvas></div>
-            </div>
-            <div class="idx-card dn">
-              <div class="idx-label">NASDAQ</div>
-              <div class="idx-val" data-ticker="^IXIC">22,312</div>
-              <div class="idx-chg dn" data-ticker="^IXIC">▼ 0.51%</div>
-              <div class="spark-mini"><canvas id="sp1" data-ticker="^IXIC"></canvas></div>
-            </div>
-            <div class="idx-card dn">
-              <div class="idx-label">DOW</div>
-              <div class="idx-val" data-ticker="^DJI">49,263</div>
-              <div class="idx-chg dn" data-ticker="^DJI">▼ 0.38%</div>
-              <div class="spark-mini"><canvas id="sp2" data-ticker="^DJI"></canvas></div>
-            </div>
-            <div class="idx-card warn">
-              <div class="idx-label">VIX</div>
-              <div class="idx-val" data-ticker="^VIX">19.8</div>
-              <div class="idx-chg warn" data-ticker="^VIX">⚠ 경계</div>
-              <div class="spark-mini"><canvas id="sp3" data-ticker="^VIX"></canvas></div>
-            </div>
-            <div class="idx-card dn">
-              <div class="idx-label">RUT 2000</div>
-              <div class="idx-val" data-ticker="^RUT">2,214</div>
-              <div class="idx-chg dn" data-ticker="^RUT">▼ 0.62%</div>
-              <div class="spark-mini"><canvas id="sp4" data-ticker="^RUT"></canvas></div>
+        <!-- 4주 차트 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">S&P 500 · 4주 추이</div>
+            <div class="card-badge">18 SESSIONS</div>
+          </div>
+          <div style="padding:12px">
+            <div class="chart-box" style="height:160px">
+              <canvas id="mainChart"></canvas>
             </div>
           </div>
+        </div>
 
-          <!-- 4주 차트 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">S&P 500 · 4주 추이</div>
-              <div class="card-badge">18 SESSIONS</div>
+        <!-- 섹터 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">섹터별 등락 (당일)</div>
+          </div>
+          <div style="padding:10px 12px">
+            <div class="chart-box" style="height:200px">
+              <canvas id="sectorChart"></canvas>
             </div>
-            <div style="padding:12px">
-              <div class="chart-box" style="height:160px">
-                <canvas id="mainChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 시장 지표 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">시장 심리 지표</div>
+          </div>
+          <div style="padding:12px">
+            <div class="metric-grid">
+              <div class="metric-box">
+                <div class="metric-label">S&P RSI(14)</div>
+                <div class="metric-val" style="color:var(--blue)">48.2</div>
+                <div class="metric-sub">중립권</div>
+                <div class="prog">
+                  <div class="prog-fill" style="width:48%;background:var(--blue)"></div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <!-- 섹터 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">섹터별 등락 (당일)</div>
-            </div>
-            <div style="padding:10px 12px">
-              <div class="chart-box" style="height:200px">
-                <canvas id="sectorChart"></canvas>
+              <div class="metric-box">
+                <div class="metric-label">VIX</div>
+                <div class="metric-val" data-ticker="^VIX" style="color:var(--warn)">--</div>
+                <div class="metric-sub" data-ticker="^VIX">⚠ 20선 경계</div>
+                <div class="prog">
+                  <div class="prog-fill" id="vix-prog" style="width:66%;background:var(--warn)"></div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <!-- 시장 지표 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">시장 심리 지표</div>
-            </div>
-            <div style="padding:12px">
-              <div class="metric-grid">
-                <div class="metric-box">
-                  <div class="metric-label">S&P RSI(14)</div>
-                  <div class="metric-val" style="color:var(--blue)">48.2</div>
-                  <div class="metric-sub">중립권</div>
-                  <div class="prog">
-                    <div class="prog-fill" style="width:48%;background:var(--blue)"></div>
-                  </div>
+              <div class="metric-box">
+                <div class="metric-label">CPI YoY</div>
+                <div class="metric-val" style="color:var(--up)">2.4%</div>
+                <div class="metric-sub">예상 2.5% 하회 ✓</div>
+                <div class="prog">
+                  <div class="prog-fill" style="width:48%;background:var(--up)"></div>
                 </div>
-                <div class="metric-box">
-                  <div class="metric-label">VIX</div>
-                  <div class="metric-val" data-ticker="^VIX" style="color:var(--warn)">--</div>
-                  <div class="metric-sub" data-ticker="^VIX">⚠ 20선 경계</div>
-                  <div class="prog">
-                    <div class="prog-fill" id="vix-prog" style="width:66%;background:var(--warn)"></div>
-                  </div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">실업률</div>
+                <div class="metric-val" style="color:var(--up)">4.3%</div>
+                <div class="metric-sub">NFP +130K↑</div>
+                <div class="prog">
+                  <div class="prog-fill" style="width:43%;background:var(--up)"></div>
                 </div>
-                <div class="metric-box">
-                  <div class="metric-label">CPI YoY</div>
-                  <div class="metric-val" style="color:var(--up)">2.4%</div>
-                  <div class="metric-sub">예상 2.5% 하회 ✓</div>
-                  <div class="prog">
-                    <div class="prog-fill" style="width:48%;background:var(--up)"></div>
-                  </div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">기준금리</div>
+                <div class="metric-val" style="color:var(--t1)">3.50%</div>
+                <div class="metric-sub">동결 유지</div>
+                <div class="prog">
+                  <div class="prog-fill" style="width:35%;background:var(--purp)"></div>
                 </div>
-                <div class="metric-box">
-                  <div class="metric-label">실업률</div>
-                  <div class="metric-val" style="color:var(--up)">4.3%</div>
-                  <div class="metric-sub">NFP +130K↑</div>
-                  <div class="prog">
-                    <div class="prog-fill" style="width:43%;background:var(--up)"></div>
-                  </div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">기준금리</div>
-                  <div class="metric-val" style="color:var(--t1)">3.50%</div>
-                  <div class="metric-sub">동결 유지</div>
-                  <div class="prog">
-                    <div class="prog-fill" style="width:35%;background:var(--purp)"></div>
-                  </div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">PCE 예상</div>
-                  <div class="metric-val" style="color:var(--warn)">2.8%</div>
-                  <div class="metric-sub">2/20 발표 ⚠</div>
-                  <div class="prog">
-                    <div class="prog-fill" style="width:70%;background:var(--warn)"></div>
-                  </div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">PCE 예상</div>
+                <div class="metric-val" style="color:var(--warn)">2.8%</div>
+                <div class="metric-sub">2/20 발표 ⚠</div>
+                <div class="prog">
+                  <div class="prog-fill" style="width:70%;background:var(--warn)"></div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-        </div><!-- /page0 -->
+      </div><!-- /page0 -->
 
-        <!-- ══════════ PAGE 1: 채권·FX ══════════ -->
-        <div class="page" id="p1">
+      <!-- ══════════ PAGE 1: 채권·FX ══════════ -->
+      <div class="page" id="p1">
 
-          <!-- Yield Curve -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">국채 수익률 곡선</div>
-              <div class="card-badge">2026.02.19</div>
+        <!-- Yield Curve -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">국채 수익률 곡선</div>
+            <div class="card-badge" id="yield-date">--</div>
+          </div>
+          <div style="padding:12px">
+            <div class="chart-box" style="height:160px">
+              <canvas id="yieldChart"></canvas>
             </div>
-            <div style="padding:12px">
-              <div class="chart-box" style="height:160px">
-                <canvas id="yieldChart"></canvas>
+          </div>
+          <div style="padding:0 12px 12px">
+            <div class="metric-grid">
+              <div class="metric-box">
+                <div class="metric-label">3M</div>
+                <div class="metric-val" data-ticker="^IRX" style="font-size:18px;color:var(--blue)">--</div>
+                <div class="metric-sub" data-ticker="^IRX">--</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">10Y</div>
+                <div class="metric-val" data-ticker="^TNX" style="font-size:18px;color:var(--warn)">--</div>
+                <div class="metric-sub" data-ticker="^TNX">--</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">30Y</div>
+                <div class="metric-val" data-ticker="^TYX" style="font-size:18px;color:var(--t2)">--</div>
+                <div class="metric-sub" data-ticker="^TYX">--</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">5Y</div>
+                <div class="metric-val" data-ticker="^FVX" style="font-size:18px;color:var(--t2)">--</div>
+                <div class="metric-sub" data-ticker="^FVX">--</div>
               </div>
             </div>
-            <div style="padding:0 12px 12px">
-              <div class="metric-grid">
-                <div class="metric-box">
-                  <div class="metric-label">2Y</div>
-                  <div class="metric-val" data-ticker="^IRX" style="font-size:18px;color:var(--blue)">3.44%</div>
-                  <div class="metric-sub" data-ticker="^IRX">단기</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">10Y</div>
-                  <div class="metric-val" data-ticker="^TNX" style="font-size:18px;color:var(--warn)">4.09%</div>
-                  <div class="metric-sub" data-ticker="^TNX">↑ 매파 반등</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">2s10s 스프레드</div>
-                  <div class="metric-val" style="font-size:18px;color:var(--up)">+65bp</div>
-                  <div class="metric-sub">정상 기울기</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">30Y</div>
-                  <div class="metric-val" data-ticker="^TYX" style="font-size:18px;color:var(--t2)">4.52%</div>
-                  <div class="metric-sub" data-ticker="^TYX">장기 압박</div>
-                </div>
-              </div>
+          </div>
+        </div>
+
+        <!-- FX -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">외환 시장</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair" style="color:var(--gold)">USD/KRW</div>
+            <div class="fx-name">원/달러 환율</div>
+            <div class="fx-val idx-val" data-ticker="KRW=X">1,450</div>
+            <div class="fx-chg idx-chg dn" data-ticker="KRW=X" style="color:var(--dn)">▲ 0.7%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">DXY</div>
+            <div class="fx-name">달러 인덱스</div>
+            <div class="fx-val idx-val" data-ticker="DX-Y.NYB">97.4</div>
+            <div class="fx-chg idx-chg dn" data-ticker="DX-Y.NYB" style="color:var(--dn)">▲ 0.3%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">EUR/USD</div>
+            <div class="fx-name">유로/달러</div>
+            <div class="fx-val idx-val" data-ticker="EURUSD=X">1.046</div>
+            <div class="fx-chg idx-chg neu" data-ticker="EURUSD=X" style="color:var(--t3)">→ 보합</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">USD/JPY</div>
+            <div class="fx-name">달러/엔</div>
+            <div class="fx-val idx-val" data-ticker="JPY=X">152.3</div>
+            <div class="fx-chg idx-chg dn" data-ticker="JPY=X" style="color:var(--dn)">▲ 0.2%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">GBP/USD</div>
+            <div class="fx-name">파운드/달러</div>
+            <div class="fx-val idx-val" data-ticker="GBPUSD=X">1.262</div>
+            <div class="fx-chg idx-chg neu" data-ticker="GBPUSD=X" style="color:var(--t3)">▼ 0.1%</div>
+          </div>
+        </div>
+
+        <!-- Commodities -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">원자재 · 크립토</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair" style="color:var(--warn)">WTI</div>
+            <div class="fx-name">서부텍사스유</div>
+            <div class="fx-val idx-val" data-ticker="CL=F" style="color:var(--warn)">$66.2</div>
+            <div class="fx-chg idx-chg up" data-ticker="CL=F" style="color:var(--up)">▲ 2.1%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">BRENT</div>
+            <div class="fx-name">브렌트유</div>
+            <div class="fx-val idx-val" data-ticker="BZ=F">$70.1</div>
+            <div class="fx-chg idx-chg up" data-ticker="BZ=F" style="color:var(--up)">▲ 1.9%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair" style="color:var(--gold)">GOLD</div>
+            <div class="fx-name">금 현물 (oz)</div>
+            <div class="fx-val idx-val" data-ticker="GC=F" style="color:var(--gold)">$2,924</div>
+            <div class="fx-chg idx-chg dn" data-ticker="GC=F" style="color:var(--dn)">▼ 0.4%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair">SILVER</div>
+            <div class="fx-name">은 현물 (oz)</div>
+            <div class="fx-val idx-val" data-ticker="SI=F">$32.6</div>
+            <div class="fx-chg idx-chg dn" data-ticker="SI=F" style="color:var(--dn)">▼ 0.2%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair" style="color:var(--cyan)">BTC</div>
+            <div class="fx-name">비트코인</div>
+            <div class="fx-val idx-val" data-ticker="BTC-USD">$97,800</div>
+            <div class="fx-chg idx-chg dn" data-ticker="BTC-USD" style="color:var(--dn)">▼ 0.8%</div>
+          </div>
+          <div class="fx-row">
+            <div class="fx-pair" style="color:var(--purp)">ETH</div>
+            <div class="fx-name">이더리움</div>
+            <div class="fx-val idx-val" data-ticker="ETH-USD">$2,740</div>
+            <div class="fx-chg idx-chg dn" data-ticker="ETH-USD" style="color:var(--dn)">▼ 1.2%</div>
+          </div>
+        </div>
+
+      </div><!-- /page1 -->
+
+      <!-- ══════════ PAGE 2: 버핏 ══════════ -->
+      <div class="page" id="p2">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:2px">
+            BERKSHIRE HATHAWAY</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold)">$274B PORT · Q4'25
+          </div>
+        </div>
+
+        <!-- Cash hoard highlight -->
+        <div
+          style="background:rgba(255,204,68,0.06);border:1px solid rgba(255,204,68,0.2);border-radius:var(--r);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:24px">💰</div>
+          <div>
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:3px">
+              현금 보유 — 사상 최대</div>
+            <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold)">$381.7B</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px">시장 고평가 시사 — 기회 대기 중</div>
+          </div>
+        </div>
+
+        <!-- TOP 10 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">TOP 10 홀딩스</div>
+            <div class="card-badge">비중순</div>
+          </div>
+          <div id="buffett-list">
+            <div style="padding:20px;text-align:center;color:var(--t3)">로드 중...</div>
+          </div>
+        </div>
+
+        <!-- Q4 변화 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Q4 2025 핵심 변화</div>
+            <div class="card-badge">13F 2026.02.17</div>
+          </div>
+          <div id="buffett-changes" style="padding:12px;display:flex;flex-direction:column;gap:8px">
+            <!-- JS injection -->
+          </div>
+        </div>
+
+        <!-- 섹터 파이 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">섹터 비중</div>
+          </div>
+          <div style="padding:12px">
+            <div class="chart-box" style="height:200px">
+              <canvas id="pieChart"></canvas>
             </div>
           </div>
+        </div>
 
-          <!-- FX -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">외환 시장</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair" style="color:var(--gold)">USD/KRW</div>
-              <div class="fx-name">원/달러 환율</div>
-              <div class="fx-val idx-val" data-ticker="KRW=X">1,450</div>
-              <div class="fx-chg idx-chg dn" data-ticker="KRW=X" style="color:var(--dn)">▲ 0.7%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">DXY</div>
-              <div class="fx-name">달러 인덱스</div>
-              <div class="fx-val idx-val" data-ticker="DX-Y.NYB">97.4</div>
-              <div class="fx-chg idx-chg dn" data-ticker="DX-Y.NYB" style="color:var(--dn)">▲ 0.3%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">EUR/USD</div>
-              <div class="fx-name">유로/달러</div>
-              <div class="fx-val idx-val" data-ticker="EURUSD=X">1.046</div>
-              <div class="fx-chg idx-chg neu" data-ticker="EURUSD=X" style="color:var(--t3)">→ 보합</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">USD/JPY</div>
-              <div class="fx-name">달러/엔</div>
-              <div class="fx-val idx-val" data-ticker="JPY=X">152.3</div>
-              <div class="fx-chg idx-chg dn" data-ticker="JPY=X" style="color:var(--dn)">▲ 0.2%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">GBP/USD</div>
-              <div class="fx-name">파운드/달러</div>
-              <div class="fx-val idx-val" data-ticker="GBPUSD=X">1.262</div>
-              <div class="fx-chg idx-chg neu" data-ticker="GBPUSD=X" style="color:var(--t3)">▼ 0.1%</div>
-            </div>
+      </div><!-- /page2 -->
+
+      <!-- ══════════ PAGE 3: ARK ══════════ -->
+      <div class="page" id="p3">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:2px">ARK
+            INVEST</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--purp)">ARKK $6.7B</div>
+        </div>
+
+        <!-- ARKK TOP 10 -->
+        <div class="card">
+          <div class="card-head" style="margin-bottom: 5px;">
+            <div class="card-title">ARKK TOP 10</div>
+            <div class="card-badge">혁신 ETF</div>
           </div>
-
-          <!-- Commodities -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">원자재 · 크립토</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair" style="color:var(--warn)">WTI</div>
-              <div class="fx-name">서부텍사스유</div>
-              <div class="fx-val idx-val" data-ticker="CL=F" style="color:var(--warn)">$66.2</div>
-              <div class="fx-chg idx-chg up" data-ticker="CL=F" style="color:var(--up)">▲ 2.1%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">BRENT</div>
-              <div class="fx-name">브렌트유</div>
-              <div class="fx-val idx-val" data-ticker="BZ=F">$70.1</div>
-              <div class="fx-chg idx-chg up" data-ticker="BZ=F" style="color:var(--up)">▲ 1.9%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair" style="color:var(--gold)">GOLD</div>
-              <div class="fx-name">금 현물 (oz)</div>
-              <div class="fx-val idx-val" data-ticker="GC=F" style="color:var(--gold)">$2,924</div>
-              <div class="fx-chg idx-chg dn" data-ticker="GC=F" style="color:var(--dn)">▼ 0.4%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair">SILVER</div>
-              <div class="fx-name">은 현물 (oz)</div>
-              <div class="fx-val idx-val" data-ticker="SI=F">$32.6</div>
-              <div class="fx-chg idx-chg dn" data-ticker="SI=F" style="color:var(--dn)">▼ 0.2%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair" style="color:var(--cyan)">BTC</div>
-              <div class="fx-name">비트코인</div>
-              <div class="fx-val idx-val" data-ticker="BTC-USD">$97,800</div>
-              <div class="fx-chg idx-chg dn" data-ticker="BTC-USD" style="color:var(--dn)">▼ 0.8%</div>
-            </div>
-            <div class="fx-row">
-              <div class="fx-pair" style="color:var(--purp)">ETH</div>
-              <div class="fx-name">이더리움</div>
-              <div class="fx-val idx-val" data-ticker="ETH-USD">$2,740</div>
-              <div class="fx-chg idx-chg dn" data-ticker="ETH-USD" style="color:var(--dn)">▼ 1.2%</div>
-            </div>
-          </div>
-
-        </div><!-- /page1 -->
-
-        <!-- ══════════ PAGE 2: 버핏 ══════════ -->
-        <div class="page" id="p2">
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:2px">
-              BERKSHIRE HATHAWAY</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold)">$274B PORT · Q4'25
-            </div>
-          </div>
-
-          <!-- Cash hoard highlight -->
           <div
-            style="background:rgba(255,204,68,0.06);border:1px solid rgba(255,204,68,0.2);border-radius:var(--r);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px">
-            <div style="font-size:24px">💰</div>
-            <div>
-              <div
-                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:3px">
-                현금 보유 — 사상 최대</div>
-              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold)">$381.7B</div>
-              <div style="font-size:10px;color:var(--t3);margin-top:2px">시장 고평가 시사 — 기회 대기 중</div>
-            </div>
+            style="padding: 0 14px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(26, 44, 62, 0.7);">
+            <div class="tag new" style="font-size: 10px; padding: 2px 6px;">섹터 집중</div>
+            <div style="font-size: 12px; color: var(--t2);">파괴적 혁신 전세계 80% 집중</div>
           </div>
-
-          <!-- TOP 10 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">TOP 10 홀딩스</div>
-              <div class="card-badge">비중순</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">1</div>
-              <div class="guru-tick" style="color:var(--blue)">AAPL</div>
-              <div class="guru-name">Apple</div>
-              <div class="guru-w">28%</div>
-              <div class="guru-act sell">▼ 축소</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">2</div>
-              <div class="guru-tick" style="color:var(--blue)">AXP</div>
-              <div class="guru-name">American Express</div>
-              <div class="guru-w">17%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">3</div>
-              <div class="guru-tick" style="color:var(--blue)">BAC</div>
-              <div class="guru-name">Bank of America</div>
-              <div class="guru-w">10%</div>
-              <div class="guru-act sell">▼ 매도</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">4</div>
-              <div class="guru-tick" style="color:var(--up)">KO</div>
-              <div class="guru-name">Coca-Cola</div>
-              <div class="guru-w">9%</div>
-              <div class="guru-act hold">→ 영구</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">5</div>
-              <div class="guru-tick" style="color:var(--up)">CVX</div>
-              <div class="guru-name">Chevron</div>
-              <div class="guru-w">7%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">6</div>
-              <div class="guru-tick" style="color:var(--up)">CB</div>
-              <div class="guru-name">Chubb</div>
-              <div class="guru-w">5%</div>
-              <div class="guru-act buy">▲ 대규모</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">7</div>
-              <div class="guru-tick" style="color:var(--blue)">OXY</div>
-              <div class="guru-name">Occidental Petroleum</div>
-              <div class="guru-w">4%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">8</div>
-              <div class="guru-tick" style="color:var(--blue)">MCO</div>
-              <div class="guru-name">Moody's</div>
-              <div class="guru-w">4%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">9</div>
-              <div class="guru-tick" style="color:var(--t2)">KHC</div>
-              <div class="guru-name">Kraft Heinz</div>
-              <div class="guru-w">3%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">10</div>
-              <div class="guru-tick" style="color:var(--cyan)">GOOGL</div>
-              <div class="guru-name">Alphabet</div>
-              <div class="guru-w">3%</div>
-              <div class="guru-act new">✦ 신규</div>
-            </div>
+          <div id="ark-list">
+            <!-- JS will inject ARK Top 10 if needed, or keep for later -->
           </div>
+        </div>
 
-          <!-- Q4 변화 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">Q4 2025 핵심 변화</div>
-              <div class="card-badge">13F 2026.02.17</div>
-            </div>
-            <div style="padding:12px;display:flex;flex-direction:column;gap:8px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <span class="tag new">NEW</span>
-                <span style="font-size:12px;color:var(--t2)">NYT (뉴욕타임스) 신규 편입</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span class="tag buy">ADD</span>
-                <span style="font-size:12px;color:var(--t2)">CB, CVX, DPZ 대규모 추가매수</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span class="tag sell">TRIM</span>
-                <span style="font-size:12px;color:var(--t2)">AMZN 대규모 축소, AAPL 지속 감소</span>
-              </div>
-            </div>
+        <!-- TODAY'S TRADES -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">오늘의 매매 (2026.02.19)</div>
+            <div class="card-badge" style="color:var(--cyan)">DAILY</div>
           </div>
-
-          <!-- 섹터 파이 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">섹터 비중</div>
-            </div>
-            <div style="padding:12px">
-              <div class="chart-box" style="height:200px">
-                <canvas id="pieChart"></canvas>
-              </div>
-            </div>
+          <div id="ark-trades">
+            <!-- JS injection -->
           </div>
+        </div>
 
-        </div><!-- /page2 -->
-
-        <!-- ══════════ PAGE 3: ARK ══════════ -->
-        <div class="page" id="p3">
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:2px">ARK
-              INVEST</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--purp)">ARKK $6.7B</div>
+        <!-- MICHAEL BURRY -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-head" style="margin-bottom: 5px;">
+            <div class="card-title">📉 Michael Burry TOP 4</div>
+            <div class="card-badge">Scion 13F</div>
           </div>
-
-          <!-- ARKK TOP 10 -->
-          <div class="card">
-            <div class="card-head" style="margin-bottom: 5px;">
-              <div class="card-title">ARKK TOP 10</div>
-              <div class="card-badge">혁신 ETF</div>
-            </div>
-            <div
-              style="padding: 0 14px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(26, 44, 62, 0.7);">
-              <div class="tag new" style="font-size: 10px; padding: 2px 6px;">섹터 집중</div>
-              <div style="font-size: 12px; color: var(--t2);">파괴적 혁신 전세계 80% 집중</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">1</div>
-              <div class="guru-tick" style="color:var(--purp)">TSLA</div>
-              <div class="guru-name">Tesla</div>
-              <div class="guru-w">10.9%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">2</div>
-              <div class="guru-tick" style="color:var(--purp)">CRSP</div>
-              <div class="guru-name">CRISPR Therapeutics</div>
-              <div class="guru-w">6.3%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">3</div>
-              <div class="guru-tick" style="color:var(--purp)">TEM</div>
-              <div class="guru-name">Tempus AI</div>
-              <div class="guru-w">5.5%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">4</div>
-              <div class="guru-tick" style="color:var(--purp)">ROKU</div>
-              <div class="guru-name">Roku</div>
-              <div class="guru-w">5.0%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">5</div>
-              <div class="guru-tick" style="color:var(--purp)">COIN</div>
-              <div class="guru-name">Coinbase</div>
-              <div class="guru-w">4.6%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">6</div>
-              <div class="guru-tick" style="color:var(--purp)">SHOP</div>
-              <div class="guru-name">Shopify</div>
-              <div class="guru-w">4.2%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">7</div>
-              <div class="guru-tick" style="color:var(--purp)">HOOD</div>
-              <div class="guru-name">Robinhood</div>
-              <div class="guru-w">4.0%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">8</div>
-              <div class="guru-tick" style="color:var(--purp)">AMD</div>
-              <div class="guru-name">AMD</div>
-              <div class="guru-w">4.0%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">9</div>
-              <div class="guru-tick" style="color:var(--purp)">BEAM</div>
-              <div class="guru-name">Beam Therapeutics</div>
-              <div class="guru-w">3.5%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">10</div>
-              <div class="guru-tick" style="color:var(--purp)">RBLX</div>
-              <div class="guru-name">Roblox</div>
-              <div class="guru-w">3.6%</div>
-              <div class="guru-act sell">▼ 일부</div>
-            </div>
+          <div id="burry-list">
+            <div style="padding:20px;text-align:center;color:var(--t3)">로드 중...</div>
           </div>
+        </div>
 
-          <!-- TODAY'S TRADES -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">오늘의 매매 (2026.02.19)</div>
-              <div class="card-badge" style="color:var(--cyan)">DAILY</div>
-            </div>
-            <div class="trade-row">
-              <div class="trade-etf">ARKK</div>
-              <div class="trade-tick">FIG</div>
-              <div class="trade-name">Figma Inc</div>
-              <div class="trade-val" style="color:var(--up)">▲ $23.3M</div>
-            </div>
-            <div class="trade-row">
-              <div class="trade-etf">ARKK</div>
-              <div class="trade-tick">DKNG</div>
-              <div class="trade-name">DraftKings</div>
-              <div class="trade-val" style="color:var(--dn)">▼ $11.2M</div>
-            </div>
-            <div class="trade-row">
-              <div class="trade-etf">ARKG</div>
-              <div class="trade-tick">CMPS</div>
-              <div class="trade-name">Compass Pathways</div>
-              <div class="trade-val" style="color:var(--up)">▲ $6.6M</div>
-            </div>
-            <div class="trade-row">
-              <div class="trade-etf">ARKK</div>
-              <div class="trade-tick">RXRX</div>
-              <div class="trade-name">Recursion Pharma</div>
-              <div class="trade-val" style="color:var(--up)">▲ $2.8M</div>
-            </div>
-            <div class="trade-row">
-              <div class="trade-etf">ARKK</div>
-              <div class="trade-tick">VEEV</div>
-              <div class="trade-name">Veeva Systems</div>
-              <div class="trade-val" style="color:var(--dn)">▼ $6.3M</div>
-            </div>
+        <!-- STAN DRUCKENMILLER -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-head" style="margin-bottom: 5px;">
+            <div class="card-title">📈 Stan Druckenmiller TOP 4</div>
+            <div class="card-badge">Duquesne 13F</div>
           </div>
-
-          <!-- MICHAEL BURRY -->
-          <div class="card" style="margin-top:16px">
-            <div class="card-head" style="margin-bottom: 5px;">
-              <div class="card-title">📉 Michael Burry TOP 4</div>
-              <div class="card-badge">Scion 13F</div>
-            </div>
-            <div
-              style="padding: 0 14px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(26, 44, 62, 0.7);">
-              <div class="tag warn" style="font-size: 10px; padding: 2px 6px;">섹터 집중</div>
-              <div style="font-size: 12px; color: var(--t2);">중국(BABA, JD, BIDU) 43% 베팅</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">1</div>
-              <div class="guru-tick" style="color:var(--red)">BABA</div>
-              <div class="guru-name">Alibaba Group Holding</div>
-              <div class="guru-w">19.5%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">2</div>
-              <div class="guru-tick" style="color:var(--red)">JD</div>
-              <div class="guru-name">JD.com Inc</div>
-              <div class="guru-w">14.3%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">3</div>
-              <div class="guru-tick" style="color:var(--red)">BIDU</div>
-              <div class="guru-name">Baidu Inc</div>
-              <div class="guru-w">9.2%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">4</div>
-              <div class="guru-tick" style="color:var(--red)">REAL</div>
-              <div class="guru-name">The RealReal</div>
-              <div class="guru-w">7.8%</div>
-              <div class="guru-act buy">▲ 신규</div>
-            </div>
+          <div id="druckenmiller-list">
+            <div style="padding:20px;text-align:center;color:var(--t3)">로드 중...</div>
           </div>
+        </div>
 
-          <!-- STAN DRUCKENMILLER -->
-          <div class="card" style="margin-top:16px">
-            <div class="card-head" style="margin-bottom: 5px;">
-              <div class="card-title">📈 Stan Druckenmiller TOP 4</div>
-              <div class="card-badge">Duquesne 13F</div>
-            </div>
-            <div
-              style="padding: 0 14px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(26, 44, 62, 0.7);">
-              <div class="tag hold" style="font-size: 10px; padding: 2px 6px;">포지션 변화</div>
-              <div style="font-size: 12px; color: var(--t2);">AI(NVDA, MSFT) 줄이고 중소형 추가</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">1</div>
-              <div class="guru-tick" style="color:var(--green)">COUP</div>
-              <div class="guru-name">Coupang Inc</div>
-              <div class="guru-w">16.4%</div>
-              <div class="guru-act hold">→ 유지</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">2</div>
-              <div class="guru-tick" style="color:var(--green)">MSFT</div>
-              <div class="guru-name">Microsoft Corp</div>
-              <div class="guru-w">12.1%</div>
-              <div class="guru-act sell">▼ 축소</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">3</div>
-              <div class="guru-tick" style="color:var(--green)">NVDA</div>
-              <div class="guru-name">NVIDIA Corp</div>
-              <div class="guru-w">8.5%</div>
-              <div class="guru-act sell">▼ 축소</div>
-            </div>
-            <div class="guru-row">
-              <div class="guru-rank">4</div>
-              <div class="guru-tick" style="color:var(--green)">VST</div>
-              <div class="guru-name">Vistra Corp</div>
-              <div class="guru-w">6.2%</div>
-              <div class="guru-act buy">▲ 추가</div>
-            </div>
-          </div>
+      </div><!-- /page3 -->
 
-        </div><!-- /page3 -->
+      <!-- ══════════ PAGE 4: 종목 ══════════ -->
+      <div class="page" id="p4">
 
-        <!-- ══════════ PAGE 4: 종목 ══════════ -->
-        <div class="page" id="p4">
-
-          <!-- Mag 7 mini chart strip -->
-          <div class="sec-label">MAGNIFICENT 7</div>
+        <!-- Mag 7 mini chart strip -->
+        <div class="sec-label">MAGNIFICENT 7</div>
+        <div class="mini-chart-strip">
           <div class="mini-chart-strip">
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="AAPL">
               <div class="mini-chart-label">AAPL</div>
-              <div class="mini-chart-val">$228.4</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 5.0% YTD ▼8.2%</div>
-              <div class="mini-chart-wrap"><canvas id="mc0"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc0" data-ticker="AAPL"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="NVDA">
               <div class="mini-chart-label">NVDA</div>
-              <div class="mini-chart-val">$132.6</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.8% YTD ▲4.1%</div>
-              <div class="mini-chart-wrap"><canvas id="mc1"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc1" data-ticker="NVDA"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="META">
               <div class="mini-chart-label">META</div>
-              <div class="mini-chart-val">$706.3</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.2% YTD ▲12.4%</div>
-              <div class="mini-chart-wrap"><canvas id="mc2"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc2" data-ticker="META"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="MSFT">
               <div class="mini-chart-label">MSFT</div>
-              <div class="mini-chart-val">$412.8</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 0.4% YTD ▼2.3%</div>
-              <div class="mini-chart-wrap"><canvas id="mc3"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc3" data-ticker="MSFT"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="AMZN">
               <div class="mini-chart-label">AMZN</div>
-              <div class="mini-chart-val">$224.1</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.3% YTD ▲3.2%</div>
-              <div class="mini-chart-wrap"><canvas id="mc4"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc4" data-ticker="AMZN"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="GOOGL">
               <div class="mini-chart-label">GOOGL</div>
-              <div class="mini-chart-val">$194.2</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 0.6% YTD ▼1.8%</div>
-              <div class="mini-chart-wrap"><canvas id="mc5"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc5" data-ticker="GOOGL"></canvas></div>
             </div>
-            <div class="mini-chart-card">
+            <div class="mini-chart-card" data-ticker="TSLA">
               <div class="mini-chart-label">TSLA</div>
-              <div class="mini-chart-val">$342.8</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 1.2% YTD ▼14.6%</div>
-              <div class="mini-chart-wrap"><canvas id="mc6"></canvas></div>
+              <div class="mini-chart-val">--</div>
+              <div class="mini-chart-chg">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc6" data-ticker="TSLA"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Movers -->
+        <div class="sec-label">주간 TOP 무버</div>
+        <div class="card" id="top-movers-list">
+          <!-- JS injection here -->
+          <div style="padding:20px;text-align:center;color:var(--t3)">로드 중...</div>
+        </div>
+
+        <!-- AI 반도체 -->
+        <div class="sec-label">AI · 반도체 워치리스트</div>
+        <div class="card" id="ai-watchlist-container">
+          <!-- JS injection here -->
+          <div style="padding:20px;text-align:center;color:var(--t3)">데이터 분석 중...</div>
+        </div>
+
+      </div><!-- /page4 -->
+
+      <!-- ══════════ PAGE 5: 해설 ══════════ -->
+      <div class="page" id="p5">
+
+        <!-- AI Commentary Container -->
+        <div id="ai-commentary-container">
+          <!-- Relocated Key Driver Banner -->
+          <div class="alert-band">
+            <div class="alert-icon">💡</div>
+            <div class="alert-content">
+              <div class="alert-title">TODAY'S KEY DRIVER</div>
+              <div class="alert-msg" id="key-driver-text">시황 데이터를 분석 중입니다...</div>
             </div>
           </div>
 
-          <!-- Weekly Movers -->
-          <div class="sec-label">주간 TOP 무버</div>
-          <div class="card">
-            <div class="row-item">
-              <div class="row-sym">VRTV</div>
-              <div class="row-name">버티브 홀딩스</div>
-              <div class="row-price">$124.6</div>
-              <div class="row-chg up">▲24.0%</div>
+          <div class="narr-item">
+            <div class="narr-head">
+              <div class="narr-title">오늘의 시장 브리핑</div>
             </div>
-            <div class="row-item">
-              <div class="row-sym">RIVN</div>
-              <div class="row-name">리비안</div>
-              <div class="row-price">$16.8</div>
-              <div class="row-chg up">▲20.0%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">ROKU</div>
-              <div class="row-name">로쿠</div>
-              <div class="row-price">$83.4</div>
-              <div class="row-chg up">▲15.0%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">WMT</div>
-              <div class="row-name">월마트</div>
-              <div class="row-price">$98.2</div>
-              <div class="row-chg up">▲2.2%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">PLTR</div>
-              <div class="row-name">팔란티어</div>
-              <div class="row-price">$74.3</div>
-              <div class="row-chg dn">▼20.0%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">DKNG</div>
-              <div class="row-name">드래프트킹스</div>
-              <div class="row-price">$34.1</div>
-              <div class="row-chg dn">▼17.0%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">CSCO</div>
-              <div class="row-name">시스코</div>
-              <div class="row-price">$54.2</div>
-              <div class="row-chg dn">▼12.0%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">AAPL</div>
-              <div class="row-name">애플</div>
-              <div class="row-price">$228.4</div>
-              <div class="row-chg dn">▼5.0%</div>
+            <div class="narr-body" id="ai-brief">
+              최신 시황 데이터를 분석 중입니다...
             </div>
           </div>
 
-          <!-- AI 반도체 -->
-          <div class="sec-label">AI · 반도체 워치리스트</div>
-          <div class="card">
-            <div class="row-item">
-              <div class="row-sym">NVDA</div>
-              <div class="row-name">NVIDIA</div>
-              <div class="row-price">$132.6</div>
-              <div class="row-chg up">YTD▲4%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">AMD</div>
-              <div class="row-name">AMD</div>
-              <div class="row-price">$122.4</div>
-              <div class="row-chg dn">YTD▼8%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">AVGO</div>
-              <div class="row-name">Broadcom</div>
-              <div class="row-price">$186.2</div>
-              <div class="row-chg up">YTD▲6%</div>
-            </div>
-            <div class="row-item">
-              <div class="row-sym">PLTR</div>
-              <div class="row-name">Palantir</div>
-              <div class="row-price">$74.3</div>
-              <div class="row-chg dn">YTD▼20%</div>
-            </div>
+          <div id="ai-topics">
+            <!-- JS will inject .narr-item for each topic -->
           </div>
+        </div>
 
-        </div><!-- /page4 -->
-
-        <!-- ══════════ PAGE 5: 해설 ══════════ -->
-        <div class="page" id="p5">
-
-          <!-- AI Commentary Container -->
-          <div id="ai-commentary-container">
-            <div class="narr-item">
-              <div class="narr-head">
-                <div class="narr-title">오늘의 시장 브리핑</div>
-              </div>
-              <div class="narr-body" id="ai-brief">
-                최신 시황 데이터를 분석 중입니다...
-              </div>
-            </div>
-
-            <div id="ai-topics">
-              <!-- JS will inject .narr-item for each topic -->
-            </div>
+        <!-- 내일 이벤트 -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">이번 주 주요 일정</div>
+            <div class="card-badge">THIS WEEK</div>
           </div>
-
-          <!-- 내일 이벤트 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">이번 주 주요 일정</div>
-              <div class="card-badge">THIS WEEK</div>
-            </div>
-            <div id="ai-events-list">
-              <!-- JS will inject .event-row for each event -->
-              <div class="event-row" style="padding:16px;text-align:center;color:#888;">일정 로딩 중...</div>
-            </div>
+          <div id="ai-events-list">
+            <!-- JS will inject .event-row for each event -->
+            <div class="event-row" style="padding:16px;text-align:center;color:#888;">일정 로딩 중...</div>
           </div>
+        </div>
 
-          <div
-            style="text-align:center;padding:16px 0;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);line-height:2">
-            데이터 출처: CNBC · Bloomberg · FRED · Yahoo Finance · SEC 13F · ARK<br>
-            ⚠ 본 자료는 투자 권유가 아닙니다
-          </div>
+        <div
+          style="text-align:center;padding:16px 0;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);line-height:2">
+          데이터 출처: CNBC · Bloomberg · FRED · Yahoo Finance · SEC 13F · ARK<br>
+          ⚠ 본 자료는 투자 권유가 아닙니다
+        </div>
 
-        </div><!-- /page5 -->
+      </div><!-- /page5 -->
 
-      </div><!-- /pages -->
-    </div><!-- /pages-wrap -->
+    </div><!-- /pages -->
+  </div><!-- /pages-wrap -->
 
-    <!-- BOTTOM NAV -->
-    <div class="bottom-nav">
-      <div class="bnav-item active" onclick="goPage(0)" id="bn0">
-        <div class="bnav-icon">📊</div>
-        <div class="bnav-label">지수</div>
-      </div>
-      <div class="bnav-item" onclick="goPage(1)" id="bn1">
-        <div class="bnav-icon">💱</div>
-        <div class="bnav-label">FX</div>
-      </div>
-      <div class="bnav-item" onclick="goPage(2)" id="bn2">
-        <div class="bnav-icon">🏦</div>
-        <div class="bnav-label">버핏</div>
-      </div>
-      <div class="bnav-item" onclick="goPage(3)" id="bn3">
-        <div class="bnav-icon">🚀</div>
-        <div class="bnav-label">ARK</div>
-      </div>
-      <div class="bnav-item" onclick="goPage(4)" id="bn4">
-        <div class="bnav-icon">⭐</div>
-        <div class="bnav-label">종목</div>
-      </div>
-      <div class="bnav-item" onclick="goPage(5)" id="bn5">
-        <div class="bnav-icon">💬</div>
-        <div class="bnav-label">해설</div>
-      </div>
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="bnav-item active" onclick="goPage(0)" id="bn0">
+      <div class="bnav-icon">📊</div>
+      <div class="bnav-label">지수</div>
     </div>
+    <div class="bnav-item" onclick="goPage(1)" id="bn1">
+      <div class="bnav-icon">💱</div>
+      <div class="bnav-label">FX</div>
+    </div>
+    <div class="bnav-item" onclick="goPage(2)" id="bn2">
+      <div class="bnav-icon">🏦</div>
+      <div class="bnav-label">버핏</div>
+    </div>
+    <div class="bnav-item" onclick="goPage(3)" id="bn3">
+      <div class="bnav-icon">🚀</div>
+      <div class="bnav-label">ARK</div>
+    </div>
+    <div class="bnav-item" onclick="goPage(4)" id="bn4">
+      <div class="bnav-icon">⭐</div>
+      <div class="bnav-label">종목</div>
+    </div>
+    <div class="bnav-item" onclick="goPage(5)" id="bn5">
+      <div class="bnav-icon">💬</div>
+      <div class="bnav-label">해설</div>
+    </div>
+  </div>
 
   </div><!-- /#app -->
 
@@ -2036,18 +1737,18 @@
         },
         scales: {
           x: { grid: { color: '#1a2c3e' }, ticks: { maxRotation: 45, color: '#3d5a6e' } },
-          y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => (v / 1000).toFixed(1) + 'K', color: '#3d5a6e' }, min: 6600, max: 7100 }
+          y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => (v / 1000).toFixed(1) + 'K', color: '#3d5a6e' } }
         }
       }
     }));
 
     /* ── SECTOR CHART ────────────────────────── */
-    new Chart(document.getElementById('sectorChart').getContext('2d'), {
+    registerChart('sectorChart', new Chart(document.getElementById('sectorChart').getContext('2d'), {
       type: 'bar',
       data: {
-        labels: ['에너지', '유틸리티', '헬스케어', '금융', '소재', '산업', '부동산', '필수소비', '임의소비', '통신', '기술'],
+        labels: [],
         datasets: [{
-          data: [2.1, 1.2, 0.3, -0.4, -0.2, 0.1, 0.8, -0.3, -0.9, -0.6, -0.8],
+          data: [],
           backgroundColor: d => d.raw >= 0 ? C.up + '99' : C.dn + '99',
           borderColor: d => d.raw >= 0 ? C.up : C.dn,
           borderWidth: 1, borderRadius: 3
@@ -2061,19 +1762,19 @@
           }
         },
         scales: {
-          x: { grid: { color: '#1a2c3e' }, ticks: { callback: v => v + '%', color: '#3d5a6e' }, min: -2, max: 3 },
+          x: { grid: { color: '#1a2c3e' }, ticks: { callback: v => v + '%', color: '#3d5a6e' } },
           y: { grid: { display: false }, ticks: { color: '#8aacbf', font: { size: 9 } } }
         }
       }
-    });
+    }));
 
     /* ── YIELD CURVE ─────────────────────────── */
-    new Chart(document.getElementById('yieldChart').getContext('2d'), {
+    registerChart('yieldChart', new Chart(document.getElementById('yieldChart').getContext('2d'), {
       type: 'line',
       data: {
         labels: ['3M', '6M', '1Y', '2Y', '5Y', '7Y', '10Y', '20Y', '30Y'],
         datasets: [{
-          data: [4.32, 4.28, 4.12, 3.44, 3.95, 4.05, 4.09, 4.43, 4.52],
+          data: [],
           borderColor: C.cyan, backgroundColor: C.cyan + '18',
           fill: true, tension: 0.4, pointRadius: 3,
           pointBackgroundColor: C.cyan, borderWidth: 2
@@ -2084,18 +1785,18 @@
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)}%` } } },
         scales: {
           x: { grid: { color: '#1a2c3e' }, ticks: { color: '#3d5a6e' } },
-          y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => v + '%', color: '#3d5a6e' }, min: 3, max: 5 }
+          y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => v + '%', color: '#3d5a6e' } }
         }
       }
-    });
+    }));
 
     /* ── BUFFETT PIE ─────────────────────────── */
-    new Chart(document.getElementById('pieChart').getContext('2d'), {
+    registerChart('pieChart', new Chart(document.getElementById('pieChart').getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: ['테크(AAPL)', '금융', '에너지', '소비재', '보험', '기타'],
+        labels: [],
         datasets: [{
-          data: [28, 22, 11, 12, 5, 22],
+          data: [],
           backgroundColor: ['#4da6ff22', '#ff9a3c22', '#00e67622', '#ffcc4422', '#b794ff22', '#3d5a6e22'],
           borderColor: [C.blue, C.warn, C.up, C.gold, C.purp, '#3d5a6e'],
           borderWidth: 1.5, hoverOffset: 4
@@ -2109,22 +1810,11 @@
         },
         cutout: '60%'
       }
-    });
+    }));
 
     /* ── MAG 7 MINI CHARTS ───────────────────── */
-    const mag7Data = [
-      [245, 238, 232, 228, 232, 231, 228],  // AAPL dn
-      [126, 128, 130, 132, 131, 133, 132],  // NVDA up
-      [680, 690, 700, 710, 706, 705, 706],  // META up
-      [420, 418, 415, 414, 413, 414, 412],  // MSFT dn
-      [218, 220, 222, 223, 224, 224, 224],  // AMZN up
-      [198, 196, 195, 194, 194, 195, 194],  // GOOGL dn
-      [370, 362, 355, 348, 345, 344, 342],  // TSLA dn
-    ];
-    ['mc0', 'mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6'].forEach((id, i) => {
-      const d = mag7Data[i];
-      const col = d[d.length - 1] >= d[0] ? C.up : C.dn;
-      spark(id, d, col);
+    ['mc0', 'mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6'].forEach(id => {
+      registerChart(id, spark(id, [], '#ccc'));
     });
 
 

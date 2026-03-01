@@ -226,6 +226,197 @@ function updateCommentaryWithData(data) {
 }
 
 /**
+ * Sector Performance Chart 업데이트
+ */
+function updateSectorsWithData(data) {
+    const chart = _chartRegistry['sectorChart'];
+    if (!chart || !data || !data.sectors) return;
+
+    const labels = Object.keys(data.sectors);
+    const values = labels.map(l => parseFloat(data.sectors[l].changePercent));
+
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.data.datasets[0].backgroundColor = values.map(v => v >= 0 ? '#00e67688' : '#ff4d4d88');
+    chart.data.datasets[0].borderColor = values.map(v => v >= 0 ? '#00e676' : '#ff4d4d');
+    chart.update('none');
+}
+
+/**
+ * Yield Curve Chart 업데이트
+ */
+function updateYieldsWithData(data) {
+    const chart = _chartRegistry['yieldChart'];
+    if (!chart || !data || !data.yields) return;
+
+    // Tickers: ^IRX(3M), ^FVX(5Y), ^TNX(10Y), ^TYX(30Y)
+    const yieldTickers = ['^IRX', '^FVX', '^TNX', '^TYX'];
+    const labels = ['3M', '5Y', '10Y', '30Y'];
+    const values = yieldTickers.map(t => data.yields[t] ? parseFloat(data.yields[t].price) : 0);
+
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.update('none');
+}
+
+/**
+ * Guru Portfolios (Buffett, ARK, etc.) 업데이트
+ */
+async function fetchPortfolios() {
+    try {
+        const response = await fetch('data/portfolios.json');
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        return null;
+    }
+}
+
+function updatePortfoliosWithData(portfolioData) {
+    if (!portfolioData) return;
+
+    // 1. Buffett Top 10
+    const buffettContainer = document.getElementById('buffett-list');
+    if (buffettContainer && portfolioData.buffett) {
+        const holdings = portfolioData.buffett.holdings;
+        buffettContainer.innerHTML = holdings.map(h => `
+            <div class="row-item">
+                <div class="row-rank">${h.rank}</div>
+                <div class="row-name">${h.name} <span class="row-sub">${h.ticker}</span></div>
+                <div class="row-weight">${h.weight}</div>
+                <div class="row-action ${h.action}">${h.actionText}</div>
+            </div>
+        `).join('');
+    }
+
+    // 2. Buffett Changes
+    const changeContainer = document.getElementById('buffett-changes');
+    if (changeContainer && portfolioData.buffett.changes) {
+        changeContainer.innerHTML = portfolioData.buffett.changes.map(c => `
+            <div class="change-item">
+                <span class="badge badge-${c.type}">${c.label}</span>
+                <span class="change-text">${c.text}</span>
+            </div>
+        `).join('');
+    }
+
+    // 3. ARK Trades
+    const arkContainer = document.getElementById('ark-trades');
+    if (arkContainer && portfolioData.ark) {
+        arkContainer.innerHTML = portfolioData.ark.trades.map(t => `
+            <div class="row-item">
+                <div class="row-etf">${t.etf}</div>
+                <div class="row-ticker">${t.ticker}</div>
+                <div class="row-name">${t.name}</div>
+                <div class="row-val ${t.type}">${t.value}</div>
+            </div>
+        `).join('');
+    }
+
+    // 4. Pie Chart (Buffett Sector)
+    const pieChart = _chartRegistry['pieChart'];
+    if (pieChart && portfolioData.buffett && portfolioData.buffett.sectors) {
+        pieChart.data.labels = portfolioData.buffett.sectors.map(s => s.label);
+        pieChart.data.datasets[0].data = portfolioData.buffett.sectors.map(s => s.value);
+        pieChart.update('none');
+    }
+
+    // 5. Guru Portfolios (Burry, Druckenmiller)
+    const burryContainer = document.getElementById('burry-list');
+    if (burryContainer && portfolioData.burry) {
+        burryContainer.innerHTML = portfolioData.burry.holdings.map(h => `
+            <div class="guru-row">
+                <div class="guru-rank">${h.rank}</div>
+                <div class="guru-tick">${h.ticker}</div>
+                <div class="guru-name">${h.name}</div>
+                <div class="guru-w">${h.weight}</div>
+                <div class="guru-act ${h.action}">${h.actionText}</div>
+            </div>
+        `).join('');
+    }
+
+    const druckContainer = document.getElementById('druckenmiller-list');
+    if (druckContainer && portfolioData.druckenmiller) {
+        druckContainer.innerHTML = portfolioData.druckenmiller.holdings.map(h => `
+            <div class="guru-row">
+                <div class="guru-rank">${h.rank}</div>
+                <div class="guru-tick">${h.ticker}</div>
+                <div class="guru-name">${h.name}</div>
+                <div class="guru-w">${h.weight}</div>
+                <div class="guru-act ${h.action}">${h.actionText}</div>
+            </div>
+        `).join('');
+    }
+}
+
+/**
+ * Mag 7 Mini Cards 업데이트
+ */
+function updateMag7WithData(data) {
+    if (!data || !data.indices) return;
+    const mag7 = ['AAPL', 'NVDA', 'META', 'MSFT', 'AMZN', 'GOOGL', 'TSLA'];
+    mag7.forEach(symbol => {
+        const card = document.querySelector(`.mini-chart-card[data-ticker="${symbol}"]`);
+        if (!card) return;
+
+        const info = data.indices[symbol];
+        if (!info) return;
+
+        const priceEl = card.querySelector('.mini-chart-val');
+        const chgEl = card.querySelector('.mini-chart-chg');
+
+        if (priceEl) priceEl.textContent = '$' + info.price;
+        if (chgEl) {
+            chgEl.textContent = info.changeText;
+            chgEl.style.color = info.status === 'up' ? 'var(--up)' : (info.status === 'down' ? 'var(--dn)' : 'var(--t2)');
+        }
+    });
+}
+
+/**
+ * 주간 무버 및 워치리스트 업데이트
+ */
+function updateListsWithData(data) {
+    if (!data || !data.indices) return;
+
+    // AI Watchlist
+    const aiContainer = document.getElementById('ai-watchlist-container');
+    if (aiContainer) {
+        const aiTickers = ['NVDA', 'AMD', 'AVGO', 'PLTR', 'TSM', 'ARM'];
+        aiContainer.innerHTML = aiTickers.map(symbol => {
+            const info = data.indices[symbol];
+            if (!info) return '';
+            return `
+                <div class="row-item">
+                    <div class="row-sym">${symbol}</div>
+                    <div class="row-name">${info.name || symbol}</div>
+                    <div class="row-price">$${info.price}</div>
+                    <div class="row-chg ${info.status === 'up' ? 'up' : 'dn'}">${info.changeText}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Top Movers (Sample - in production we'd get this from backend/script)
+    const moversContainer = document.getElementById('top-movers-list');
+    if (moversContainer) {
+        const moverTickers = ['PLTR', 'TSLA', 'COIN', 'MSTR', 'SMCI'];
+        moversContainer.innerHTML = moverTickers.map(symbol => {
+            const info = data.indices[symbol];
+            if (!info) return '';
+            return `
+                <div class="row-item">
+                    <div class="row-sym">${symbol}</div>
+                    <div class="row-name">${info.name || symbol}</div>
+                    <div class="row-price">$${info.price}</div>
+                    <div class="row-chg ${info.status === 'up' ? 'up' : 'dn'}">${info.changeText}</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+/**
  * VIX progress bar dynamic update.
  */
 function updateVixProgress(data) {
@@ -250,6 +441,15 @@ async function handleRefreshClick() {
         updateChartsWithData(data);
         updateCommentaryWithData(data);
         updateVixProgress(data);
+        updateSectorsWithData(data);
+        updateYieldsWithData(data);
+        updateMag7WithData(data);
+        updateListsWithData(data);
+    }
+
+    const portfolioData = await fetchPortfolios();
+    if (portfolioData) {
+        updatePortfoliosWithData(portfolioData);
     }
 
     if (btn) btn.style.opacity = "1";
@@ -282,10 +482,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
         updateVixProgress(data);
-        // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
+
+        const portfolioData = await fetchPortfolios();
+        if (portfolioData) {
+            updatePortfoliosWithData(portfolioData);
+        }
+
+        // 차트 초기화 완료 후 업데이트
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 updateChartsWithData(data);
+                updateSectorsWithData(data);
+                updateYieldsWithData(data);
+                updateMag7WithData(data);
+                updateListsWithData(data);
             });
         });
     }
