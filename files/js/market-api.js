@@ -4,8 +4,8 @@
  * Feature: realtime-api + dynamic-charts
  */
 
-const CACHE_KEY_DATA = "us_market_data_v4";
-const CACHE_KEY_TIME = "us_market_last_sync_v4";
+const CACHE_KEY_DATA = "us_market_data_v3";
+const CACHE_KEY_TIME = "us_market_last_sync_v3";
 
 // Registry to hold Chart.js instances for later updates
 const _chartRegistry = {};
@@ -24,64 +24,34 @@ function isCacheExpired(lastSyncTime) {
 }
 
 /**
- * 데이터를 JSON 파일로부터 가져온다.
- * Stale-While-Revalidate 전략: 캐시가 있으면 즉시 반환하고, 백그라운드에서 fetch를 수행한다.
+ * 데이터를 JSON 파일로부터 가져온다 (캐시 포함)
  */
 async function fetchMarketData(force = false) {
     const cachedDataStr = localStorage.getItem(CACHE_KEY_DATA);
     const lastSyncStr = localStorage.getItem(CACHE_KEY_TIME);
 
-    // 강제 새로고침(Refresh 버튼)이 아니고 캐시가 있는 경우
-    if (!force && cachedDataStr) {
-        const cachedData = JSON.parse(cachedDataStr);
-
-        // 캐시가 만료되지 않았으면 그냥 사용
-        if (!isCacheExpired(lastSyncStr)) {
-            console.log("Using fresh cached data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
-            return cachedData;
-        }
-
-        // 캐시가 만료되었더라도 일단 반환 (Stale)
-        // 호출부에서 별도의 비동기 fetch를 수행하도록 설계
-        console.log("Using stale cached data (expired)...");
-        return cachedData;
+    if (!force && cachedDataStr && !isCacheExpired(lastSyncStr)) {
+        console.log("Using cached market data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
+        return JSON.parse(cachedDataStr);
     }
 
-    return await performFetch();
-}
-
-/**
- * 실제로 서버에서 데이터를 가져오고 캐시를 업데이트한다.
- */
-async function performFetch() {
     try {
-        console.log("Fetching live market data JSON...");
+        console.log("Fetching static market data JSON...");
         const response = await fetch('data/market_data.json');
-        if (!response.ok) throw new Error(`Failed to load market data: ${response.statusText}`);
+        if (!response.ok) throw new Error(`Failed to load static market data: ${response.statusText}`);
 
         const newMarketData = await response.json();
 
         localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
         localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
 
-        console.log("Market data synchronized at:", new Date().toLocaleTimeString());
+        showToast("최신 정보가 동기화되었습니다.");
         return newMarketData;
 
     } catch (error) {
         console.error("Market data fetch error:", error);
-        // 폴백 1: 현재 v4 캐시
-        const cached = localStorage.getItem(CACHE_KEY_DATA);
-        if (cached) {
-            console.log("Falling back to localStorage v4 cache");
-            return JSON.parse(cached);
-        }
-        // 폴백 2: 이전 v3 캐시
-        const oldCached = localStorage.getItem('us_market_data_v3');
-        if (oldCached) {
-            console.log("Falling back to localStorage v3 cache");
-            return JSON.parse(oldCached);
-        }
-        showToast("데이터를 불러오지 못했습니다.", true);
+        showToast("데이터를 불러오지 못했습니다. 이전 데이터를 표시합니다.", true);
+        if (cachedDataStr) return JSON.parse(cachedDataStr);
         return null;
     }
 }
@@ -92,18 +62,8 @@ async function performFetch() {
 function updateDOMWithData(data) {
     if (!data || !data.indices) return;
 
-    // 1. Alert Band 업데이트
-    const alertMsgEl = document.getElementById("ai-alert-msg");
-    if (alertMsgEl && data.alert) {
-        alertMsgEl.textContent = data.alert.message || "";
-    }
-
-    // 2. 지수 및 상세 지표 업데이트
     const tickers = Object.keys(data.indices);
     tickers.forEach(symbol => {
-        const item = data.indices[symbol];
-
-        // 가격(Price) 업데이트
         const priceEls = document.querySelectorAll(
             `.idx-val[data-ticker="${symbol}"], .metric-val[data-ticker="${symbol}"], .fx-val[data-ticker="${symbol}"]`
         );
@@ -113,37 +73,22 @@ function updateDOMWithData(data) {
             const currentText = priceEl.textContent;
             if (currentText.includes("$")) prefix = "$";
             if (currentText.includes("%")) suffix = "%";
-            priceEl.textContent = prefix + item.price + suffix;
+            priceEl.textContent = prefix + data.indices[symbol].price + suffix;
         });
 
-        // 변동(Change/Sub) 업데이트
         const chgEls = document.querySelectorAll(
             `.idx-chg[data-ticker="${symbol}"], .metric-sub[data-ticker="${symbol}"], .fx-chg[data-ticker="${symbol}"]`
         );
         chgEls.forEach(chgEl => {
-            chgEl.textContent = item.changeText;
+            chgEl.textContent = data.indices[symbol].changeText;
             chgEl.classList.remove('up', 'dn', 'warn', 'neu');
-            if (item.status === 'up') chgEl.classList.add('up');
-            else if (item.status === 'down') chgEl.classList.add('dn');
-            else if (item.status === 'warn') chgEl.classList.add('warn');
-            else chgEl.classList.add('neu');
+            if (data.indices[symbol].status === 'up') chgEl.classList.add('up');
+            if (data.indices[symbol].status === 'down') chgEl.classList.add('dn');
+            if (data.indices[symbol].status === 'warn') chgEl.classList.add('warn');
         });
-
-        // 3. 프로그레스 바 업데이트 (지표용)
-        if (item.value !== undefined) {
-            const progFill = document.querySelector(`.metric-box:has([data-ticker="${symbol}"]) .prog-fill`);
-            if (progFill) {
-                progFill.style.width = item.value + '%';
-                // 상태에 따른 색상 변경
-                progFill.style.background = ''; // CSS 기본값 우선
-                if (item.status === 'up') progFill.style.background = 'var(--up)';
-                else if (item.status === 'down') progFill.style.background = 'var(--dn)';
-                else if (item.status === 'warn') progFill.style.background = 'var(--warn)';
-            }
-        }
     });
 
-    // 최종 동기화 시간 표시
+    // 최종 동기화 시간을 JSON 기반으로 표시
     const timeLabel = document.getElementById("last-sync-time");
     if (timeLabel && data.lastUpdated) {
         const d = new Date(data.lastUpdated);
@@ -272,13 +217,11 @@ async function handleRefreshClick() {
     const btn = document.getElementById("refresh-btn");
     if (btn) btn.style.opacity = "0.5";
 
-    // F5와 동일하게 performFetch() 직접 호출 → 항상 서버에서 최신 데이터
-    const data = await performFetch();
+    const data = await fetchMarketData(true);
     if (data) {
         updateDOMWithData(data);
         updateChartsWithData(data);
         updateCommentaryWithData(data);
-        showToast("최신 데이터로 업데이트되었습니다.");
     }
 
     if (btn) btn.style.opacity = "1";
@@ -306,13 +249,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
-    // 항상 서버에서 최신 데이터를 한 번만 가져와서 렌더링
-    // F5와 Refresh 버튼이 항상 동일한 데이터를 보여주도록 서버 직접 fetch
-    const data = await performFetch();
+    const data = await fetchMarketData(false);
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
-        // 차트 렌더 대기 후 업데이트
+        // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 updateChartsWithData(data);
