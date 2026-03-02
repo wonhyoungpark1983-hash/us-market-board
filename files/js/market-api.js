@@ -56,7 +56,7 @@ async function fetchMarketData(force = false) {
 async function performFetch() {
     try {
         console.log("Fetching live market data JSON...");
-        const response = await fetch('data/market_data.json?t=' + Date.now()); // 캐시 방지
+        const response = await fetch('data/market_data.json');
         if (!response.ok) throw new Error(`Failed to load market data: ${response.statusText}`);
 
         const newMarketData = await response.json();
@@ -69,7 +69,19 @@ async function performFetch() {
 
     } catch (error) {
         console.error("Market data fetch error:", error);
-        showToast("데이터 동기화 실패. 이전 데이터를 유지합니다.", true);
+        // 폴백 1: 현재 v4 캐시
+        const cached = localStorage.getItem(CACHE_KEY_DATA);
+        if (cached) {
+            console.log("Falling back to localStorage v4 cache");
+            return JSON.parse(cached);
+        }
+        // 폴백 2: 이전 v3 캐시
+        const oldCached = localStorage.getItem('us_market_data_v3');
+        if (oldCached) {
+            console.log("Falling back to localStorage v3 cache");
+            return JSON.parse(oldCached);
+        }
+        showToast("데이터를 불러오지 못했습니다.", true);
         return null;
     }
 }
