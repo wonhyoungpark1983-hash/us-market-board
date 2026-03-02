@@ -134,19 +134,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
-    // 1. Pre-render with what we have (fastest TTI)
-    if (window.__MARKET_DATA_FALLBACK__) {
-        console.log("Initial boost: rendering fallback data.");
-        renderDashboard(window.__MARKET_DATA_FALLBACK__);
-    } else {
-        const cached = localStorage.getItem(CACHE_KEY_DATA);
-        if (cached) {
-            try { renderDashboard(JSON.parse(cached)); } catch (e) { }
-        }
-    }
-
-    // 2. Hot-swap with fresh data from server
-    const data = await fetchMarketData(false);
     if (data) {
         console.log("Hot-swap: updating with fresh server data.");
         renderDashboard(data);
