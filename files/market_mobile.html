@@ -1823,15 +1823,7 @@
     setTimeout(() => { if (hint) hint.style.opacity = '0'; }, 5000);
     setTimeout(() => { if (hint) hint.style.display = 'none'; }, 5500);
 
-    /* ── LOCAL FILE BOOTSTRAP (CORS Bypass) ── */
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.__MARKET_DATA_FALLBACK__) {
-        console.log("Bootstrap: Direct fall-back rendering triggered.");
-        if (typeof renderDashboard === 'function') {
-          renderDashboard(window.__MARKET_DATA_FALLBACK__);
-        }
-      }
-    });
+    /* ── BOOTSTRAP: Controlled by market-api.js ── */
   </script>
 </body>
 
