@@ -24,34 +24,52 @@ function isCacheExpired(lastSyncTime) {
 }
 
 /**
- * 데이터를 JSON 파일로부터 가져온다 (캐시 포함)
+ * 데이터를 JSON 파일로부터 가져온다.
+ * Stale-While-Revalidate 전략: 캐시가 있으면 즉시 반환하고, 백그라운드에서 fetch를 수행한다.
  */
 async function fetchMarketData(force = false) {
     const cachedDataStr = localStorage.getItem(CACHE_KEY_DATA);
     const lastSyncStr = localStorage.getItem(CACHE_KEY_TIME);
 
-    if (!force && cachedDataStr && !isCacheExpired(lastSyncStr)) {
-        console.log("Using cached market data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
-        return JSON.parse(cachedDataStr);
+    // 강제 새로고침(Refresh 버튼)이 아니고 캐시가 있는 경우
+    if (!force && cachedDataStr) {
+        const cachedData = JSON.parse(cachedDataStr);
+
+        // 캐시가 만료되지 않았으면 그냥 사용
+        if (!isCacheExpired(lastSyncStr)) {
+            console.log("Using fresh cached data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
+            return cachedData;
+        }
+
+        // 캐시가 만료되었더라도 일단 반환 (Stale)
+        // 호출부에서 별도의 비동기 fetch를 수행하도록 설계
+        console.log("Using stale cached data (expired)...");
+        return cachedData;
     }
 
+    return await performFetch();
+}
+
+/**
+ * 실제로 서버에서 데이터를 가져오고 캐시를 업데이트한다.
+ */
+async function performFetch() {
     try {
-        console.log("Fetching static market data JSON...");
-        const response = await fetch('data/market_data.json');
-        if (!response.ok) throw new Error(`Failed to load static market data: ${response.statusText}`);
+        console.log("Fetching live market data JSON...");
+        const response = await fetch('data/market_data.json?t=' + Date.now()); // 캐시 방지
+        if (!response.ok) throw new Error(`Failed to load market data: ${response.statusText}`);
 
         const newMarketData = await response.json();
 
         localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
         localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
 
-        showToast("최신 정보가 동기화되었습니다.");
+        console.log("Market data synchronized at:", new Date().toLocaleTimeString());
         return newMarketData;
 
     } catch (error) {
         console.error("Market data fetch error:", error);
-        showToast("데이터를 불러오지 못했습니다. 이전 데이터를 표시합니다.", true);
-        if (cachedDataStr) return JSON.parse(cachedDataStr);
+        showToast("데이터 동기화 실패. 이전 데이터를 유지합니다.", true);
         return null;
     }
 }
@@ -62,8 +80,18 @@ async function fetchMarketData(force = false) {
 function updateDOMWithData(data) {
     if (!data || !data.indices) return;
 
+    // 1. Alert Band 업데이트
+    const alertMsgEl = document.getElementById("ai-alert-msg");
+    if (alertMsgEl && data.alert) {
+        alertMsgEl.textContent = data.alert.message || "";
+    }
+
+    // 2. 지수 및 상세 지표 업데이트
     const tickers = Object.keys(data.indices);
     tickers.forEach(symbol => {
+        const item = data.indices[symbol];
+
+        // 가격(Price) 업데이트
         const priceEls = document.querySelectorAll(
             `.idx-val[data-ticker="${symbol}"], .metric-val[data-ticker="${symbol}"], .fx-val[data-ticker="${symbol}"]`
         );
@@ -73,22 +101,37 @@ function updateDOMWithData(data) {
             const currentText = priceEl.textContent;
             if (currentText.includes("$")) prefix = "$";
             if (currentText.includes("%")) suffix = "%";
-            priceEl.textContent = prefix + data.indices[symbol].price + suffix;
+            priceEl.textContent = prefix + item.price + suffix;
         });
 
+        // 변동(Change/Sub) 업데이트
         const chgEls = document.querySelectorAll(
             `.idx-chg[data-ticker="${symbol}"], .metric-sub[data-ticker="${symbol}"], .fx-chg[data-ticker="${symbol}"]`
         );
         chgEls.forEach(chgEl => {
-            chgEl.textContent = data.indices[symbol].changeText;
+            chgEl.textContent = item.changeText;
             chgEl.classList.remove('up', 'dn', 'warn', 'neu');
-            if (data.indices[symbol].status === 'up') chgEl.classList.add('up');
-            if (data.indices[symbol].status === 'down') chgEl.classList.add('dn');
-            if (data.indices[symbol].status === 'warn') chgEl.classList.add('warn');
+            if (item.status === 'up') chgEl.classList.add('up');
+            else if (item.status === 'down') chgEl.classList.add('dn');
+            else if (item.status === 'warn') chgEl.classList.add('warn');
+            else chgEl.classList.add('neu');
         });
+
+        // 3. 프로그레스 바 업데이트 (지표용)
+        if (item.value !== undefined) {
+            const progFill = document.querySelector(`.metric-box:has([data-ticker="${symbol}"]) .prog-fill`);
+            if (progFill) {
+                progFill.style.width = item.value + '%';
+                // 상태에 따른 색상 변경
+                progFill.style.background = ''; // CSS 기본값 우선
+                if (item.status === 'up') progFill.style.background = 'var(--up)';
+                else if (item.status === 'down') progFill.style.background = 'var(--dn)';
+                else if (item.status === 'warn') progFill.style.background = 'var(--warn)';
+            }
+        }
     });
 
-    // 최종 동기화 시간을 JSON 기반으로 표시
+    // 최종 동기화 시간 표시
     const timeLabel = document.getElementById("last-sync-time");
     if (timeLabel && data.lastUpdated) {
         const d = new Date(data.lastUpdated);
@@ -249,15 +292,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
+    // 1. 우선 캐시 데이터를 즉시 렌더링 (Stale)
     const data = await fetchMarketData(false);
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
-        // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
+        // 차트 초기화 대기
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 updateChartsWithData(data);
             });
         });
+    }
+
+    // 2. 즉시 백그라운드에서 최신 데이터 동기화 (Revalidate)
+    const freshData = await performFetch();
+    if (freshData) {
+        // 데이터가 다를 수 있으므로 UI 및 차트 재업데이트
+        updateDOMWithData(freshData);
+        updateCommentaryWithData(freshData);
+        updateChartsWithData(freshData);
+        showToast("최신 데이터로 업데이트되었습니다.");
     }
 });
