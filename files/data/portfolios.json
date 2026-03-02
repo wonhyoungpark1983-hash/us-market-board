@@ -1,0 +1,16 @@
+{
+    "buffett": {
+        "holdings": [],
+        "changes": [],
+        "sectors": []
+    },
+    "ark": {
+        "trades": []
+    },
+    "burry": {
+        "holdings": []
+    },
+    "druckenmiller": {
+        "holdings": []
+    }
+}

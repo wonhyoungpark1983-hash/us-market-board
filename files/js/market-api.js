@@ -265,9 +265,13 @@ function updateYieldsWithData(data) {
 async function fetchPortfolios() {
     try {
         const response = await fetch('data/portfolios.json');
-        if (!response.ok) return null;
+        if (!response.ok) {
+            console.warn("Portfolios data not found (404), skipping portfolio updates.");
+            return null;
+        }
         return await response.json();
     } catch (e) {
+        console.error("Error fetching portfolios:", e);
         return null;
     }
 }
