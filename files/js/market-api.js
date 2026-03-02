@@ -4,8 +4,8 @@
  * Feature: realtime-api + dynamic-charts
  */
 
-const CACHE_KEY_DATA = "us_market_data_v3";
-const CACHE_KEY_TIME = "us_market_last_sync_v3";
+const CACHE_KEY_DATA = "us_market_data_v4";
+const CACHE_KEY_TIME = "us_market_last_sync_v4";
 
 // Registry to hold Chart.js instances for later updates
 const _chartRegistry = {};
@@ -260,11 +260,13 @@ async function handleRefreshClick() {
     const btn = document.getElementById("refresh-btn");
     if (btn) btn.style.opacity = "0.5";
 
-    const data = await fetchMarketData(true);
+    // F5와 동일하게 performFetch() 직접 호출 → 항상 서버에서 최신 데이터
+    const data = await performFetch();
     if (data) {
         updateDOMWithData(data);
         updateChartsWithData(data);
         updateCommentaryWithData(data);
+        showToast("최신 데이터로 업데이트되었습니다.");
     }
 
     if (btn) btn.style.opacity = "1";
@@ -292,26 +294,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
-    // 1. 우선 캐시 데이터를 즉시 렌더링 (Stale)
-    const data = await fetchMarketData(false);
+    // 항상 서버에서 최신 데이터를 한 번만 가져와서 렌더링
+    // F5와 Refresh 버튼이 항상 동일한 데이터를 보여주도록 서버 직접 fetch
+    const data = await performFetch();
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
-        // 차트 초기화 대기
+        // 차트 렌더 대기 후 업데이트
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 updateChartsWithData(data);
             });
         });
-    }
-
-    // 2. 즉시 백그라운드에서 최신 데이터 동기화 (Revalidate)
-    const freshData = await performFetch();
-    if (freshData) {
-        // 데이터가 다를 수 있으므로 UI 및 차트 재업데이트
-        updateDOMWithData(freshData);
-        updateCommentaryWithData(freshData);
-        updateChartsWithData(freshData);
-        showToast("최신 데이터로 업데이트되었습니다.");
     }
 });
