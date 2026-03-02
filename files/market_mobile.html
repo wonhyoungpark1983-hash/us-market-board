@@ -1081,19 +1081,19 @@
 
         <!-- Index horizontal strip -->
         <div class="idx-strip">
-          <div class="idx-card dn">
+          <div class="idx-card">
             <div class="idx-label">S&P 500</div>
             <div class="idx-val" data-ticker="^GSPC">6,854</div>
             <div class="idx-chg dn" data-ticker="^GSPC">▼ 0.47%</div>
             <div class="spark-mini"><canvas id="sp0" data-ticker="^GSPC"></canvas></div>
           </div>
-          <div class="idx-card dn">
+          <div class="idx-card">
             <div class="idx-label">NASDAQ</div>
             <div class="idx-val" data-ticker="^IXIC">22,312</div>
             <div class="idx-chg dn" data-ticker="^IXIC">▼ 0.51%</div>
             <div class="spark-mini"><canvas id="sp1" data-ticker="^IXIC"></canvas></div>
           </div>
-          <div class="idx-card dn">
+          <div class="idx-card">
             <div class="idx-label">DOW</div>
             <div class="idx-val" data-ticker="^DJI">49,263</div>
             <div class="idx-chg dn" data-ticker="^DJI">▼ 0.38%</div>
@@ -1105,7 +1105,7 @@
             <div class="idx-chg warn" data-ticker="^VIX">⚠ 경계</div>
             <div class="spark-mini"><canvas id="sp3" data-ticker="^VIX"></canvas></div>
           </div>
-          <div class="idx-card dn">
+          <div class="idx-card">
             <div class="idx-label">RUT 2000</div>
             <div class="idx-val" data-ticker="^RUT">2,214</div>
             <div class="idx-chg dn" data-ticker="^RUT">▼ 0.62%</div>
@@ -1591,6 +1591,7 @@
 
   <div class="swipe-hint">←</div>
 
+  <script src="data/market_data_fallback.js"></script>
   <script src="js/market-api.js"></script>
   <script>
     /* ═══════════════════════════════════════════
@@ -1821,6 +1822,16 @@
     /* ── HIDE HINT AFTER 5s ──────────────────── */
     setTimeout(() => { if (hint) hint.style.opacity = '0'; }, 5000);
     setTimeout(() => { if (hint) hint.style.display = 'none'; }, 5500);
+
+    /* ── LOCAL FILE BOOTSTRAP (CORS Bypass) ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.__MARKET_DATA_FALLBACK__) {
+        console.log("Bootstrap: Direct fall-back rendering triggered.");
+        if (typeof renderDashboard === 'function') {
+          renderDashboard(window.__MARKET_DATA_FALLBACK__);
+        }
+      }
+    });
   </script>
 </body>
 

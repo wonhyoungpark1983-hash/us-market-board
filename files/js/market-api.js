@@ -40,25 +40,34 @@ async function fetchMarketData(force = false) {
         return JSON.parse(cachedDataStr);
     }
 
-    try {
-        console.log("Fetching static market data JSON...");
-        const response = await fetch('data/market_data.json');
-        if (!response.ok) throw new Error(`Failed to load static market data: ${response.statusText}`);
-
-        const newMarketData = await response.json();
-
-        localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
+    // 1. Check for script-loaded fallback FIRST (Guaranteed success for file:// and fast)
+    if (window.__MARKET_DATA_FALLBACK__) {
+        console.log("Using script-loaded fallback data (Direct Access).");
+        localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(window.__MARKET_DATA_FALLBACK__));
         localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
-
-        showToast("최신 정보가 동기화되었습니다.");
-        return newMarketData;
-
-    } catch (error) {
-        console.error("Market data fetch error:", error);
-        showToast("데이터를 불러오지 못했습니다. 이전 데이터를 표시합니다.", true);
-        if (cachedDataStr) return JSON.parse(cachedDataStr);
-        return null;
+        // For local files, we might not want a toast every time, but user asked for status check
+        showToast("로컬 데이터를 로드했습니다.");
+        return window.__MARKET_DATA_FALLBACK__;
     }
+
+    // 2. Try fetching from JSON (suitable for web servers / http://)
+    try {
+        console.log("Attempting to fetch market data JSON...");
+        const response = await fetch('data/market_data.json');
+        if (response.ok) {
+            const newMarketData = await response.json();
+            localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
+            localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
+            showToast("최신 정보가 동기화되었습니다.");
+            return newMarketData;
+        }
+    } catch (error) {
+        console.warn("Fetch failed (CORS or Network).");
+    }
+
+    showToast("데이터를 불러오지 못했습니다. 이전 데이터를 표시합니다.", true);
+    if (cachedDataStr) return JSON.parse(cachedDataStr);
+    return null;
 }
 
 /**
@@ -79,6 +88,10 @@ function updateDOMWithData(data) {
             if (currentText.includes("$")) prefix = "$";
             if (currentText.includes("%")) suffix = "%";
             priceEl.textContent = prefix + data.indices[symbol].price + suffix;
+
+            // Remove 'dn' class if it was hidden initially
+            const container = priceEl.closest('.idx-card, .mini-chart-card');
+            if (container) container.classList.remove('dn');
         });
 
         const chgEls = document.querySelectorAll(
@@ -93,8 +106,8 @@ function updateDOMWithData(data) {
         });
     });
 
-    // 최종 동기화 시간을 JSON 기반으로 표시
-    const timeLabel = document.getElementById("last-sync-time");
+    // 최종 동기화 시간을 JSON 기반으로 표시 (모바일에서는 ID가 'last-sync-date' 또는 클래스로 부여될 수 있음)
+    const timeLabel = document.getElementById("last-sync-time") || document.getElementById("last-sync-date");
     if (timeLabel && data.lastUpdated) {
         const d = new Date(data.lastUpdated);
         const yyyy = d.getFullYear();
@@ -171,31 +184,35 @@ function updateCommentaryWithData(data) {
 
     // 1. Brief 업데이트
     const briefEl = document.getElementById('ai-brief');
-    if (briefEl && comm.brief) {
-        briefEl.textContent = comm.brief;
+    if (briefEl) {
+        briefEl.textContent = comm.brief || "현재 생성된 요약 해설이 없습니다.";
     }
 
     // 2. Topics 업데이트
     const topicsContainer = document.getElementById('ai-topics');
-    if (topicsContainer && comm.topics && Array.isArray(comm.topics)) {
-        topicsContainer.innerHTML = '';
-        const colors = ['var(--warn)', 'var(--cyan)', 'var(--gold)', 'var(--t1)'];
-        comm.topics.forEach((topic, idx) => {
-            const color = colors[idx % colors.length];
-            const numStr = String(idx + 1).padStart(2, '0');
-            const topicHtml = `
-              <div class="narr-item">
-                <div class="narr-head">
-                  <div class="narr-num" style="color:${color}">${numStr}</div>
-                  <div class="narr-title">${topic.title}</div>
-                </div>
-                <div class="narr-body">
-                  ${topic.description}
-                </div>
-              </div>
-            `;
-            topicsContainer.insertAdjacentHTML('beforeend', topicHtml);
-        });
+    if (topicsContainer) {
+        if (comm.topics && Array.isArray(comm.topics) && comm.topics.length > 0) {
+            topicsContainer.innerHTML = '';
+            const colors = ['var(--warn)', 'var(--cyan)', 'var(--gold)', 'var(--t1)'];
+            comm.topics.forEach((topic, idx) => {
+                const color = colors[idx % colors.length];
+                const numStr = String(idx + 1).padStart(2, '0');
+                const topicHtml = `
+                  <div class="narr-item">
+                    <div class="narr-head">
+                      <div class="narr-num" style="color:${color}">${numStr}</div>
+                      <div class="narr-title">${topic.title}</div>
+                    </div>
+                    <div class="narr-body">
+                      ${topic.description}
+                    </div>
+                  </div>
+                `;
+                topicsContainer.insertAdjacentHTML('beforeend', topicHtml);
+            });
+        } else {
+            topicsContainer.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3)">주요 토픽 데이터가 없습니다.</div>';
+        }
     }
 
     // 3. Events 업데이트
@@ -220,8 +237,8 @@ function updateCommentaryWithData(data) {
 
     // 4. TODAY'S KEY DRIVER banner
     const keyDriverEl = document.getElementById('key-driver-text');
-    if (keyDriverEl && comm.brief) {
-        keyDriverEl.textContent = comm.brief;
+    if (keyDriverEl) {
+        keyDriverEl.textContent = comm.brief || "시장 흐름을 분석 중입니다...";
     }
 }
 
@@ -232,8 +249,23 @@ function updateSectorsWithData(data) {
     const chart = _chartRegistry['sectorChart'];
     if (!chart || !data || !data.sectors) return;
 
-    const labels = Object.keys(data.sectors);
-    const values = labels.map(l => parseFloat(data.sectors[l].changePercent));
+    const sectorMap = {
+        "Technology": "기술",
+        "Health Care": "헬스케어",
+        "Financials": "금융",
+        "Consumer Discretionary": "임의소비재",
+        "Industrials": "산업재",
+        "Communication": "통신",
+        "Consumer Staples": "필수소비재",
+        "Energy": "에너지",
+        "Real Estate": "부동산",
+        "Basic Materials": "원자재",
+        "Utilities": "유틸리티"
+    };
+
+    const rawLabels = Object.keys(data.sectors);
+    const labels = rawLabels.map(l => sectorMap[l] || l);
+    const values = rawLabels.map(l => parseFloat(data.sectors[l].changePercent));
 
     chart.data.labels = labels;
     chart.data.datasets[0].data = values;
@@ -476,31 +508,51 @@ function showToast(message, isError = false) {
     setTimeout(() => toast.remove(), 3000);
 }
 
+/**
+ * 통합 대시보드 렌더링 함수
+ */
+async function renderDashboard(data) {
+    if (!data) return;
+
+    // 1. Static DOM 업데이트
+    updateDOMWithData(data);
+    updateCommentaryWithData(data);
+    updateVixProgress(data);
+
+    // 2. 비동기 포트폴리오 데이터 (선택 사항)
+    fetchPortfolios().then(portfolioData => {
+        if (portfolioData) updatePortfoliosWithData(portfolioData);
+    });
+
+    // 3. 차트 및 동적 요소 업데이트 (requestAnimationFrame으로 성능 확보)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            updateChartsWithData(data);
+            updateSectorsWithData(data);
+            updateYieldsWithData(data);
+            updateMag7WithData(data);
+            updateListsWithData(data);
+        });
+    });
+}
+
+// 전역 공개 (로컬 부트스트랩용)
+window.renderDashboard = renderDashboard;
+
 // 초기 로딩 시 진입점
 document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
-    const data = await fetchMarketData(false);
-    if (data) {
-        updateDOMWithData(data);
-        updateCommentaryWithData(data);
-        updateVixProgress(data);
-
-        const portfolioData = await fetchPortfolios();
-        if (portfolioData) {
-            updatePortfoliosWithData(portfolioData);
-        }
-
-        // 차트 초기화 완료 후 업데이트
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                updateChartsWithData(data);
-                updateSectorsWithData(data);
-                updateYieldsWithData(data);
-                updateMag7WithData(data);
-                updateListsWithData(data);
-            });
-        });
+    // 1. 로컬 데이터 우선 렌더링 (CORS 우회)
+    if (window.__MARKET_DATA_FALLBACK__) {
+        console.log("Init: Using local fallback data.");
+        renderDashboard(window.__MARKET_DATA_FALLBACK__);
+        // 로컬 파일 경로면 fetch 시도 자체가 무의미하므로 종료
+        if (window.location.protocol === 'file:') return;
     }
+
+    // 2. Web/Server 환경에서는 fetch 시도
+    const data = await fetchMarketData(false);
+    if (data) renderDashboard(data);
 });
