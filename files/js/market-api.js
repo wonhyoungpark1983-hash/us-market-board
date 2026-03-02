@@ -35,40 +35,123 @@ async function fetchMarketData(force = false) {
     const cachedDataStr = localStorage.getItem(CACHE_KEY_DATA);
     const lastSyncStr = localStorage.getItem(CACHE_KEY_TIME);
 
+    // [New] If on web (http/https), always try fresh fetch unless explicit policy
+    const isWeb = window.location.protocol.startsWith('http');
+
     if (!force && cachedDataStr && !isCacheExpired(lastSyncStr)) {
         console.log("Using cached market data:", new Date(parseInt(lastSyncStr, 10)).toLocaleString());
-        return JSON.parse(cachedDataStr);
+        try {
+            return JSON.parse(cachedDataStr);
+        } catch (e) {
+            console.error("Cache corrupted, clearing...");
+            localStorage.removeItem(CACHE_KEY_DATA);
+        }
     }
 
-    // 1. Check for script-loaded fallback FIRST (Guaranteed success for file:// and fast)
-    if (window.__MARKET_DATA_FALLBACK__) {
-        console.log("Using script-loaded fallback data (Direct Access).");
-        localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(window.__MARKET_DATA_FALLBACK__));
-        localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
-        // For local files, we might not want a toast every time, but user asked for status check
-        showToast("로컬 데이터를 로드했습니다.");
-        return window.__MARKET_DATA_FALLBACK__;
-    }
-
-    // 2. Try fetching from JSON (suitable for web servers / http://)
+    // 1. Try fetching from JSON (suitable for web servers / http://)
     try {
-        console.log("Attempting to fetch market data JSON...");
-        const response = await fetch('data/market_data.json');
+        console.log("Fetching market data JSON...");
+        // Use a cache-busting query param if forced or on web to ensure freshness
+        const timestamp = force ? `?t=${Date.now()}` : '';
+        const response = await fetch('data/market_data.json' + timestamp);
         if (response.ok) {
             const newMarketData = await response.json();
             localStorage.setItem(CACHE_KEY_DATA, JSON.stringify(newMarketData));
             localStorage.setItem(CACHE_KEY_TIME, Date.now().toString());
-            showToast("최신 정보가 동기화되었습니다.");
+            console.log("Market data fetched successfully.");
             return newMarketData;
+        } else {
+            console.warn("Server returned error, checking fallback...");
         }
-    } catch (error) {
-        console.warn("Fetch failed (CORS or Network).");
+    } catch (err) {
+        console.warn("Fetch failed (CORS or Network), checking fallback:", err.message);
     }
 
-    showToast("데이터를 불러오지 못했습니다. 이전 데이터를 표시합니다.", true);
-    if (cachedDataStr) return JSON.parse(cachedDataStr);
+    // 2. Fallback to script-loaded data (Guaranteed for local files)
+    if (window.__MARKET_DATA_FALLBACK__) {
+        console.log("Using script-loaded fallback data.");
+        return window.__MARKET_DATA_FALLBACK__;
+    }
+
     return null;
 }
+
+/**
+ * Handle Refresh Button Click
+ */
+async function handleRefreshClick() {
+    console.log("Refresh requested...");
+    const data = await fetchMarketData(true);
+    if (data) {
+        await renderDashboard(data);
+        showToast("최신 정보가 동기화되었습니다.");
+    } else {
+        showToast("데이터 업데이트에 실패했습니다.", true);
+    }
+}
+
+/**
+ * 통합 대시보드 렌더링 함수
+ */
+async function renderDashboard(data) {
+    if (!data) return;
+
+    try {
+        console.log("Rendering Dashboard Content...");
+        // 1. Static DOM 업데이트
+        updateDOMWithData(data);
+        updateCommentaryWithData(data);
+        // Assuming updateVixProgress is defined elsewhere or will be added
+        // updateVixProgress(data);
+
+        // 2. 비동기 포트폴리오 데이터
+        fetchPortfolios().then(portfolioData => {
+            // Assuming updatePortfoliosWithData is defined elsewhere or will be added
+            // if (portfolioData) updatePortfoliosWithData(portfolioData);
+        }).catch(err => console.warn("Portfolio load skipped:", err));
+
+        // 3. 차트 및 동적 요소 업데이트
+        requestAnimationFrame(() => {
+            updateChartsWithData(data);
+            updateSectorsWithData(data);
+            updateYieldsWithData(data);
+            // Assuming updateMag7WithData and updateListsWithData are defined elsewhere or will be added
+            // updateMag7WithData(data);
+            // updateListsWithData(data);
+            console.log("Rendering cycle complete.");
+        });
+    } catch (err) {
+        console.error("Critical rendering error:", err);
+    }
+}
+
+// 전역 공개 (로컬 부트스트랩용)
+window.renderDashboard = renderDashboard;
+
+// 초기 로딩 시 진입점
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("Dashboard initializing...");
+    const btnRefresh = document.getElementById("refresh-btn");
+    if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
+
+    // 1. Pre-render with what we have (fastest TTI)
+    if (window.__MARKET_DATA_FALLBACK__) {
+        console.log("Initial boost: rendering fallback data.");
+        renderDashboard(window.__MARKET_DATA_FALLBACK__);
+    } else {
+        const cached = localStorage.getItem(CACHE_KEY_DATA);
+        if (cached) {
+            try { renderDashboard(JSON.parse(cached)); } catch (e) { }
+        }
+    }
+
+    // 2. Hot-swap with fresh data from server
+    const data = await fetchMarketData(false);
+    if (data) {
+        console.log("Hot-swap: updating with fresh server data.");
+        renderDashboard(data);
+    }
+});
 
 /**
  * 받아온 JSON 데이터를 기반으로 가격/변동 DOM을 업데이트한다.
