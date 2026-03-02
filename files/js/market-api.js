@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnRefresh = document.getElementById("refresh-btn");
     if (btnRefresh) btnRefresh.addEventListener("click", handleRefreshClick);
 
-    const data = await fetchMarketData(false);
+    const data = await fetchMarketData(true);
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
