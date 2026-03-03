@@ -1691,45 +1691,45 @@
           <div class="mini-chart-strip">
             <div class="mini-chart-card">
               <div class="mini-chart-label">AAPL</div>
-              <div class="mini-chart-val">$228.4</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 5.0% YTD ▼8.2%</div>
-              <div class="mini-chart-wrap"><canvas id="mc0"></canvas></div>
+              <div class="mini-chart-val" data-ticker="AAPL">--</div>
+              <div class="mini-chart-chg" data-ticker="AAPL">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc0" data-ticker="AAPL"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">NVDA</div>
-              <div class="mini-chart-val">$132.6</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.8% YTD ▲4.1%</div>
-              <div class="mini-chart-wrap"><canvas id="mc1"></canvas></div>
+              <div class="mini-chart-val" data-ticker="NVDA">--</div>
+              <div class="mini-chart-chg" data-ticker="NVDA">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc1" data-ticker="NVDA"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">META</div>
-              <div class="mini-chart-val">$706.3</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.2% YTD ▲12.4%</div>
-              <div class="mini-chart-wrap"><canvas id="mc2"></canvas></div>
+              <div class="mini-chart-val" data-ticker="META">--</div>
+              <div class="mini-chart-chg" data-ticker="META">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc2" data-ticker="META"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">MSFT</div>
-              <div class="mini-chart-val">$412.8</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 0.4% YTD ▼2.3%</div>
-              <div class="mini-chart-wrap"><canvas id="mc3"></canvas></div>
+              <div class="mini-chart-val" data-ticker="MSFT">--</div>
+              <div class="mini-chart-chg" data-ticker="MSFT">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc3" data-ticker="MSFT"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">AMZN</div>
-              <div class="mini-chart-val">$224.1</div>
-              <div class="mini-chart-chg" style="color:var(--up)">▲ 0.3% YTD ▲3.2%</div>
-              <div class="mini-chart-wrap"><canvas id="mc4"></canvas></div>
+              <div class="mini-chart-val" data-ticker="AMZN">--</div>
+              <div class="mini-chart-chg" data-ticker="AMZN">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc4" data-ticker="AMZN"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">GOOGL</div>
-              <div class="mini-chart-val">$194.2</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 0.6% YTD ▼1.8%</div>
-              <div class="mini-chart-wrap"><canvas id="mc5"></canvas></div>
+              <div class="mini-chart-val" data-ticker="GOOGL">--</div>
+              <div class="mini-chart-chg" data-ticker="GOOGL">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc5" data-ticker="GOOGL"></canvas></div>
             </div>
             <div class="mini-chart-card">
               <div class="mini-chart-label">TSLA</div>
-              <div class="mini-chart-val">$342.8</div>
-              <div class="mini-chart-chg" style="color:var(--dn)">▼ 1.2% YTD ▼14.6%</div>
-              <div class="mini-chart-wrap"><canvas id="mc6"></canvas></div>
+              <div class="mini-chart-val" data-ticker="TSLA">--</div>
+              <div class="mini-chart-chg" data-ticker="TSLA">--</div>
+              <div class="mini-chart-wrap"><canvas id="mc6" data-ticker="TSLA"></canvas></div>
             </div>
           </div>
 
@@ -2113,20 +2113,7 @@
     });
 
     /* ── MAG 7 MINI CHARTS ───────────────────── */
-    const mag7Data = [
-      [245, 238, 232, 228, 232, 231, 228],  // AAPL dn
-      [126, 128, 130, 132, 131, 133, 132],  // NVDA up
-      [680, 690, 700, 710, 706, 705, 706],  // META up
-      [420, 418, 415, 414, 413, 414, 412],  // MSFT dn
-      [218, 220, 222, 223, 224, 224, 224],  // AMZN up
-      [198, 196, 195, 194, 194, 195, 194],  // GOOGL dn
-      [370, 362, 355, 348, 345, 344, 342],  // TSLA dn
-    ];
-    ['mc0', 'mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6'].forEach((id, i) => {
-      const d = mag7Data[i];
-      const col = d[d.length - 1] >= d[0] ? C.up : C.dn;
-      spark(id, d, col);
-    });
+    ['mc0', 'mc1', 'mc2', 'mc3', 'mc4', 'mc5', 'mc6'].forEach(id => registerChart(id, spark(id, [], C.dn)));
 
 
     /* ── HIDE HINT AFTER 5s ──────────────────── */

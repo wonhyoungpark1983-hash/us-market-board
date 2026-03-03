@@ -65,7 +65,7 @@ function updateDOMWithData(data) {
     const tickers = Object.keys(data.indices);
     tickers.forEach(symbol => {
         const priceEls = document.querySelectorAll(
-            `.idx-val[data-ticker="${symbol}"], .metric-val[data-ticker="${symbol}"], .fx-val[data-ticker="${symbol}"]`
+            `.idx-val[data-ticker="${symbol}"], .metric-val[data-ticker="${symbol}"], .fx-val[data-ticker="${symbol}"], .mini-chart-val[data-ticker="${symbol}"]`
         );
         priceEls.forEach(priceEl => {
             let prefix = "";
@@ -77,7 +77,7 @@ function updateDOMWithData(data) {
         });
 
         const chgEls = document.querySelectorAll(
-            `.idx-chg[data-ticker="${symbol}"], .metric-sub[data-ticker="${symbol}"], .fx-chg[data-ticker="${symbol}"]`
+            `.idx-chg[data-ticker="${symbol}"], .metric-sub[data-ticker="${symbol}"], .fx-chg[data-ticker="${symbol}"], .mini-chart-chg[data-ticker="${symbol}"]`
         );
         chgEls.forEach(chgEl => {
             chgEl.textContent = data.indices[symbol].changeText;
