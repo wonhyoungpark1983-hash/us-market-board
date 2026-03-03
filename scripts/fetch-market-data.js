@@ -221,56 +221,62 @@ async function fetchMarketData() {
 
                 const prompt = `
 You are an expert financial analyst. Today's date is ${dateStr}.
-Based on the following US market data at the close:
-1. Daily Performance & 1-Month Trend:
+
+IMPORTANT: Use your Google Search grounding to look up the LATEST US market news from TODAY before answering. Prioritize real, specific news events over generic market commentary.
+
+Market data at today's close:
 - S&P 500: ${spx?.price || 'N/A'} (Daily: ${spx?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^GSPC'] || 'N/A'}%)
 - NASDAQ: ${ndx?.price || 'N/A'} (Daily: ${ndx?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^IXIC'] || 'N/A'}%)
 - Dow Jones: ${dji?.price || 'N/A'} (Daily: ${dji?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^DJI'] || 'N/A'}%)
 - VIX: ${vix?.price || 'N/A'} (Daily: ${vix?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['^VIX'] || 'N/A'}%)
 - Bitcoin: ${btc?.price || 'N/A'} (Daily: ${btc?.changePercent || 'N/A'}%, 1-Month: ${oneMonthChanges['BTC-USD'] || 'N/A'}%)
 
-2. Latest Mainstream Market News Headlines (S&P 500 & Economy):
-${marketNews.length > 0 ? marketNews.map(n => "- " + n).join('\n') : 'No news fetched'}
+Search for and reference TODAY's specific news events such as:
+- Federal Reserve statements or policy signals
+- Major earnings releases (beats/misses)
+- Tariff/trade policy announcements
+- Economic data releases (CPI, PCE, jobs, GDP)
+- Geopolitical events affecting markets
+- Major stock moves and their reasons
 
-3. Latest Crypto News Headlines (Bitcoin):
-${cryptoNews.length > 0 ? cryptoNews.map(n => "- " + n).join('\n') : 'No news fetched'}
+RULES:
+1. Each "topics" item MUST be grounded in a REAL news event from today or this week. Name the specific event, company, or policy.
+2. Do NOT use vague descriptions like "시장 변동성" without citing the actual cause.
+3. 1-month trend takes precedence over daily move for overall market assessment.
+4. "events" must list ONLY upcoming economic events from ${dateStr} onward this week.
 
-Write a daily US market commentary based strictly on the provided recent news headlines and the 1-month long-term trends, NOT just the 1-day daily change. 
-It MUST be accurate for today (${dateStr}).
-CRITICAL RULES for MARKET TRENDS: 
-1. If the 1-month trend is heavily negative (e.g. -10%) but the daily change is slightly positive (e.g. +1%), DO NOT use titles like "강세 지속" (Continued Strength) or "상승장". Describe it accurately as a "slight rebound during a broader downtrend" (단기 반등/낙폭 과대에 따른 반발 매수 등).
-2. Only label the market as "강세" (Strong) if BOTH the daily and 1-month trends are positive. 
-3. For the "events" section, list only REAL upcoming major economic events or earnings for the U.S. market starting from TODAY or later this week. Do NOT invent past events.
-Output strictly in JSON format with the following schema, and do not include markdown \`\`\`json block wrappers.
+Output ONLY a valid JSON object (no markdown code fences, no extra text):
 {
-  "brief": "A 1-2 sentence overall summary of the market today.",
+  "brief": "2-3 sentence summary citing specific news drivers.",
   "topics": [
-    { "title": "Topic 1 (e.g. Fed Policy)", "description": "1-2 sentence explanation." },
+    { "title": "Specific topic title", "description": "2-3 sentences with specific facts and figures." },
     { "title": "Topic 2", "description": "..." },
     { "title": "Topic 3", "description": "..." },
     { "title": "Topic 4", "description": "..." }
   ],
   "events": [
-    { "date": "e.g. 2. 26. (목)", "description": "Event 1" },
-    { "date": "e.g. 2. 27. (금)", "description": "Event 2" }
+    { "date": "3. 4. (화)", "description": "Specific event name" }
   ]
 }
 
-Ensure the tone is professional, objective, and written in Korean. Look up the most recent major news for the US market (e.g. CPI, Fed speeches, earnings, geopolitical events) to enrich the topics and upcoming events.
+Write in Korean. Be specific, factual, and reference actual news events.
 `;
 
                 const response = await ai.models.generateContent({
                     model: 'gemini-2.0-flash',
                     contents: prompt,
                     config: {
-                        responseMimeType: "application/json",
+                        tools: [{ googleSearch: {} }],
                     }
                 });
 
                 const rawText = response.text;
-                const commentaryJson = JSON.parse(rawText);
+                // Extract JSON from response (may be wrapped in markdown code fences)
+                const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/({[\s\S]*})/);
+                const jsonStr = jsonMatch ? jsonMatch[1] : rawText;
+                const commentaryJson = JSON.parse(jsonStr.trim());
                 newMarketData.commentary = commentaryJson;
-                console.log("Successfully generated AI Commentary.");
+                console.log("Successfully generated AI Commentary with Google Search Grounding.");
             }
         } catch (e) {
             console.error("Failed to generate AI commentary:", e.message);
