@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-02T21:54:20.060Z",
+  "lastUpdated": "2026-03-03T03:51:06.216Z",
   "indices": {
     "^GSPC": {
       "price": "6,881.62",
@@ -32,69 +32,69 @@
       "status": "down"
     },
     "CL=F": {
-      "price": "71.29",
-      "changeText": "▲ 6.4%",
-      "changePercent": "+6.37",
+      "price": "72.36",
+      "changeText": "▲ 1.6%",
+      "changePercent": "+1.59",
       "status": "up"
     },
     "BZ=F": {
-      "price": "78.15",
-      "changeText": "▲ 7.2%",
-      "changePercent": "+7.25",
+      "price": "79.32",
+      "changeText": "▲ 2.0%",
+      "changePercent": "+2.03",
       "status": "up"
     },
     "GC=F": {
-      "price": "5,346.30",
-      "changeText": "▲ 1.9%",
-      "changePercent": "+1.88",
+      "price": "5,379.60",
+      "changeText": "▲ 1.3%",
+      "changePercent": "+1.28",
       "status": "up"
     },
     "SI=F": {
-      "price": "89.86",
-      "changeText": "▼ 3.7%",
-      "changePercent": "-3.68",
-      "status": "down"
+      "price": "90.47",
+      "changeText": "▲ 1.8%",
+      "changePercent": "+1.82",
+      "status": "up"
     },
     "BTC-USD": {
-      "price": "69,479.10",
-      "changeText": "▲ 5.7%",
-      "changePercent": "+5.69",
-      "status": "up"
+      "price": "68,343.43",
+      "changeText": "▼ 0.7%",
+      "changePercent": "-0.67",
+      "status": "down"
     },
     "ETH-USD": {
-      "price": "2,045.82",
-      "changeText": "▲ 5.5%",
-      "changePercent": "+5.51",
-      "status": "up"
+      "price": "2,008.89",
+      "changeText": "▼ 0.9%",
+      "changePercent": "-0.90",
+      "status": "down"
     },
     "KRW=X": {
-      "price": "1,453.6",
-      "changeText": "▲ 1.5%",
-      "changePercent": "+1.49",
+      "price": "1,463.2",
+      "changeText": "▲ 1.7%",
+      "changePercent": "+1.72",
       "status": "up"
     },
     "DX-Y.NYB": {
-      "price": "98.54",
-      "changeText": "▲ 1.0%",
-      "changePercent": "+0.96",
+      "price": "98.53",
+      "changeText": "▲ 0.2%",
+      "changePercent": "+0.15",
       "status": "up"
     },
     "EURUSD=X": {
       "price": "1.17",
-      "changeText": "▼ 0.9%",
-      "changePercent": "-0.92",
+      "changeText": "▼ 0.5%",
+      "changePercent": "-0.54",
       "status": "down"
     },
     "JPY=X": {
-      "price": "157.32",
-      "changeText": "▲ 0.9%",
-      "changePercent": "+0.94",
+      "price": "157.25",
+      "changeText": "▲ 0.4%",
+      "changePercent": "+0.40",
       "status": "up"
     },
     "GBPUSD=X": {
       "price": "1.34",
-      "changeText": "▼ 0.6%",
-      "changePercent": "-0.63",
+      "changeText": "▼ 0.0%",
+      "changePercent": "-0.04",
       "status": "down"
     },
     "^TNX": {
@@ -420,7 +420,7 @@
         "2/27",
         "2/28",
         "3/1",
-        "3/2"
+        "3/3"
       ],
       "values": [
         68003.77,
@@ -432,7 +432,7 @@
         65881.8,
         66995.86,
         65738.1,
-        69479.1
+        68343.43
       ]
     },
     "AAPL": {
@@ -713,37 +713,37 @@
     }
   },
   "commentary": {
-    "brief": "3월 3일 기준, S&P 500은 전일 대비 하락 마감하였습니다. VIX가 19.86으로 상승하며 시장 변동성이 확대되고 있습니다.",
+    "brief": "미국 주식 시장은 전반적으로 하락세를 보였으며, 특히 기술주 중심의 나스닥 하락폭이 두드러졌습니다. 지정학적 긴장 고조로 인해 에너지 가격이 상승하고 안전 자산 선호 심리가 강화되었습니다.",
     "topics": [
       {
-        "title": "시장 변동성 확대",
-        "description": "VIX가 20선에 근접하며 투자 심리가 위축되고 있습니다. 관세 불확실성과 성장 둔화 우려가 복합적으로 작용 중입니다."
+        "title": "주식 시장 하락 및 변동성 확대",
+        "description": "S&P 500, 나스닥, 다우존스 지수 모두 하락했으며, 특히 다우존스 지수의 하락폭이 컸습니다. VIX 지수가 급등하며 시장의 불확실성이 커지고 있음을 시사합니다. 1개월 추세 역시 하락세로 전환되어 투자 심리가 위축되고 있습니다."
       },
       {
-        "title": "관세 정책 불확실성",
-        "description": "트럼프 행정부의 관세 정책 발표 및 무역 협상 상황이 시장에 영향을 미치고 있습니다. 캐나다·멕시코 관세 부과 이슈가 지속 중입니다."
+        "title": "소형주 ETF vs 대형주 ETF",
+        "description": "IWM(소형주 ETF)과 SPY(S&P 500 ETF)의 성과 비교 관련 논쟁이 있습니다. BKLC ETF는 0%의 수수료를 부과하면서도 S&P 500을 능가하는 성과를 보여주었습니다."
       },
       {
-        "title": "에너지 섹터 강세",
-        "description": "에너지 섹터가 3% 이상 상승하며 시장 내 방어적 성격을 보이고 있습니다. 유가 상승이 주요 원인으로 분석됩니다."
+        "title": "암호화폐 시장 약세 지속",
+        "description": "비트코인 가격이 하락하며 한 달 동안 10% 가까이 하락했습니다. 암호화폐 시장은 전반적으로 약세를 보이고 있으며, 투자자들은 신중한 태도를 유지하고 있습니다."
       },
       {
-        "title": "기술주 약세 지속",
-        "description": "기술 섹터가 1% 하락하며 주요 지수를 끌어내리고 있습니다. Mag7 중심의 차익 실현 압력이 지속되고 있습니다."
+        "title": "지정학적 리스크 증가",
+        "description": "이란의 공격으로 인해 금과 유가가 급등했습니다. 지정학적 불안정성이 시장에 부정적인 영향을 미치고 있으며, 안전 자산에 대한 수요가 증가하고 있습니다."
       }
     ],
     "events": [
       {
-        "date": "3. 4. (화)",
-        "description": "ISM 서비스업 PMI 발표"
+        "date": "3. 5. (수)",
+        "description": "2월 ADP 고용 변화 발표 예상"
       },
       {
-        "date": "3. 5. (수)",
-        "description": "ADP 민간 고용 발표"
+        "date": "3. 6. (목)",
+        "description": "제롬 파월 연준 의장 의회 증언 예정"
       },
       {
         "date": "3. 7. (금)",
-        "description": "비농업 고용(NFP) 및 실업률 발표"
+        "description": "2월 실업률 및 비농업 고용 지수 발표 예정"
       }
     ]
   }
