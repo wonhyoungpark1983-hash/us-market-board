@@ -206,7 +206,7 @@ async function fetchMarketData() {
             if (!process.env.GEMINI_API_KEY) {
                 console.warn("GEMINI_API_KEY is not set. Skipping AI commentary generation.");
             } else {
-                const { GoogleGenAI } = require('@google/genai');
+                const { GoogleGenAI } = await import('@google/genai');
                 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
                 const spx = newMarketData.indices['^GSPC'];
@@ -260,14 +260,15 @@ Ensure the tone is professional, objective, and written in Korean. Look up the m
 `;
 
                 const response = await ai.models.generateContent({
-                    model: 'gemini-1.5-flash',
+                    model: 'gemini-2.0-flash',
                     contents: prompt,
                     config: {
                         responseMimeType: "application/json",
                     }
                 });
 
-                const commentaryJson = JSON.parse(response.text);
+                const rawText = response.text;
+                const commentaryJson = JSON.parse(rawText);
                 newMarketData.commentary = commentaryJson;
                 console.log("Successfully generated AI Commentary.");
             }
