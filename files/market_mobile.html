@@ -2043,7 +2043,7 @@
     }));
 
     /* ── SECTOR CHART ────────────────────────── */
-    new Chart(document.getElementById('sectorChart').getContext('2d'), {
+    registerChart('sectorChart', new Chart(document.getElementById('sectorChart').getContext('2d'), {
       type: 'bar',
       data: {
         labels: ['에너지', '유틸리티', '헬스케어', '금융', '소재', '산업', '부동산', '필수소비', '임의소비', '통신', '기술'],
@@ -2066,15 +2066,15 @@
           y: { grid: { display: false }, ticks: { color: '#8aacbf', font: { size: 9 } } }
         }
       }
-    });
+    }));
 
     /* ── YIELD CURVE ─────────────────────────── */
-    new Chart(document.getElementById('yieldChart').getContext('2d'), {
+    registerChart('yieldChart', new Chart(document.getElementById('yieldChart').getContext('2d'), {
       type: 'line',
       data: {
-        labels: ['3M', '6M', '1Y', '2Y', '5Y', '7Y', '10Y', '20Y', '30Y'],
+        labels: ['3M', '5Y', '10Y', '30Y'],
         datasets: [{
-          data: [4.32, 4.28, 4.12, 3.44, 3.95, 4.05, 4.09, 4.43, 4.52],
+          data: [3.58, 3.51, 3.96, 4.63],
           borderColor: C.cyan, backgroundColor: C.cyan + '18',
           fill: true, tension: 0.4, pointRadius: 3,
           pointBackgroundColor: C.cyan, borderWidth: 2
@@ -2088,7 +2088,7 @@
           y: { grid: { color: '#1a2c3e' }, ticks: { callback: v => v + '%', color: '#3d5a6e' }, min: 3, max: 5 }
         }
       }
-    });
+    }));
 
     /* ── BUFFETT PIE ─────────────────────────── */
     new Chart(document.getElementById('pieChart').getContext('2d'), {

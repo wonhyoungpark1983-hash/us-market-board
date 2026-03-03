@@ -150,6 +150,37 @@ function updateChartsWithData(data) {
         mainChart.options.scales.y.max = maxY;
         mainChart.update('none');
     }
+
+    // 섹터 차트 업데이트 (data.sectors)
+    const sectorChart = _chartRegistry['sectorChart'];
+    if (sectorChart && data.sectors) {
+        const sectorMap = {
+            'Energy': '에너지', 'Utilities': '유틸리티', 'Health Care': '헬스케어',
+            'Financials': '금융', 'Materials': '소재', 'Industrials': '산업',
+            'Real Estate': '부동산', 'Consumer Staples': '필수소비',
+            'Consumer Discretionary': '임의소비', 'Communication': '통신', 'Technology': '기술'
+        };
+        const keys = Object.keys(sectorMap);
+        const vals = keys.map(k => parseFloat(data.sectors[k]?.changePercent || 0));
+        sectorChart.data.labels = keys.map(k => sectorMap[k]);
+        sectorChart.data.datasets[0].data = vals;
+        sectorChart.update('none');
+    }
+
+    // 금리 곡선 차트 업데이트 (data.yields)
+    const yieldChart = _chartRegistry['yieldChart'];
+    if (yieldChart && data.yields) {
+        const yKeys = ['^IRX', '^FVX', '^TNX', '^TYX'];
+        const yLabels = ['3M', '5Y', '10Y', '30Y'];
+        const yVals = yKeys.map(k => parseFloat(data.yields[k]?.price || 0));
+        yieldChart.data.labels = yLabels;
+        yieldChart.data.datasets[0].data = yVals;
+        const minY = Math.floor(Math.min(...yVals) * 2) / 2 - 0.5;
+        const maxY = Math.ceil(Math.max(...yVals) * 2) / 2 + 0.5;
+        yieldChart.options.scales.y.min = minY;
+        yieldChart.options.scales.y.max = maxY;
+        yieldChart.update('none');
+    }
 }
 
 /**
