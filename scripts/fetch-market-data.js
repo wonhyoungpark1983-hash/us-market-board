@@ -40,6 +40,7 @@ async function fetchMarketData() {
         history: {}, // 10-day OHLC history for chart tickers
         sectors: {}, // Sector ETF daily performance
         yields: {},  // Yield curve data (3M, 5Y, 10Y, 30Y)
+        macros: {}, // Macro indicators: RSI, CPI, Unemployment, FedRate, PCE
         commentary: {
             brief: "AI 브리핑 생성 중입니다. 잠시 후 새로고침 해주세요.",
             topics: [],
@@ -198,6 +199,97 @@ async function fetchMarketData() {
             cryptoNews = btcNewsRes.news.slice(0, 3).map(n => n.title);
         } catch (err) {
             console.warn("Failed to fetch news:", err.message);
+        }
+
+        // --- Calculate RSI(14) from S&P 500 History ---
+        try {
+            const spxHistory = newMarketData.history['^GSPC'];
+            if (spxHistory && spxHistory.values.length >= 15) {
+                const prices = spxHistory.values;
+                const gains = [], losses = [];
+                for (let i = 1; i < prices.length; i++) {
+                    const diff = prices[i] - prices[i - 1];
+                    gains.push(diff > 0 ? diff : 0);
+                    losses.push(diff < 0 ? Math.abs(diff) : 0);
+                }
+                const period = 14;
+                const avgGain = gains.slice(-period).reduce((a, b) => a + b, 0) / period;
+                const avgLoss = losses.slice(-period).reduce((a, b) => a + b, 0) / period;
+                const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+                const rsi = parseFloat((100 - 100 / (1 + rs)).toFixed(1));
+                let rsiLabel = '중립권';
+                if (rsi >= 70) rsiLabel = '과매수 ⚠';
+                else if (rsi >= 60) rsiLabel = '강세권';
+                else if (rsi <= 30) rsiLabel = '과매도 ✓';
+                else if (rsi <= 40) rsiLabel = '약세권';
+                newMarketData.macros.rsi = { value: rsi, label: rsiLabel };
+                console.log(`RSI(14) calculated: ${rsi}`);
+            }
+        } catch (err) {
+            console.warn('Failed to calculate RSI:', err.message);
+        }
+
+        // --- Fetch FRED Macro Indicators ---
+        console.log('Fetching FRED macro indicators...');
+        const FRED_BASE = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=';
+        async function fetchFredLatest(seriesId) {
+            const res = await fetch(`${FRED_BASE}${seriesId}`);
+            const text = await res.text();
+            const lines = text.trim().split('\n').filter(l => !l.startsWith('DATE'));
+            const last = lines[lines.length - 1].split(',');
+            return { date: last[0], value: parseFloat(last[1]) };
+        }
+        try {
+            const [cpiRes, unempRes, fedRateRes, pceRes] = await Promise.all([
+                fetchFredLatest('CPIAUCSL'),  // CPI All Urban (monthly)
+                fetchFredLatest('UNRATE'),    // Unemployment Rate
+                fetchFredLatest('FEDFUNDS'),  // Federal Funds Rate
+                fetchFredLatest('PCEPILFE'),  // Core PCE Price Index
+            ]);
+
+            // CPI YoY: need 12 months ago value
+            const cpiRawRes = await fetch(`${FRED_BASE}CPIAUCSL`);
+            const cpiRawText = await cpiRawRes.text();
+            const cpiLines = cpiRawText.trim().split('\n').filter(l => !l.startsWith('DATE'));
+            const cpiLatest = parseFloat(cpiLines[cpiLines.length - 1].split(',')[1]);
+            const cpi12mAgo = parseFloat(cpiLines[Math.max(0, cpiLines.length - 13)].split(',')[1]);
+            const cpiYoY = parseFloat(((cpiLatest - cpi12mAgo) / cpi12mAgo * 100).toFixed(1));
+
+            // PCE YoY
+            const pceRawRes = await fetch(`${FRED_BASE}PCEPILFE`);
+            const pceRawText = await pceRawRes.text();
+            const pceLines = pceRawText.trim().split('\n').filter(l => !l.startsWith('DATE'));
+            const pceLatest = parseFloat(pceLines[pceLines.length - 1].split(',')[1]);
+            const pce12mAgo = parseFloat(pceLines[Math.max(0, pceLines.length - 13)].split(',')[1]);
+            const pceYoY = parseFloat(((pceLatest - pce12mAgo) / pce12mAgo * 100).toFixed(1));
+
+            // Date formatting (YYYY-MM → M월)
+            const cpiDateParts = cpiRes.date.split('-');
+            const cpiMonth = `${parseInt(cpiDateParts[1])}월 기준`;
+
+            newMarketData.macros.cpi = {
+                value: cpiYoY,
+                label: cpiMonth,
+                status: cpiYoY < 2.5 ? 'up' : cpiYoY < 3.5 ? 'warn' : 'dn'
+            };
+            newMarketData.macros.unemployment = {
+                value: unempRes.value,
+                label: `${parseInt(unempRes.date.split('-')[1])}월 기준`,
+                status: unempRes.value < 4.5 ? 'up' : unempRes.value < 6 ? 'warn' : 'dn'
+            };
+            newMarketData.macros.fedRate = {
+                value: fedRateRes.value,
+                label: '현재 기준금리',
+                status: 'neu'
+            };
+            newMarketData.macros.pce = {
+                value: pceYoY,
+                label: `${parseInt(pceRawText.trim().split('\n').filter(l => !l.startsWith('DATE')).pop().split(',')[0].split('-')[1])}월 기준`,
+                status: pceYoY < 2.5 ? 'up' : pceYoY < 3.5 ? 'warn' : 'dn'
+            };
+            console.log(`FRED: CPI=${cpiYoY}%, Unemp=${unempRes.value}%, FedRate=${fedRateRes.value}%, PCE=${pceYoY}%`);
+        } catch (err) {
+            console.warn('Failed to fetch FRED data:', err.message);
         }
 
         // --- Generate AI Commentary ---

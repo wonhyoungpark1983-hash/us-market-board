@@ -259,6 +259,57 @@ async function handleRefreshClick() {
 }
 
 /**
+ * 매크로 지표(RSI, CPI, 실업률, 기준금리, PCE, VIX) DOM을 업데이트한다.
+ */
+function updateMacrosWithData(data) {
+    if (!data) return;
+    const macros = data.macros || {};
+
+    function setBox(valId, subId, barId, value, label, pct, colorVar) {
+        const valEl = document.getElementById(valId);
+        const subEl = document.getElementById(subId);
+        const barEl = document.getElementById(barId);
+        if (valEl) { valEl.textContent = value; if (colorVar) valEl.style.color = colorVar; }
+        if (subEl) subEl.textContent = label;
+        if (barEl) { barEl.style.width = Math.min(pct, 100) + '%'; if (colorVar) barEl.style.background = colorVar; }
+    }
+
+    // RSI(14)
+    if (macros.rsi) {
+        const rsi = macros.rsi.value;
+        const col = rsi >= 70 ? 'var(--dn)' : rsi <= 30 ? 'var(--up)' : 'var(--blue)';
+        setBox('macro-rsi-val', 'macro-rsi-sub', 'macro-rsi-bar', rsi, macros.rsi.label, rsi, col);
+    }
+    // VIX (data.indices에서)
+    if (data.indices && data.indices['^VIX']) {
+        const vix = parseFloat(data.indices['^VIX'].price);
+        const vixPct = (vix / 40) * 100;
+        const vixCol = vix >= 30 ? 'var(--dn)' : vix >= 20 ? 'var(--warn)' : 'var(--up)';
+        const vixLabel = vix >= 30 ? '⚠ 공포 구간' : vix >= 20 ? '⚠ 경계 구간' : '안정 구간';
+        setBox('macro-vix-val', 'macro-vix-sub', 'macro-vix-bar', data.indices['^VIX'].price, vixLabel, vixPct, vixCol);
+    }
+    // CPI YoY
+    if (macros.cpi) {
+        const col = { up: 'var(--up)', warn: 'var(--warn)', dn: 'var(--dn)' }[macros.cpi.status] || 'var(--up)';
+        setBox('macro-cpi-val', 'macro-cpi-sub', 'macro-cpi-bar', macros.cpi.value + '%', macros.cpi.label, (macros.cpi.value / 10) * 100, col);
+    }
+    // 실업률
+    if (macros.unemployment) {
+        const col = { up: 'var(--up)', warn: 'var(--warn)', dn: 'var(--dn)' }[macros.unemployment.status] || 'var(--up)';
+        setBox('macro-unemp-val', 'macro-unemp-sub', 'macro-unemp-bar', macros.unemployment.value + '%', macros.unemployment.label, (macros.unemployment.value / 10) * 100, col);
+    }
+    // 기준금리
+    if (macros.fedRate) {
+        setBox('macro-rate-val', 'macro-rate-sub', 'macro-rate-bar', macros.fedRate.value + '%', macros.fedRate.label, (macros.fedRate.value / 10) * 100, 'var(--purp)');
+    }
+    // PCE Core YoY
+    if (macros.pce) {
+        const col = { up: 'var(--up)', warn: 'var(--warn)', dn: 'var(--dn)' }[macros.pce.status] || 'var(--warn)';
+        setBox('macro-pce-val', 'macro-pce-sub', 'macro-pce-bar', macros.pce.value + '%', macros.pce.label, (macros.pce.value / 10) * 100, col);
+    }
+}
+
+/**
  * 화면 구석에 작은 알림창 띄우기
  */
 function showToast(message, isError = false) {
@@ -284,6 +335,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data) {
         updateDOMWithData(data);
         updateCommentaryWithData(data);
+        updateMacrosWithData(data);
         // 차트 초기화 완료 후 업데이트 (requestAnimationFrame으로 렌더 완료 대기)
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
