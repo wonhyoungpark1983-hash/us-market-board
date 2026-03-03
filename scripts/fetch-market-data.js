@@ -39,7 +39,12 @@ async function fetchMarketData() {
         indices: {},
         history: {}, // 10-day OHLC history for chart tickers
         sectors: {}, // Sector ETF daily performance
-        yields: {}   // Yield curve data (3M, 5Y, 10Y, 30Y)
+        yields: {},  // Yield curve data (3M, 5Y, 10Y, 30Y)
+        commentary: {
+            brief: "AI 브리핑 생성 중입니다. 잠시 후 새로고침 해주세요.",
+            topics: [],
+            events: []
+        }
     };
 
     try {
