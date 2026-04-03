@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-02T21:56:23.953Z",
+  "lastUpdated": "2026-04-03T21:53:31.181Z",
   "indices": {
     "^GSPC": {
       "price": "6,582.69",
@@ -21,9 +21,9 @@
     },
     "^VIX": {
       "price": "23.87",
-      "changeText": "안정",
-      "changePercent": "-2.73",
-      "status": "down"
+      "changeText": "⚠ 경계",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^RUT": {
       "price": "2,530.04",
@@ -56,70 +56,70 @@
       "status": "down"
     },
     "BTC-USD": {
-      "price": "66,846.19",
-      "changeText": "▼ 1.8%",
-      "changePercent": "-1.81",
-      "status": "down"
-    },
-    "ETH-USD": {
-      "price": "2,060.02",
-      "changeText": "▼ 3.7%",
-      "changePercent": "-3.68",
-      "status": "down"
-    },
-    "KRW=X": {
-      "price": "1,509.9",
-      "changeText": "▲ 0.4%",
-      "changePercent": "+0.43",
+      "price": "66,926.66",
+      "changeText": "▲ 0.1%",
+      "changePercent": "+0.06",
       "status": "up"
     },
+    "ETH-USD": {
+      "price": "2,058.72",
+      "changeText": "▲ 0.1%",
+      "changePercent": "+0.09",
+      "status": "up"
+    },
+    "KRW=X": {
+      "price": "1,510.5",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.10",
+      "status": "down"
+    },
     "DX-Y.NYB": {
-      "price": "100.01",
-      "changeText": "▲ 0.4%",
-      "changePercent": "+0.36",
+      "price": "100.19",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.54",
       "status": "up"
     },
     "EURUSD=X": {
       "price": "1.15",
-      "changeText": "▼ 0.3%",
-      "changePercent": "-0.25",
+      "changeText": "▼ 0.6%",
+      "changePercent": "-0.60",
       "status": "down"
     },
     "JPY=X": {
-      "price": "159.55",
+      "price": "159.63",
       "changeText": "▲ 0.6%",
-      "changePercent": "+0.61",
+      "changePercent": "+0.59",
       "status": "up"
     },
     "GBPUSD=X": {
       "price": "1.32",
-      "changeText": "▼ 0.1%",
-      "changePercent": "-0.14",
+      "changeText": "▼ 0.8%",
+      "changePercent": "-0.82",
       "status": "down"
     },
     "^TNX": {
       "price": "4.31",
-      "changeText": "▼ 0.6bp",
-      "changePercent": "-0.14",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TYX": {
       "price": "4.89",
-      "changeText": "▼ 1.0bp",
-      "changePercent": "-0.20",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^FVX": {
       "price": "3.95",
-      "changeText": "▼ 0.7bp",
-      "changePercent": "-0.18",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^IRX": {
       "price": "3.61",
-      "changeText": "▲ 0.2bp",
-      "changePercent": "+0.06",
-      "status": "warn"
+      "changeText": "▼ 0.0bp",
+      "changePercent": "-0.00",
+      "status": "down"
     },
     "AAPL": {
       "price": "255.92",
@@ -411,7 +411,6 @@
     },
     "BTC-USD": {
       "labels": [
-        "3/24",
         "3/25",
         "3/26",
         "3/27",
@@ -420,10 +419,10 @@
         "3/30",
         "3/31",
         "4/1",
-        "4/2"
+        "4/2",
+        "4/3"
       ],
       "values": [
-        70517.86,
         71309.88,
         68791.63,
         66338.38,
@@ -432,7 +431,8 @@
         66691.45,
         68233.31,
         68078.55,
-        66846.19
+        66888.57,
+        66926.66
       ]
     },
     "AAPL": {
@@ -689,54 +689,74 @@
   "yields": {
     "^IRX": {
       "price": "3.61",
-      "changeText": "▲ 0.2bp",
-      "changePercent": "+0.06",
-      "status": "warn"
+      "changeText": "▼ 0.0bp",
+      "changePercent": "-0.00",
+      "status": "down"
     },
     "^FVX": {
       "price": "3.95",
-      "changeText": "▼ 0.7bp",
-      "changePercent": "-0.18",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TNX": {
       "price": "4.31",
-      "changeText": "▼ 0.6bp",
-      "changePercent": "-0.14",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TYX": {
       "price": "4.89",
-      "changeText": "▼ 1.0bp",
-      "changePercent": "-0.20",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     }
   },
   "macros": {},
   "commentary": {
-    "brief": "오늘 미국 시장은 혼조세를 보였으며, 트럼프 대통령의 강경 발언과 IMF의 금리 인하 제한 전망이 시장에 영향을 미쳤습니다. 특히, 철강 및 알루미늄 완제품에 대한 관세 부과와 의약품 관세 추진 소식이 주목받았습니다.",
+    "brief": "미국 시장은 4월 4일 혼조세로 마감했으며, 트럼프 행정부의 새로운 관세 발표와 제약회사 지출 감소 전망이 주요 요인으로 작용했습니다. S&P 500, NASDAQ, Dow Jones는 각각 상승했지만, 1개월 추세는 하락세를 보이고 있습니다.",
     "topics": [
       {
-        "title": "미국, 철강·알루미늄 완제품에 25% 일괄 관세 발표",
-        "description": "미국은 철강 및 알루미늄 완제품에 대해 25%의 일괄 관세를 부과할 예정입니다. 이는 완제품에 포함된 금속 함량 가치를 측정하기 어려웠던 기업들의 행정 부담을 줄이기 위한 조치입니다. 다만, 일부 제품은 실제 비용이 오르는 효과가 나타날 수 있다는 분석도 있습니다."
+        "title": "트럼프 행정부의 새로운 관세 조치 발표",
+        "description": "트럼프 행정부는 철강, 알루미늄, 구리 등 품목에 대한 새로운 관세 조치를 발표했습니다. 변압기, 기계류 등은 관세 부담이 완화되지만, 가전제품, 전선, 일부 자동차 부품은 관세 부담이 가중될 것으로 예상됩니다. 또한, 미국에서 생산되지 않은 특허 의약품과 그 원료에 100% 관세를 부과하며, 한국 등 일부 국가에는 15% 관세율이 적용됩니다."
       },
       {
-        "title": "트럼프, 새로운 의약품 관세 추진",
-        "description": "트럼프 행정부는 미국 내에서 낮은 약가를 보장하는 합의를 체결하지 않은 제약사들을 대상으로 새로운 관세를 발표할 예정입니다. 이르면 4월 2일에 발표될 예정이며, 합의를 맺지 않은 기업들의 의약품에 100% 관세가 부과될 수 있습니다."
+        "title": "제약회사 지출 감소 전망",
+        "description": "프리지아(PHR)는 특정 제약사들의 재정 지출 의사결정 불확실성 심화로 인해 2027 회계연도 매출 전망치를 하향 조정했습니다. 조정 EBITDA는 유지될 것으로 예상되지만, 매출 감소에도 불구하고 운영 효율성 강화로 수익성을 방어할 수 있음을 시사합니다."
       },
       {
-        "title": "IMF, 연준의 금리 인하 여지 제한적 전망",
-        "description": "IMF는 연준이 향후 1년 동안 정책 금리를 낮출 여지가 거의 없다고 진단했습니다. 에너지 가격 상승과 글로벌 원자재 가격의 상방 리스크가 인플레이션 목표 복귀를 지연시킬 가능성을 고려할 때 금리 인하가 어려울 것이라는 분석입니다."
+        "title": "지정학적 리스크 지속",
+        "description": "미국과 이란 간의 긴장이 지속되면서 유가가 급등하고 시장 변동성이 확대되었습니다. 트럼프 대통령의 종전 의사 표명에도 불구하고, 호르무즈 해협 문제 해결책 미제시 등은 여전히 위협 요인으로 남아있습니다."
       },
       {
-        "title": "트럼프, 이란에 대한 강경 발언",
-        "description": "트럼프 대통령은 앞으로 2~3주에 걸쳐 이란에 '극도로 강력한 타격'을 가할 것이라고 밝혔습니다. 이로 인해 코스피를 비롯한 아시아 주요국 증시가 하락세를 보였으며, 국제유가와 달러/원 환율이 상승했습니다."
+        "title": "미국 경제 지표 혼조세",
+        "description": "2월 소매 판매는 0.6% 증가했지만, 이는 에너지 가격 급등 및 주식 시장 조정 이전의 데이터라는 분석이 있습니다. 또한, 2월 일자리가 감소하면서 금리 인하에 대한 기대감도 여전히 존재합니다."
       }
     ],
     "events": [
       {
-        "date": "4. 3. (금)",
-        "description": "미국 철강·알루미늄 완제품 25% 관세 발표"
+        "date": "4. 10. (목)",
+        "description": "미국 소비자물가지수(CPI) 발표 (3월)"
+      },
+      {
+        "date": "4. 22. (수)",
+        "description": "Elevance Health 2026년 1분기 실적 발표"
+      },
+      {
+        "date": "4. 28. (화)",
+        "description": "테슬라 실적 발표"
+      },
+      {
+        "date": "4. 28~29. (화~수)",
+        "description": "FOMC 회의"
+      },
+      {
+        "date": "4. 29. (수)",
+        "description": "메타 실적 발표"
+      },
+      {
+        "date": "4. 30. (목)",
+        "description": "애플 실적 발표"
       }
     ]
   }
