@@ -1,287 +1,286 @@
 {
-  "lastUpdated": "2026-05-06T22:11:38.941Z",
+  "lastUpdated": "2026-05-07T22:32:14.027Z",
   "indices": {
     "^GSPC": {
-      "price": "7,365.12",
-      "changeText": "▲ 2.3%",
-      "changePercent": "+2.28",
+      "price": "7,337.11",
+      "changeText": "▲ 1.1%",
+      "changePercent": "+1.07",
       "status": "up"
     },
     "^IXIC": {
-      "price": "25,838.94",
-      "changeText": "▲ 3.1%",
-      "changePercent": "+3.08",
+      "price": "25,806.20",
+      "changeText": "▲ 1.9%",
+      "changePercent": "+1.90",
       "status": "up"
     },
     "^DJI": {
-      "price": "49,910.59",
-      "changeText": "▲ 2.0%",
-      "changePercent": "+1.98",
-      "status": "up"
-    },
-    "^VIX": {
-      "price": "17.39",
-      "changeText": "⚠ 경계",
-      "changePercent": "+0.06",
-      "status": "warn"
-    },
-    "^RUT": {
-      "price": "2,886.77",
-      "changeText": "▲ 3.2%",
-      "changePercent": "+3.25",
-      "status": "up"
-    },
-    "CL=F": {
-      "price": "95.85",
-      "changeText": "▼ 6.3%",
-      "changePercent": "-6.28",
-      "status": "down"
-    },
-    "BZ=F": {
-      "price": "101.70",
-      "changeText": "▼ 7.4%",
-      "changePercent": "-7.44",
-      "status": "down"
-    },
-    "GC=F": {
-      "price": "4,702.40",
-      "changeText": "▲ 3.2%",
-      "changePercent": "+3.22",
-      "status": "up"
-    },
-    "SI=F": {
-      "price": "77.87",
-      "changeText": "▲ 6.5%",
-      "changePercent": "+6.51",
-      "status": "up"
-    },
-    "BTC-USD": {
-      "price": "80,909.98",
-      "changeText": "▼ 0.0%",
-      "changePercent": "-0.02",
-      "status": "down"
-    },
-    "ETH-USD": {
-      "price": "2,375.61",
+      "price": "49,596.97",
       "changeText": "▲ 0.6%",
       "changePercent": "+0.61",
       "status": "up"
     },
-    "KRW=X": {
-      "price": "1,445.3",
-      "changeText": "▼ 2.1%",
-      "changePercent": "-2.08",
+    "^VIX": {
+      "price": "17.08",
+      "changeText": "안정",
+      "changePercent": "-1.78",
       "status": "down"
     },
-    "DX-Y.NYB": {
-      "price": "98.01",
-      "changeText": "▼ 0.5%",
-      "changePercent": "-0.48",
+    "^RUT": {
+      "price": "2,839.63",
+      "changeText": "▼ 0.2%",
+      "changePercent": "-0.19",
       "status": "down"
     },
-    "EURUSD=X": {
-      "price": "1.18",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.53",
-      "status": "up"
-    },
-    "JPY=X": {
-      "price": "156.33",
-      "changeText": "▼ 0.6%",
-      "changePercent": "-0.55",
-      "status": "down"
-    },
-    "GBPUSD=X": {
-      "price": "1.36",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.46",
-      "status": "up"
-    },
-    "^TNX": {
-      "price": "4.36",
-      "changeText": "▼ 6.0bp",
-      "changePercent": "-1.36",
-      "status": "down"
-    },
-    "^TYX": {
-      "price": "4.94",
-      "changeText": "▼ 4.1bp",
-      "changePercent": "-0.82",
-      "status": "down"
-    },
-    "^FVX": {
-      "price": "4.00",
-      "changeText": "▼ 7.0bp",
-      "changePercent": "-1.72",
-      "status": "down"
-    },
-    "^IRX": {
-      "price": "3.60",
-      "changeText": "▲ 0.0bp",
-      "changePercent": "+0.00",
-      "status": "warn"
-    },
-    "AAPL": {
-      "price": "287.51",
-      "changeText": "▲ 3.9%",
-      "changePercent": "+3.86",
-      "status": "up"
-    },
-    "NVDA": {
-      "price": "207.83",
-      "changeText": "▲ 4.7%",
-      "changePercent": "+4.71",
-      "status": "up"
-    },
-    "META": {
-      "price": "612.88",
-      "changeText": "▲ 0.4%",
-      "changePercent": "+0.40",
-      "status": "up"
-    },
-    "MSFT": {
-      "price": "413.96",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.08",
-      "status": "up"
-    },
-    "AMZN": {
-      "price": "274.99",
-      "changeText": "▲ 1.1%",
-      "changePercent": "+1.08",
-      "status": "up"
-    },
-    "GOOGL": {
-      "price": "398.04",
-      "changeText": "▲ 3.9%",
-      "changePercent": "+3.86",
-      "status": "up"
-    },
-    "TSLA": {
-      "price": "398.73",
-      "changeText": "▲ 1.6%",
-      "changePercent": "+1.58",
-      "status": "up"
-    },
-    "AMD": {
-      "price": "421.39",
-      "changeText": "▲ 23.4%",
-      "changePercent": "+23.38",
-      "status": "up"
-    },
-    "AVGO": {
-      "price": "425.44",
-      "changeText": "▲ 2.1%",
-      "changePercent": "+2.15",
-      "status": "up"
-    },
-    "PLTR": {
-      "price": "133.79",
-      "changeText": "▼ 8.4%",
-      "changePercent": "-8.38",
-      "status": "down"
-    },
-    "TSM": {
-      "price": "419.50",
-      "changeText": "▲ 4.5%",
-      "changePercent": "+4.45",
-      "status": "up"
-    },
-    "ARM": {
-      "price": "237.30",
-      "changeText": "▲ 16.7%",
-      "changePercent": "+16.75",
-      "status": "up"
-    },
-    "COIN": {
-      "price": "197.96",
-      "changeText": "▼ 2.5%",
-      "changePercent": "-2.48",
-      "status": "down"
-    },
-    "MSTR": {
-      "price": "186.82",
-      "changeText": "▲ 1.6%",
-      "changePercent": "+1.64",
-      "status": "up"
-    },
-    "SMCI": {
-      "price": "34.66",
-      "changeText": "▲ 24.1%",
-      "changePercent": "+24.14",
-      "status": "up"
-    },
-    "XLE": {
-      "price": "57.00",
-      "changeText": "▼ 4.0%",
-      "changePercent": "-4.02",
-      "status": "down"
-    },
-    "XLU": {
-      "price": "45.71",
-      "changeText": "▼ 1.4%",
-      "changePercent": "-1.42",
-      "status": "down"
-    },
-    "XLV": {
-      "price": "145.40",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.46",
-      "status": "up"
-    },
-    "XLF": {
-      "price": "51.84",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.50",
-      "status": "up"
-    },
-    "XLB": {
-      "price": "52.41",
-      "changeText": "▲ 3.5%",
-      "changePercent": "+3.47",
-      "status": "up"
-    },
-    "XLI": {
-      "price": "176.87",
-      "changeText": "▲ 3.4%",
-      "changePercent": "+3.44",
-      "status": "up"
-    },
-    "XLRE": {
-      "price": "44.74",
+    "CL=F": {
+      "price": "96.51",
       "changeText": "▲ 1.5%",
       "changePercent": "+1.50",
       "status": "up"
     },
-    "XLP": {
-      "price": "84.24",
+    "BZ=F": {
+      "price": "101.90",
+      "changeText": "▲ 0.6%",
+      "changePercent": "+0.62",
+      "status": "up"
+    },
+    "GC=F": {
+      "price": "4,706.90",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.53",
+      "status": "up"
+    },
+    "SI=F": {
+      "price": "79.39",
+      "changeText": "▲ 3.4%",
+      "changePercent": "+3.36",
+      "status": "up"
+    },
+    "BTC-USD": {
+      "price": "79,933.49",
+      "changeText": "▼ 1.8%",
+      "changePercent": "-1.83",
+      "status": "down"
+    },
+    "ETH-USD": {
+      "price": "2,288.40",
+      "changeText": "▼ 2.7%",
+      "changePercent": "-2.65",
+      "status": "down"
+    },
+    "KRW=X": {
+      "price": "1,455.6",
+      "changeText": "▼ 1.2%",
+      "changePercent": "-1.24",
+      "status": "down"
+    },
+    "DX-Y.NYB": {
+      "price": "98.26",
+      "changeText": "▲ 0.2%",
+      "changePercent": "+0.24",
+      "status": "up"
+    },
+    "EURUSD=X": {
+      "price": "1.17",
+      "changeText": "▲ 0.1%",
+      "changePercent": "+0.15",
+      "status": "up"
+    },
+    "JPY=X": {
+      "price": "156.89",
+      "changeText": "▼ 0.5%",
+      "changePercent": "-0.50",
+      "status": "down"
+    },
+    "GBPUSD=X": {
+      "price": "1.36",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.13",
+      "status": "down"
+    },
+    "^TNX": {
+      "price": "4.39",
+      "changeText": "▲ 3.6bp",
+      "changePercent": "+0.83",
+      "status": "warn"
+    },
+    "^TYX": {
+      "price": "4.97",
+      "changeText": "▲ 2.6bp",
+      "changePercent": "+0.53",
+      "status": "warn"
+    },
+    "^FVX": {
+      "price": "4.04",
+      "changeText": "▲ 4.2bp",
+      "changePercent": "+1.05",
+      "status": "warn"
+    },
+    "^IRX": {
+      "price": "3.60",
+      "changeText": "▼ 0.2bp",
+      "changePercent": "-0.06",
+      "status": "down"
+    },
+    "AAPL": {
+      "price": "287.44",
+      "changeText": "▲ 1.1%",
+      "changePercent": "+1.15",
+      "status": "up"
+    },
+    "NVDA": {
+      "price": "211.50",
+      "changeText": "▲ 7.6%",
+      "changePercent": "+7.63",
+      "status": "up"
+    },
+    "META": {
+      "price": "616.81",
+      "changeText": "▲ 2.0%",
+      "changePercent": "+1.96",
+      "status": "up"
+    },
+    "MSFT": {
+      "price": "420.77",
+      "changeText": "▲ 2.3%",
+      "changePercent": "+2.28",
+      "status": "up"
+    },
+    "AMZN": {
+      "price": "271.17",
+      "changeText": "▼ 0.9%",
+      "changePercent": "-0.87",
+      "status": "down"
+    },
+    "GOOGL": {
+      "price": "397.99",
+      "changeText": "▲ 2.5%",
+      "changePercent": "+2.46",
+      "status": "up"
+    },
+    "TSLA": {
+      "price": "411.79",
+      "changeText": "▲ 5.8%",
+      "changePercent": "+5.76",
+      "status": "up"
+    },
+    "AMD": {
+      "price": "408.46",
+      "changeText": "▲ 15.0%",
+      "changePercent": "+14.97",
+      "status": "up"
+    },
+    "AVGO": {
+      "price": "412.56",
+      "changeText": "▼ 3.5%",
+      "changePercent": "-3.46",
+      "status": "down"
+    },
+    "PLTR": {
+      "price": "137.05",
       "changeText": "▲ 0.8%",
       "changePercent": "+0.84",
       "status": "up"
     },
+    "TSM": {
+      "price": "414.15",
+      "changeText": "▲ 5.0%",
+      "changePercent": "+5.00",
+      "status": "up"
+    },
+    "ARM": {
+      "price": "213.31",
+      "changeText": "▲ 2.1%",
+      "changePercent": "+2.14",
+      "status": "up"
+    },
+    "COIN": {
+      "price": "192.96",
+      "changeText": "▼ 2.4%",
+      "changePercent": "-2.42",
+      "status": "down"
+    },
+    "MSTR": {
+      "price": "179.84",
+      "changeText": "▼ 3.8%",
+      "changePercent": "-3.78",
+      "status": "down"
+    },
+    "SMCI": {
+      "price": "33.62",
+      "changeText": "▲ 20.8%",
+      "changePercent": "+20.80",
+      "status": "up"
+    },
+    "XLE": {
+      "price": "55.95",
+      "changeText": "▼ 5.9%",
+      "changePercent": "-5.89",
+      "status": "down"
+    },
+    "XLU": {
+      "price": "45.12",
+      "changeText": "▼ 2.7%",
+      "changePercent": "-2.70",
+      "status": "down"
+    },
+    "XLV": {
+      "price": "144.72",
+      "changeText": "▼ 0.4%",
+      "changePercent": "-0.40",
+      "status": "down"
+    },
+    "XLF": {
+      "price": "51.55",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.08",
+      "status": "down"
+    },
+    "XLB": {
+      "price": "51.40",
+      "changeText": "▼ 0.3%",
+      "changePercent": "-0.25",
+      "status": "down"
+    },
+    "XLI": {
+      "price": "174.00",
+      "changeText": "▲ 0.9%",
+      "changePercent": "+0.92",
+      "status": "up"
+    },
+    "XLRE": {
+      "price": "44.40",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.52",
+      "status": "up"
+    },
+    "XLP": {
+      "price": "83.98",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.10",
+      "status": "down"
+    },
     "XLY": {
-      "price": "119.87",
-      "changeText": "▲ 1.8%",
-      "changePercent": "+1.83",
+      "price": "119.88",
+      "changeText": "▲ 1.5%",
+      "changePercent": "+1.53",
       "status": "up"
     },
     "VOX": {
-      "price": "198.33",
-      "changeText": "▲ 1.2%",
-      "changePercent": "+1.23",
+      "price": "198.12",
+      "changeText": "▲ 1.4%",
+      "changePercent": "+1.43",
       "status": "up"
     },
     "XLK": {
-      "price": "170.03",
-      "changeText": "▲ 4.9%",
-      "changePercent": "+4.92",
+      "price": "169.69",
+      "changeText": "▲ 2.5%",
+      "changePercent": "+2.45",
       "status": "up"
     }
   },
   "history": {
     "^GSPC": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -290,10 +289,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        7108.4,
         7165.08,
         7173.91,
         7138.8,
@@ -302,12 +301,12 @@
         7230.12,
         7200.75,
         7259.22,
-        7365.12
+        7365.12,
+        7337.11
       ]
     },
     "^IXIC": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -316,10 +315,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        24438.5,
         24836.6,
         24887.1,
         24663.8,
@@ -328,12 +327,12 @@
         25114.44,
         25067.8,
         25326.13,
-        25838.94
+        25838.94,
+        25806.2
       ]
     },
     "^DJI": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -342,10 +341,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        49310.32,
         49230.71,
         49167.79,
         49141.93,
@@ -354,12 +353,12 @@
         49499.27,
         48941.9,
         49298.25,
-        49910.59
+        49910.59,
+        49596.97
       ]
     },
     "^VIX": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -368,10 +367,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        19.31,
         18.71,
         18.02,
         17.83,
@@ -380,12 +379,12 @@
         16.99,
         18.29,
         17.38,
-        17.39
+        17.39,
+        17.08
       ]
     },
     "^RUT": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -394,10 +393,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        2775.1,
         2787,
         2788.19,
         2756.05,
@@ -406,13 +405,12 @@
         2812.82,
         2796,
         2845,
-        2886.77
+        2886.77,
+        2839.63
       ]
     },
     "BTC-USD": {
       "labels": [
-        "4/26",
-        "4/27",
         "4/28",
         "4/29",
         "4/30",
@@ -420,11 +418,11 @@
         "5/2",
         "5/3",
         "5/4",
-        "5/5"
+        "5/5",
+        "5/6",
+        "5/7"
       ],
       "values": [
-        78657.54,
-        77366.63,
         76350.67,
         75776.13,
         76304.32,
@@ -432,12 +430,13 @@
         78657.25,
         78538.23,
         79827.91,
-        80927.05
+        80927.05,
+        81427.53,
+        79933.49
       ]
     },
     "AAPL": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -446,10 +445,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        273.43,
         271.06,
         267.61,
         270.71,
@@ -458,12 +457,12 @@
         280.14,
         276.83,
         284.18,
-        287.51
+        287.51,
+        287.44
       ]
     },
     "NVDA": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -472,10 +471,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        199.64,
         208.27,
         216.61,
         213.17,
@@ -484,12 +483,12 @@
         198.45,
         198.48,
         196.5,
-        207.83
+        207.83,
+        211.5
       ]
     },
     "META": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -498,10 +497,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        659.15,
         675.03,
         678.62,
         671.34,
@@ -510,12 +509,12 @@
         608.75,
         610.41,
         604.96,
-        612.88
+        612.88,
+        616.81
       ]
     },
     "MSFT": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -524,10 +523,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        415.75,
         424.62,
         424.82,
         429.25,
@@ -536,12 +535,12 @@
         414.44,
         413.62,
         411.38,
-        413.96
+        413.96,
+        420.77
       ]
     },
     "AMZN": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -550,10 +549,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        255.08,
         263.99,
         261.12,
         259.7,
@@ -562,12 +561,12 @@
         268.26,
         272.05,
         273.55,
-        274.99
+        274.99,
+        271.17
       ]
     },
     "GOOGL": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -576,10 +575,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        338.89,
         344.4,
         350.34,
         349.78,
@@ -588,12 +587,12 @@
         385.69,
         383.25,
         388.43,
-        398.04
+        398.04,
+        397.99
       ]
     },
     "TSLA": {
       "labels": [
-        "4/23",
         "4/24",
         "4/27",
         "4/28",
@@ -602,10 +601,10 @@
         "5/1",
         "5/4",
         "5/5",
-        "5/6"
+        "5/6",
+        "5/7"
       ],
       "values": [
-        373.72,
         376.3,
         378.67,
         376.02,
@@ -614,102 +613,103 @@
         390.82,
         392.51,
         389.37,
-        398.73
+        398.73,
+        411.79
       ]
     }
   },
   "sectors": {
     "Energy": {
-      "price": "57.00",
-      "changeText": "▼ 4.0%",
-      "changePercent": "-4.02",
+      "price": "55.95",
+      "changeText": "▼ 5.9%",
+      "changePercent": "-5.89",
       "status": "down"
     },
     "Utilities": {
-      "price": "45.71",
-      "changeText": "▼ 1.4%",
-      "changePercent": "-1.42",
+      "price": "45.12",
+      "changeText": "▼ 2.7%",
+      "changePercent": "-2.70",
       "status": "down"
     },
     "Health Care": {
-      "price": "145.40",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.46",
-      "status": "up"
+      "price": "144.72",
+      "changeText": "▼ 0.4%",
+      "changePercent": "-0.40",
+      "status": "down"
     },
     "Financials": {
-      "price": "51.84",
-      "changeText": "▲ 0.5%",
-      "changePercent": "+0.50",
-      "status": "up"
+      "price": "51.55",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.08",
+      "status": "down"
     },
     "Materials": {
-      "price": "52.41",
-      "changeText": "▲ 3.5%",
-      "changePercent": "+3.47",
-      "status": "up"
+      "price": "51.40",
+      "changeText": "▼ 0.3%",
+      "changePercent": "-0.25",
+      "status": "down"
     },
     "Industrials": {
-      "price": "176.87",
-      "changeText": "▲ 3.4%",
-      "changePercent": "+3.44",
+      "price": "174.00",
+      "changeText": "▲ 0.9%",
+      "changePercent": "+0.92",
       "status": "up"
     },
     "Real Estate": {
-      "price": "44.74",
-      "changeText": "▲ 1.5%",
-      "changePercent": "+1.50",
+      "price": "44.40",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.52",
       "status": "up"
     },
     "Consumer Staples": {
-      "price": "84.24",
-      "changeText": "▲ 0.8%",
-      "changePercent": "+0.84",
-      "status": "up"
+      "price": "83.98",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.10",
+      "status": "down"
     },
     "Consumer Discretionary": {
-      "price": "119.87",
-      "changeText": "▲ 1.8%",
-      "changePercent": "+1.83",
+      "price": "119.88",
+      "changeText": "▲ 1.5%",
+      "changePercent": "+1.53",
       "status": "up"
     },
     "Communication": {
-      "price": "198.33",
-      "changeText": "▲ 1.2%",
-      "changePercent": "+1.23",
+      "price": "198.12",
+      "changeText": "▲ 1.4%",
+      "changePercent": "+1.43",
       "status": "up"
     },
     "Technology": {
-      "price": "170.03",
-      "changeText": "▲ 4.9%",
-      "changePercent": "+4.92",
+      "price": "169.69",
+      "changeText": "▲ 2.5%",
+      "changePercent": "+2.45",
       "status": "up"
     }
   },
   "yields": {
     "^IRX": {
       "price": "3.60",
-      "changeText": "▲ 0.0bp",
-      "changePercent": "+0.00",
-      "status": "warn"
+      "changeText": "▼ 0.2bp",
+      "changePercent": "-0.06",
+      "status": "down"
     },
     "^FVX": {
-      "price": "4.00",
-      "changeText": "▼ 7.0bp",
-      "changePercent": "-1.72",
-      "status": "down"
+      "price": "4.04",
+      "changeText": "▲ 4.2bp",
+      "changePercent": "+1.05",
+      "status": "warn"
     },
     "^TNX": {
-      "price": "4.36",
-      "changeText": "▼ 6.0bp",
-      "changePercent": "-1.36",
-      "status": "down"
+      "price": "4.39",
+      "changeText": "▲ 3.6bp",
+      "changePercent": "+0.83",
+      "status": "warn"
     },
     "^TYX": {
-      "price": "4.94",
-      "changeText": "▼ 4.1bp",
-      "changePercent": "-0.82",
-      "status": "down"
+      "price": "4.97",
+      "changeText": "▲ 2.6bp",
+      "changePercent": "+0.53",
+      "status": "warn"
     }
   },
   "macros": {
@@ -735,30 +735,25 @@
     }
   },
   "commentary": {
-    "brief": "오늘 미국 시장은 긍정적인 모습을 보였으며, S&P 500, NASDAQ, Dow Jones 모두 상승했습니다. 특히, 미국과 이란 간의 종전 기대감이 확산되면서 국제 유가가 하락했고, 이는 시장 전반에 긍정적인 영향을 미쳤습니다. 또한, 주요 기술 기업들의 AI 투자 확대 발표는 반도체 주가 상승에 대한 기대감을 높였습니다.",
+    "brief": "미국 시장은 2026년 5월 7일에 혼조세로 마감했다. S&P 500은 장중 최고치를 경신한 후 소폭 하락했으며, 나스닥 또한 강세를 보였으나 하락 마감했다. 트럼프 대통령은 EU가 7월 4일까지 무역 합의를 이행하지 않을 경우 관세를 인상할 것이라고 경고했다.",
     "topics": [
       {
-        "title": "미국-이란 종전 기대감 및 유가 하락",
-        "description": "미국과 이란 간의 긴장 완화 기대감이 확산되면서 국제 유가가 급락했습니다. 브렌트유 선물은 배럴당 100달러 이하로 떨어졌고, WTI도 큰 폭으로 하락했습니다. 도널드 트럼프 대통령이 호르무즈 해협 통과 선박 호위 작전의 일시적 중단을 시사하면서 유가 하락을 더욱 부추겼습니다. 유가 하락은 셰브론(CVX)과 같은 에너지 기업 주가에 하방 압력으로 작용했습니다."
+        "title": "미국-이란 협상 불확실성",
+        "description": "미국과 이란 간의 협상 결과에 대한 불확실성으로 인해 유가와 증시의 변동성이 지속되고 있다. 이란 측에서 '비현실적 계획'으로 호르무즈 해협 재개가 불가하다는 입장을 밝히고 배상금을 요구하면서 협상에 대한 불확실성이 커졌다."
       },
       {
-        "title": "기술 기업 AI 투자 확대 및 반도체 주가 기대감 상승",
-        "description": "주요 빅테크 기업들이 AI 설비 투자를 대폭 늘리겠다고 발표하면서 반도체 주에 대한 추가 상승 기대감이 커졌습니다. 샌디스크는 데이터센터 매출이 급증하며 호실적을 발표했고, 52주 신고가를 경신했습니다. AI 시스템이 요구하는 데이터 저장 용량이 증가하면서 플래시 메모리 칩 수요가 공급을 앞지르고 있는 상황입니다."
+        "title": "트럼프, EU에 7월 4일까지 무역 합의 이행 촉구",
+        "description": "트럼프 미국 대통령은 EU가 7월 4일까지 미국과의 무역 합의를 이행하지 않으면 관세를 인상하겠다고 경고했다. 그는 EU가 합의에 따라 관세율을 0%로 낮추겠다고 약속했다고 언급하며, 이행하지 않을 경우 더 높은 수준으로 관세를 인상할 것이라고 압박했다."
       },
       {
-        "title": "연준 정책 관련 불확실성 지속",
-        "description": "미국 연준은 기준 금리를 3.50~3.75%로 동결했지만, FOMC 내부에서 금리 인하에 대한 이견이 지속되고 있습니다. 일부 위원들은 향후 금리 인하 가능성을 시사하는 완화적 기조에 반대하며 신중한 접근을 주장하고 있습니다. 닐 카시카리 미니애폴리스 연은 총재는 인플레이션 상승 위험이 고조된 상황에서 금리 인하 행보를 시사하면 안 된다는 입장을 밝혔습니다."
+        "title": "주요 기업 실적 발표",
+        "description": "포티넷은 연간 결제액 가이던스를 대폭 상향하며 주가가 급등했고, 데이터도그는 1분기 이익이 예상치를 크게 상회하여 주가가 폭등했다. 반면 플래닛 피트니스는 멤버십 가격 인상을 포기하고 연간 이익 전망을 하향하여 주가가 폭락했다."
       },
       {
-        "title": "미국 무역 정책 관련 동향",
-        "description": "제이미슨 그리어 미국 무역대표부(USTR) 대표는 상호 관세 무효화에 따른 관세 환급을 기업들이 수령하지 않을 수도 있다고 언급했습니다. 또한, USTR은 해외 국가들의 과잉생산 및 강제 노동 관련 무역법 301조 조사를 올여름 마무리할 예정이며, 조사 결과에 따라 새로운 관세 부과 또는 무역 협상이 진행될 수 있습니다."
+        "title": "지정학적 리스크와 시장 영향",
+        "description": "호르무즈 해협을 둘러싼 지정학적 리스크와 미국-이란 간의 협상 불확실성이 유가 변동성에 영향을 미치고 있다. 전문가들은 미국과 이란 간 협상 결과가 명확해지기 전까지 유가와 증시 변동성이 이어질 것으로 전망하고 있다."
       }
     ],
-    "events": [
-      {
-        "date": "미정",
-        "description": "미국 노동통계국, 4월 비농업 부문 고용 데이터 발표 (5월 8일 발표 예상)"
-      }
-    ]
+    "events": []
   }
 }
