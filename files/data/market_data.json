@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-22T22:31:18.251Z",
+  "lastUpdated": "2026-05-25T22:31:45.876Z",
   "indices": {
     "^GSPC": {
       "price": "7,473.47",
@@ -20,9 +20,9 @@
       "status": "up"
     },
     "^VIX": {
-      "price": "16.70",
+      "price": "16.59",
       "changeText": "안정",
-      "changePercent": "-0.36",
+      "changePercent": "-0.66",
       "status": "down"
     },
     "^RUT": {
@@ -32,94 +32,94 @@
       "status": "up"
     },
     "CL=F": {
-      "price": "97.00",
-      "changeText": "▲ 0.7%",
-      "changePercent": "+0.67",
-      "status": "up"
+      "price": "90.50",
+      "changeText": "▼ 6.3%",
+      "changePercent": "-6.31",
+      "status": "down"
     },
     "BZ=F": {
-      "price": "103.94",
-      "changeText": "▲ 1.3%",
-      "changePercent": "+1.33",
-      "status": "up"
+      "price": "93.96",
+      "changeText": "▼ 9.3%",
+      "changePercent": "-9.25",
+      "status": "down"
     },
     "GC=F": {
-      "price": "4,510.50",
-      "changeText": "▼ 0.6%",
-      "changePercent": "-0.65",
-      "status": "down"
+      "price": "4,576.30",
+      "changeText": "▲ 1.2%",
+      "changePercent": "+1.22",
+      "status": "up"
     },
     "SI=F": {
-      "price": "75.92",
-      "changeText": "▼ 0.7%",
-      "changePercent": "-0.65",
-      "status": "down"
+      "price": "78.53",
+      "changeText": "▲ 3.5%",
+      "changePercent": "+3.47",
+      "status": "up"
     },
     "BTC-USD": {
-      "price": "75,749.99",
-      "changeText": "▼ 2.3%",
-      "changePercent": "-2.31",
-      "status": "down"
-    },
-    "ETH-USD": {
-      "price": "2,071.68",
-      "changeText": "▼ 2.8%",
-      "changePercent": "-2.80",
-      "status": "down"
-    },
-    "KRW=X": {
-      "price": "1,520.5",
-      "changeText": "▲ 1.4%",
-      "changePercent": "+1.38",
-      "status": "up"
-    },
-    "DX-Y.NYB": {
-      "price": "99.32",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.13",
-      "status": "up"
-    },
-    "EURUSD=X": {
-      "price": "1.16",
-      "changeText": "▼ 0.2%",
-      "changePercent": "-0.17",
-      "status": "down"
-    },
-    "JPY=X": {
-      "price": "159.16",
+      "price": "77,112.00",
       "changeText": "▲ 0.2%",
       "changePercent": "+0.17",
       "status": "up"
     },
-    "GBPUSD=X": {
-      "price": "1.34",
-      "changeText": "▼ 0.0%",
-      "changePercent": "-0.01",
+    "ETH-USD": {
+      "price": "2,106.41",
+      "changeText": "▲ 0.4%",
+      "changePercent": "+0.40",
+      "status": "up"
+    },
+    "KRW=X": {
+      "price": "1,517.2",
+      "changeText": "▲ 0.9%",
+      "changePercent": "+0.85",
+      "status": "up"
+    },
+    "DX-Y.NYB": {
+      "price": "99.24",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.08",
       "status": "down"
+    },
+    "EURUSD=X": {
+      "price": "1.16",
+      "changeText": "▲ 0.2%",
+      "changePercent": "+0.20",
+      "status": "up"
+    },
+    "JPY=X": {
+      "price": "158.92",
+      "changeText": "▼ 0.1%",
+      "changePercent": "-0.06",
+      "status": "down"
+    },
+    "GBPUSD=X": {
+      "price": "1.35",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.52",
+      "status": "up"
     },
     "^TNX": {
       "price": "4.56",
-      "changeText": "▼ 2.8bp",
-      "changePercent": "-0.61",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TYX": {
       "price": "5.06",
-      "changeText": "▼ 4.8bp",
-      "changePercent": "-0.94",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^FVX": {
       "price": "4.26",
-      "changeText": "▼ 0.1bp",
-      "changePercent": "-0.02",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^IRX": {
-      "price": "3.59",
-      "changeText": "▲ 0.3bp",
-      "changePercent": "+0.08",
-      "status": "warn"
+      "price": "3.58",
+      "changeText": "▼ 0.0bp",
+      "changePercent": "-0.00",
+      "status": "down"
     },
     "AAPL": {
       "price": "308.82",
@@ -359,7 +359,6 @@
     },
     "^VIX": {
       "labels": [
-        "5/11",
         "5/12",
         "5/13",
         "5/14",
@@ -368,10 +367,10 @@
         "5/19",
         "5/20",
         "5/21",
-        "5/22"
+        "5/22",
+        "5/25"
       ],
       "values": [
-        18.38,
         17.99,
         17.87,
         17.26,
@@ -380,7 +379,8 @@
         18.06,
         17.44,
         16.76,
-        16.7
+        16.7,
+        16.59
       ]
     },
     "^RUT": {
@@ -411,28 +411,28 @@
     },
     "BTC-USD": {
       "labels": [
-        "5/13",
-        "5/14",
-        "5/15",
         "5/16",
         "5/17",
         "5/18",
         "5/19",
         "5/20",
         "5/21",
-        "5/22"
+        "5/22",
+        "5/23",
+        "5/24",
+        "5/25"
       ],
       "values": [
-        79277.12,
-        81051.25,
-        79065.68,
         78131.44,
         77429.35,
         76954.17,
         76750.91,
         77457.77,
         77539.17,
-        75749.99
+        75488.24,
+        76673.37,
+        76981.13,
+        77112
       ]
     },
     "AAPL": {
@@ -688,28 +688,28 @@
   },
   "yields": {
     "^IRX": {
-      "price": "3.59",
-      "changeText": "▲ 0.3bp",
-      "changePercent": "+0.08",
-      "status": "warn"
+      "price": "3.58",
+      "changeText": "▼ 0.0bp",
+      "changePercent": "-0.00",
+      "status": "down"
     },
     "^FVX": {
       "price": "4.26",
-      "changeText": "▼ 0.1bp",
-      "changePercent": "-0.02",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TNX": {
       "price": "4.56",
-      "changeText": "▼ 2.8bp",
-      "changePercent": "-0.61",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TYX": {
       "price": "5.06",
-      "changeText": "▼ 4.8bp",
-      "changePercent": "-0.94",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     }
   },
   "macros": {
@@ -735,38 +735,8 @@
     }
   },
   "commentary": {
-    "brief": "미국 시장은 다우존스 산업평균지수가 사상 최고치를 경신하며 3일 연속 상승세를 이어갔습니다. 미국과 이란 간의 협상 진전에 대한 기대감이 투자 심리를 자극했으며, 연준 내부에서는 인플레이션 우려 속 완화적 통화 정책에 대한 재검토 목소리가 나오고 있습니다.",
-    "topics": [
-      {
-        "title": "다우존스, 사상 최고치 경신",
-        "description": "뉴욕증시는 미국과 이란 간 협상 진전 기대감에 힘입어 3일 연속 상승했습니다. 특히 다우존스 산업평균지수는 0.58% 상승한 50,579.70으로 마감하며 사상 최고치를 또 다시 경신했습니다."
-      },
-      {
-        "title": "연준 내부, 완화 편향 제거 요구",
-        "description": "크리스토퍼 월러 연준 이사는 인플레이션이 목표치인 2%로 복귀하는 명확한 신호가 나타날 때까지 현재의 정책 금리를 유지해야 한다고 주장했습니다. 또한, 정책 성명에서 '완화 편향' 표현을 제거하여 금리 인하 가능성을 낮추는 것을 지지한다고 밝혔습니다."
-      },
-      {
-        "title": "미 무역대표부, 반도체 관세 부과 시기 신중론",
-        "description": "제이미슨 그리어 미국 무역대표부(USTR) 대표는 반도체에 대한 전면적인 품목 관세 부과가 필요하지만, 시기와 규모를 신중하게 고려해야 한다고 밝혔습니다. 그는 마이크론 테크놀러지 메모리칩 공장 증설 행사에서 이같이 언급하며, 미국 내 반도체 산업 보호를 위한 장기적인 관세 부과 필요성을 강조했습니다."
-      },
-      {
-        "title": "IBM, 양자 컴퓨팅 투자 확대",
-        "description": "트럼프 행정부는 양자 컴퓨팅 부문에 대한 투자 계획을 발표하고 9개 양자 컴퓨팅 기업에 20억 달러 이상의 연방 자금을 배정했습니다. 이에 따라 IBM은 기존 하드웨어에서 고마진 하이브리드 클라우드 및 AI로 사업을 전환하며 월가 컨센서스인 321달러를 목표로 하고 있습니다."
-      }
-    ],
-    "events": [
-      {
-        "date": "미정",
-        "description": "미국 5월 소비심리평가지수 확정치 발표 예정"
-      },
-      {
-        "date": "6월",
-        "description": "케빈 워시 신임 연준 의장 취임 후 첫 FOMC 회의 예정"
-      },
-      {
-        "date": "6/10",
-        "description": "미국 5월 소비자물가지수(CPI) 발표 예정"
-      }
-    ]
+    "brief": "AI 브리핑 생성 중입니다. 잠시 후 새로고침 해주세요.",
+    "topics": [],
+    "events": []
   }
 }
