@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-02T22:32:45.966Z",
+  "lastUpdated": "2026-07-03T22:29:53.113Z",
   "indices": {
     "^GSPC": {
       "price": "7,483.24",
@@ -20,9 +20,9 @@
       "status": "up"
     },
     "^VIX": {
-      "price": "16.15",
+      "price": "15.81",
       "changeText": "안정",
-      "changePercent": "-2.65",
+      "changePercent": "-2.11",
       "status": "down"
     },
     "^RUT": {
@@ -32,94 +32,94 @@
       "status": "down"
     },
     "CL=F": {
-      "price": "68.54",
-      "changeText": "▼ 0.1%",
-      "changePercent": "-0.06",
-      "status": "down"
+      "price": "68.78",
+      "changeText": "▲ 0.3%",
+      "changePercent": "+0.29",
+      "status": "up"
     },
     "BZ=F": {
-      "price": "71.64",
-      "changeText": "▲ 0.1%",
-      "changePercent": "+0.10",
+      "price": "72.13",
+      "changeText": "▲ 0.8%",
+      "changePercent": "+0.78",
       "status": "up"
     },
     "GC=F": {
-      "price": "4,137.00",
-      "changeText": "▲ 1.7%",
-      "changePercent": "+1.69",
+      "price": "4,187.30",
+      "changeText": "▲ 2.9%",
+      "changePercent": "+2.93",
       "status": "up"
     },
     "SI=F": {
-      "price": "61.44",
-      "changeText": "▲ 2.3%",
-      "changePercent": "+2.26",
+      "price": "62.82",
+      "changeText": "▲ 4.5%",
+      "changePercent": "+4.54",
       "status": "up"
     },
     "BTC-USD": {
-      "price": "61,440.36",
-      "changeText": "▲ 2.4%",
-      "changePercent": "+2.39",
+      "price": "62,568.67",
+      "changeText": "▲ 1.8%",
+      "changePercent": "+1.76",
       "status": "up"
     },
     "ETH-USD": {
-      "price": "1,694.61",
-      "changeText": "▲ 5.3%",
-      "changePercent": "+5.32",
+      "price": "1,758.40",
+      "changeText": "▲ 3.5%",
+      "changePercent": "+3.55",
       "status": "up"
     },
     "KRW=X": {
-      "price": "1,537.1",
-      "changeText": "▼ 0.7%",
-      "changePercent": "-0.75",
+      "price": "1,530.2",
+      "changeText": "▼ 1.4%",
+      "changePercent": "-1.40",
       "status": "down"
     },
     "DX-Y.NYB": {
-      "price": "100.85",
+      "price": "100.86",
       "changeText": "▼ 0.5%",
       "changePercent": "-0.53",
       "status": "down"
     },
     "EURUSD=X": {
       "price": "1.14",
-      "changeText": "▲ 0.2%",
-      "changePercent": "+0.18",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.54",
       "status": "up"
     },
     "JPY=X": {
-      "price": "161.15",
-      "changeText": "▼ 0.9%",
-      "changePercent": "-0.91",
+      "price": "161.34",
+      "changeText": "▼ 0.7%",
+      "changePercent": "-0.74",
       "status": "down"
     },
     "GBPUSD=X": {
-      "price": "1.33",
-      "changeText": "▲ 0.7%",
-      "changePercent": "+0.73",
+      "price": "1.34",
+      "changeText": "▲ 0.5%",
+      "changePercent": "+0.53",
       "status": "up"
     },
     "^TNX": {
-      "price": "4.49",
-      "changeText": "▲ 1.0bp",
-      "changePercent": "+0.22",
+      "price": "4.48",
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
       "status": "warn"
     },
     "^TYX": {
-      "price": "4.99",
-      "changeText": "▲ 1.9bp",
-      "changePercent": "+0.38",
+      "price": "4.98",
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
       "status": "warn"
     },
     "^FVX": {
       "price": "4.23",
-      "changeText": "▼ 0.2bp",
-      "changePercent": "-0.05",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^IRX": {
       "price": "3.67",
-      "changeText": "▼ 3.2bp",
-      "changePercent": "-0.86",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "AAPL": {
       "price": "308.63",
@@ -359,7 +359,6 @@
     },
     "^VIX": {
       "labels": [
-        "6/18",
         "6/22",
         "6/23",
         "6/24",
@@ -368,10 +367,10 @@
         "6/29",
         "6/30",
         "7/1",
-        "7/2"
+        "7/2",
+        "7/3"
       ],
       "values": [
-        16.4,
         17.28,
         19.49,
         18.63,
@@ -380,7 +379,8 @@
         17.65,
         16.45,
         16.59,
-        16.15
+        16.15,
+        15.81
       ]
     },
     "^RUT": {
@@ -411,7 +411,6 @@
     },
     "BTC-USD": {
       "labels": [
-        "6/23",
         "6/24",
         "6/25",
         "6/26",
@@ -420,10 +419,10 @@
         "6/29",
         "6/30",
         "7/1",
-        "7/2"
+        "7/2",
+        "7/3"
       ],
       "values": [
-        62668.02,
         60995.13,
         59721.68,
         60016.43,
@@ -432,7 +431,8 @@
         60138.38,
         58558.86,
         60003.76,
-        61440.36
+        61485.3,
+        62568.67
       ]
     },
     "AAPL": {
@@ -689,30 +689,51 @@
   "yields": {
     "^IRX": {
       "price": "3.67",
-      "changeText": "▼ 3.2bp",
-      "changePercent": "-0.86",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^FVX": {
       "price": "4.23",
-      "changeText": "▼ 0.2bp",
-      "changePercent": "-0.05",
-      "status": "down"
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
+      "status": "warn"
     },
     "^TNX": {
-      "price": "4.49",
-      "changeText": "▲ 1.0bp",
-      "changePercent": "+0.22",
+      "price": "4.48",
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
       "status": "warn"
     },
     "^TYX": {
-      "price": "4.99",
-      "changeText": "▲ 1.9bp",
-      "changePercent": "+0.38",
+      "price": "4.98",
+      "changeText": "▲ 0.0bp",
+      "changePercent": "+0.00",
       "status": "warn"
     }
   },
-  "macros": {},
+  "macros": {
+    "cpi": {
+      "value": 4.2,
+      "label": "5월 기준",
+      "status": "dn"
+    },
+    "unemployment": {
+      "value": 4.2,
+      "label": "6월 기준",
+      "status": "up"
+    },
+    "fedRate": {
+      "value": 3.63,
+      "label": "현재 기준금리",
+      "status": "neu"
+    },
+    "pce": {
+      "value": 3.4,
+      "label": "5월 기준",
+      "status": "warn"
+    }
+  },
   "commentary": {
     "brief": "AI 브리핑 생성 중입니다. 잠시 후 새로고침 해주세요.",
     "topics": [],
