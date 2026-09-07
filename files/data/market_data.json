@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-04T23:06:07.528Z",
+  "lastUpdated": "2026-09-07T23:36:16.517Z",
   "indices": {
     "^GSPC": {
       "price": "7,718.60",
@@ -20,9 +20,9 @@
       "status": "up"
     },
     "^VIX": {
-      "price": "14.53",
+      "price": "15.30",
       "changeText": "⚠ 경계",
-      "changePercent": "+1.47",
+      "changePercent": "+5.30",
       "status": "warn"
     },
     "^RUT": {
@@ -32,69 +32,69 @@
       "status": "up"
     },
     "CL=F": {
-      "price": "91.22",
-      "changeText": "▼ 0.1%",
-      "changePercent": "-0.09",
-      "status": "down"
+      "price": "92.61",
+      "changeText": "▲ 1.2%",
+      "changePercent": "+1.24",
+      "status": "up"
     },
     "BZ=F": {
-      "price": "95.83",
-      "changeText": "▲ 0.3%",
-      "changePercent": "+0.32",
+      "price": "97.22",
+      "changeText": "▲ 1.0%",
+      "changePercent": "+0.98",
       "status": "up"
     },
     "GC=F": {
-      "price": "4,477.20",
-      "changeText": "▼ 0.3%",
-      "changePercent": "-0.32",
-      "status": "down"
+      "price": "4,456.50",
+      "changeText": "▲ 0.6%",
+      "changePercent": "+0.60",
+      "status": "up"
     },
     "SI=F": {
-      "price": "66.82",
-      "changeText": "▼ 0.2%",
-      "changePercent": "-0.23",
-      "status": "down"
+      "price": "66.87",
+      "changeText": "▲ 1.2%",
+      "changePercent": "+1.25",
+      "status": "up"
     },
     "BTC-USD": {
-      "price": "79,663.48",
-      "changeText": "▼ 2.0%",
-      "changePercent": "-1.98",
+      "price": "79,010.30",
+      "changeText": "▼ 1.7%",
+      "changePercent": "-1.67",
       "status": "down"
     },
     "ETH-USD": {
-      "price": "2,451.45",
-      "changeText": "▼ 2.3%",
-      "changePercent": "-2.26",
+      "price": "2,485.26",
+      "changeText": "▼ 1.2%",
+      "changePercent": "-1.16",
       "status": "down"
     },
     "KRW=X": {
-      "price": "1,346.0",
-      "changeText": "▼ 0.9%",
-      "changePercent": "-0.91",
+      "price": "1,344.7",
+      "changeText": "▼ 0.0%",
+      "changePercent": "-0.02",
       "status": "down"
     },
     "DX-Y.NYB": {
-      "price": "99.16",
-      "changeText": "▲ 0.2%",
-      "changePercent": "+0.16",
+      "price": "99.18",
+      "changeText": "▲ 0.0%",
+      "changePercent": "+0.02",
       "status": "up"
     },
     "EURUSD=X": {
       "price": "1.16",
-      "changeText": "▲ 0.3%",
-      "changePercent": "+0.31",
+      "changeText": "▲ 0.2%",
+      "changePercent": "+0.15",
       "status": "up"
     },
     "JPY=X": {
-      "price": "156.22",
-      "changeText": "▼ 1.7%",
-      "changePercent": "-1.70",
+      "price": "154.02",
+      "changeText": "▼ 1.4%",
+      "changePercent": "-1.40",
       "status": "down"
     },
     "GBPUSD=X": {
       "price": "1.35",
       "changeText": "▲ 0.2%",
-      "changePercent": "+0.24",
+      "changePercent": "+0.23",
       "status": "up"
     },
     "^TNX": {
@@ -359,7 +359,6 @@
     },
     "^VIX": {
       "labels": [
-        "8/24",
         "8/25",
         "8/26",
         "8/27",
@@ -368,10 +367,10 @@
         "9/1",
         "9/2",
         "9/3",
-        "9/4"
+        "9/4",
+        "9/7"
       ],
       "values": [
-        15.85,
         15.45,
         15.21,
         14.51,
@@ -380,7 +379,8 @@
         16.34,
         15.2,
         14.32,
-        14.53
+        14.53,
+        15.3
       ]
     },
     "^RUT": {
@@ -411,28 +411,28 @@
     },
     "BTC-USD": {
       "labels": [
-        "8/26",
-        "8/27",
-        "8/28",
         "8/29",
         "8/30",
         "8/31",
         "9/1",
         "9/2",
         "9/3",
-        "9/4"
+        "9/4",
+        "9/5",
+        "9/6",
+        "9/7"
       ],
       "values": [
-        79027.42,
-        80257.54,
-        77830.29,
         78245.81,
         77667.57,
         78548.63,
         77403.63,
         77300.48,
         81271.74,
-        79663.48
+        79671.97,
+        79823.87,
+        80350.05,
+        79010.3
       ]
     },
     "AAPL": {
